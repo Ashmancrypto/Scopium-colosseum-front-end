@@ -1,0 +1,256 @@
+/* Import Solana Wallet Adapter styles */
+@import url('@solana/wallet-adapter-react-ui/styles.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme-specific styles */
+.light {
+  color-scheme: light;
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-tertiary: #6B7280;
+  --bg-primary: #F9FAFB;
+  --bg-secondary: #FFFFFF;
+  --border-primary: #E5E7EB;
+  --border-secondary: #D1D5DB;
+}
+
+.dark {
+  color-scheme: dark;
+  --text-primary: #FFFFFF;
+  --text-secondary: #D1D5DB;
+  --text-tertiary: #9CA3AF;
+  --bg-primary: #1E1E1E;
+  --bg-secondary: #1F2937;
+  --border-primary: #374151;
+  --border-secondary: #4B5563;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.3);
+  border-radius: 4px;
+}
+
+.light ::-webkit-scrollbar-track {
+  background: rgba(229, 231, 235, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.8);
+  border-radius: 4px;
+  border: 1px solid rgba(31, 41, 55, 0.5);
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.8);
+  border: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 114, 128, 0.9);
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 114, 128, 0.9);
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(31, 41, 55, 0.3);
+}
+
+.light ::-webkit-scrollbar-corner {
+  background: rgba(229, 231, 235, 0.3);
+}
+
+/* Firefox scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(75, 85, 99, 0.8) rgba(31, 41, 55, 0.3);
+}
+
+.light * {
+  scrollbar-color: rgba(156, 163, 175, 0.8) rgba(229, 231, 235, 0.3);
+}
+
+/* Hide scrollbar for specific elements if needed */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom wallet adapter button styling */
+.wallet-adapter-button-trigger {
+  background: transparent !important;
+}
+
+.wallet-adapter-button {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+  border-radius: 0.75rem !important;
+  padding: 0.5rem 1.5rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s !important;
+  transform: scale(1) !important;
+}
+
+.wallet-adapter-button:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: scale(1.05) !important;
+}
+
+.wallet-adapter-button:not([disabled]):hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.wallet-adapter-button[disabled] {
+  background: rgba(107, 114, 128, 0.5) !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* HIDE DEFAULT WALLET ADAPTER MODAL - This is the key fix */
+.wallet-adapter-modal {
+  display: none !important;
+}
+
+.wallet-adapter-modal-overlay {
+  display: none !important;
+}
+
+.wallet-adapter-modal-container {
+  display: none !important;
+}
+
+.wallet-adapter-modal-wrapper {
+  display: none !important;
+}
+
+/* Override any wallet adapter modal positioning */
+.wallet-adapter-modal-overlay,
+.wallet-adapter-modal {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 9999 !important;
+  display: none !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* Toast animations */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes shrink {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out forwards;
+}
+
+/* Line clamp utility for text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth transitions for interactive elements */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Custom gradient backgrounds */
+.bg-gradient-card {
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.9) 0%, rgba(17, 24, 39, 0.9) 100%);
+}
+
+/* Hover effects for cards */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.shadow-pink-bottom {
+  box-shadow: 0 2px 4px 0 rgba(250, 78, 171, 0.25); /* adjust spread & blur if needed */
+}
+
+.shadow-green-bottom {
+  box-shadow: 0 2px 4px 0 rgba(1, 219, 117, 0.25);
+}
+
+/* Loading shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}

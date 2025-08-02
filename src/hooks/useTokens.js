@@ -1,0 +1,218 @@
+import { useState, useEffect, useCallback, useContext } from 'react';
+import { findTokens } from '../api/token/index.js';
+import { getTrendingTokens } from '../api/token/index.js';
+import { useLogin } from './auth/useLogin.js';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { getUser } from '../utils/index.js';
+import { useLogout } from './auth/useLogout.js';
+import { AuthContext } from '../contexts/AuthContext.jsx';
+
+export const useTokens = () => {
+
+  const { user } = useContext(AuthContext);
+
+  const [userId, setUserId] = useState('');
+  const [allTokens, setAllTokens] = useState([]);
+  const [trendingTokens, setTrendingTokens] = useState([]);
+  const [tokens, setTokens] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingTrending, setLoadingTrending] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [filters, setFilters] = useState({
+    name: '',
+    sortCondition: 'creation time',
+    sortOrder: 'desc',
+    nsfw: false,
+    category: 'All Tokens'
+  });
+  const { publicKey, disconnecting } = useWallet();
+
+  const { login } = useLogin();
+  const { logout } = useLogout();
+
+  useEffect(() => {
+    setUserId(user?.userId);
+  }, [user]);
+
+  const TOKENS_PER_PAGE = 9;
+
+  const fetchTokens = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const result = await findTokens(
+        filters.name,
+        `sort: ${filters.sortCondition}`,
+        `sort: ${filters.sortOrder}`,
+        filters.nsfw,
+        userId
+      );
+
+      if (result && Array.isArray(result)) {
+        setAllTokens(result);
+      } else {
+        setAllTokens([]);
+      }
+    } catch (err) {
+      console.error('Error fetching tokens:', err);
+      setError(err.message || 'Failed to fetch tokens');
+      setAllTokens([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const fetchTrendingTokens = async () => {
+    try {
+      setLoadingTrending(true);
+      const user = getUser();
+      const userId = user?.userId || '';
+
+      // Fetch tokens sorted by market cap (trending)
+      const result = await getTrendingTokens(userId);
+
+      if (result && Array.isArray(result)) {
+        // Take first 20 tokens for trending section
+        setTrendingTokens(result.slice(0, 20));
+      } else {
+        setTrendingTokens([]);
+      }
+    } catch (error) {
+      console.error('Error fetching trending tokens:', error);
+      setTrendingTokens([]);
+    } finally {
+      setLoadingTrending(false);
+    }
+  };
+
+  // Filter tokens by category
+  const filterTokensByCategory = useCallback((tokens, category) => {
+    if (category === 'All Tokens') {
+      return tokens;
+    }
+
+    const categoryMap = {
+      'Meme Tokens': 1,
+      'Fame Tokens': 2,
+      'AI Tokens': 3
+    };
+
+    const categoryId = categoryMap[category];
+    if (categoryId !== undefined) {
+      const filtered = tokens.filter(token => token.category === categoryId);
+      return filtered;
+    }
+
+    return tokens;
+  }, []);
+
+  // Apply category filter and pagination
+  useEffect(() => {
+    const filteredTokens = filterTokensByCategory(allTokens, filters.category);
+
+    // Apply pagination
+    const startIndex = (currentPage - 1) * TOKENS_PER_PAGE;
+    const endIndex = startIndex + TOKENS_PER_PAGE;
+    const paginatedTokens = filteredTokens.slice(startIndex, endIndex);
+
+    setTokens(paginatedTokens);
+  }, [allTokens, filters.category, currentPage, filterTokensByCategory]);
+
+  useEffect(() => {
+    fetchTokens();
+    fetchTrendingTokens();
+  }, [filters.name, filters.sortCondition, filters.sortOrder, filters.nsfw, userId]);
+
+  const updateFilters = useCallback((newFilters) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
+    // Reset to first page when filters change
+    setCurrentPage(1);
+  }, []);
+
+  const searchTokens = useCallback((searchTerm) => {
+    updateFilters({ name: searchTerm });
+  }, [updateFilters]);
+
+  const sortTokens = useCallback((sortCondition, sortOrder = 'desc') => {
+    updateFilters({ sortCondition, sortOrder });
+  }, [updateFilters]);
+
+  const setCategory = useCallback((category) => {
+    updateFilters({ category });
+  }, [updateFilters]);
+
+  const refreshTokens = useCallback(() => {
+    fetchTokens();
+    fetchTrendingTokens();
+  }, [fetchTokens]);
+
+  const toggleNSFW = useCallback(() => {
+    updateFilters({ nsfw: !filters.nsfw });
+  }, [filters.nsfw, updateFilters]);
+
+  const nextPage = useCallback(() => {
+    const filteredTokens = filterTokensByCategory(allTokens, filters.category);
+    const totalPages = Math.ceil(filteredTokens.length / TOKENS_PER_PAGE);
+    if (currentPage < totalPages) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+    }
+  }, [allTokens, filters.category, currentPage, filterTokensByCategory]);
+
+  const prevPage = useCallback(() => {
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+    }
+  }, [currentPage]);
+
+  const goToPage = useCallback((page) => {
+    const filteredTokens = filterTokensByCategory(allTokens, filters.category);
+    const totalPages = Math.ceil(filteredTokens.length / TOKENS_PER_PAGE);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  }, [allTokens, filters.category, filterTokensByCategory]);
+
+  // Calculate pagination info
+  const filteredTokens = filterTokensByCategory(allTokens, filters.category);
+  const favoriteTokens = allTokens.filter(token => token.isFavorited);
+  const totalTokens = filteredTokens.length;
+  const totalPages = Math.ceil(totalTokens / TOKENS_PER_PAGE);
+  const hasNextPage = currentPage < totalPages;
+  const hasPrevPage = currentPage > 1;
+
+  const paginationInfo = {
+    currentPage,
+    totalPages,
+    totalTokens,
+    tokensPerPage: TOKENS_PER_PAGE,
+    hasNextPage,
+    hasPrevPage,
+    nextPage,
+    prevPage,
+    goToPage
+  };
+
+  return {
+    tokens,
+    allTokens: filteredTokens,
+    trendingTokens,
+    favoriteTokens,
+    loading,
+    loadingTrending,
+    error,
+    filters,
+    pagination: paginationInfo,
+    searchTokens,
+    sortTokens,
+    setCategory,
+    updateFilters,
+    refreshTokens,
+    toggleNSFW,
+    fetchTrendingTokens
+  }
+};
