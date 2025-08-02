@@ -11,12 +11,15 @@ export class AuthService {
   }
 
   login = async (walletAddr) => {
+    // console.log('DEBUG: Sending login request with walletAddr:', walletAddr);
     return this.instance
       .post("/login", {
         walletAddr
       })
       .then((res) => {
+        // console.log('DEBUG: Login response received:', res.data);
         const decodedToken = jwtDecode(res.data.token.replace("Bearer ", ""))
+        // console.log('DEBUG: Decoded token:', decodedToken);
         localStorage.setItem('token', res.data.token.replace("Bearer ", ""))
 
         return {
@@ -27,6 +30,10 @@ export class AuthService {
           iat: decodedToken.iat,
           accessToken: res.data.token.replace("Bearer ", "")
         }
+      })
+      .catch((error) => {
+        // console.error('DEBUG: Login error:', error.response?.data || error.message);
+        throw error;
       });
   };
 

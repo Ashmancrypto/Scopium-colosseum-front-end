@@ -10,6 +10,7 @@ import { getUser } from '../utils/index.js';
 import { solPriceContext } from '../contexts/SolPriceContext.jsx';
 import { formatTokenPrice, formatTokenMarketCap, formatAddress, formatTimeAgo } from '../utils/formatters.js';
 import { TradingInterface, TokenChart, HolderDistribution, TransactionTable } from '../components/tokenPage/index.js';
+import Chat from '../components/tokenPage/Chat';
 
 const TokenPage = () => {
     const { tokenAddress } = useParams();
@@ -25,6 +26,8 @@ const TokenPage = () => {
     const [loadingTransactions, setLoadingTransactions] = useState(true);
     const [isWatchlisted, setIsWatchlisted] = useState(false);
     const [activeTab, setActiveTab] = useState('chart');
+    const user = getUser();
+    const currentUserId = user?._id;
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [chatMessage, setChatMessage] = useState('');
 
@@ -108,14 +111,6 @@ const TokenPage = () => {
 
     const handleBackClick = () => {
         navigate(-1);
-    };
-
-    const handleSendMessage = () => {
-        if (chatMessage.trim()) {
-            // TODO: Implement chat functionality
-            console.log('Sending message:', chatMessage);
-            setChatMessage('');
-        }
     };
 
     const getPriceChangeColor = (change) => {
@@ -302,46 +297,7 @@ const TokenPage = () => {
                     </div>
 
                     {/* Right Column - Chat */}
-                    <div>
-                        <div className={`rounded-xl border h-[500px] flex flex-col ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-                            {/* Chat Header */}
-                            <div className={`p-4 border-b flex items-center justify-between ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
-                                <h3 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Chat</h3>
-                            </div>
-
-                            {/* Chat Body */}
-                            <div className="flex-1 p-4 overflow-y-auto">
-                                <div className="text-center">
-                                    <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
-                                        You must hold [TOKEN NAME] in order to join the group chat.
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Chat Input */}
-                            <div className={`p-4 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
-                                <div className="flex items-center space-x-2">
-                                    <input
-                                        type="text"
-                                        value={chatMessage}
-                                        onChange={(e) => setChatMessage(e.target.value)}
-                                        placeholder="Send a message"
-                                        className={`flex-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 ${isDark
-                                                ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-                                                : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                                            }`}
-                                        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                                    />
-                                    <button
-                                        onClick={handleSendMessage}
-                                        className="p-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition-colors"
-                                    >
-                                        <Send className="w-4 h-4" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <Chat tokenAddress={tokenAddress} currentUserId={currentUserId} />
                 </div>
                 {/* Transactions Table */}
                 <div className="mx-4 lg:mx-6 mt-6 mb-8">
