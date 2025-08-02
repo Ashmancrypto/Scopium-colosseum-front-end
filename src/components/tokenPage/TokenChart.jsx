@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
-import Datafeed from './datafeed.js';
+import Datafeed from './DataFeed.js';
 
 const TokenChart = ({ token }) => {
   const chartRef = useRef(null);
