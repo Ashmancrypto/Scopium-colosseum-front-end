@@ -448,7 +448,7 @@ const Chat = ({ tokenAddress, currentUserId }) => {
         {!loading && messages.length === 0 ? (
           <div className="text-center h-full flex items-center justify-center">
             <p className={isDark ? 'text-gray-400' : 'text-gray-500'}>
-              No messages yet. Start the conversation!
+              {publicKey ? "No messages yet. Start the conversation!" : "Please connect your wallet"}
             </p>
           </div>
         ) : (
