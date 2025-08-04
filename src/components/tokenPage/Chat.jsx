@@ -242,8 +242,8 @@ const Chat = ({ tokenAddress, currentUserId }) => {
 
     if (!publicKey) {
       if (DEBUG) console.error('WebSocket skipped: Missing publicKey', { publicKey });
-      setError('Wallet not connected');
-      toast.error('Auth Error', 'Please connect your wallet');
+      // setError('Wallet not connected');
+      // toast.error('Auth Error', 'Please connect your wallet');
       // Start polling as a fallback after token is available
       const pollInterval = setInterval(() => {
         if (token) fetchNewMessages();
