@@ -254,3 +254,27 @@
   background-size: 200px 100%;
   animation: shimmer 1.5s infinite;
 }
+
+/* Add to existing globals.css */
+.tv-chart-container * {
+  color: #b0b0b0 !important;
+}
+
+.tv-chart-container .legend-l31H9iuA,
+.tv-chart-container .valueItem-l31H9iuA,
+.tv-chart-container .title-l31H9iuA {
+  background-color: #0b1326 !important;
+}
+
+.tv-chart-container .chart-markup-table {
+  background-color: #0b1326 !important;
+}
+
+.tv-chart-container .errorCardRendererContainer-S9sXvhAu {
+  background: linear-gradient(#0b1326, #0b1326) !important;
+}
+
+.tv-chart-container .apply-common-tooltip {
+  background-color: #131722 !important;
+  border-color: #0159b3 !important;
+}

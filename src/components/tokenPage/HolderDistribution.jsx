@@ -48,6 +48,8 @@ const HolderDistribution = ({ holders }) => {
   const popupBg = isDark ? 'bg-gray-800' : 'bg-white';
   const popupText = isDark ? 'text-white' : 'text-gray-900';
   const avatarFallbackBg = isDark ? 'bg-gray-600' : 'bg-gray-300';
+  const textFill = isDark ? 'black' : 'white';
+  const textOutlineColor = isDark ? 'white' : 'black';
 
   // SVG dimensions
   const width = 640;
@@ -177,8 +179,8 @@ const HolderDistribution = ({ holders }) => {
             </radialGradient>
             <filter id="textOutline" x="-50%" y="-50%" width="200%" height="200%">
               <feMorphology operator="dilate" radius="1" in="SourceAlpha" result="outline" />
-              <feFlood floodColor="white" floodOpacity="1" result="white" />
-              <feComposite in="white" in2="outline" operator="in" result="stroke" />
+              <feFlood floodColor={textOutlineColor} floodOpacity="1" result="outlineColor" />
+              <feComposite in="outlineColor" in2="outline" operator="in" result="stroke" />
               <feMerge>
                 <feMergeNode in="stroke" />
                 <feMergeNode in="SourceGraphic" />
@@ -242,7 +244,7 @@ const HolderDistribution = ({ holders }) => {
                       y={textY}
                       textAnchor="middle"
                       className={`${USERNAME_FONT} font-bold`}
-                      fill="black"
+                      fill={textFill}
                       filter="url(#textOutline)"
                     >
                       {bubble.displayAddress}
@@ -252,7 +254,7 @@ const HolderDistribution = ({ holders }) => {
                       y={percentageY}
                       textAnchor="middle"
                       className={`${percentageFontSize} font-bold`}
-                      fill="black"
+                      fill={textFill}
                       filter="url(#textOutline)"
                     >
                       {bubble.percentage.toFixed(2)}%
