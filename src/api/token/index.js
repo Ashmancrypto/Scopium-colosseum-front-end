@@ -93,6 +93,12 @@ export async function getTradeHistory(mintAddr) {
   return result.data;
 }
 
+export async function getTokenHolderDistribution(mintAddr, userId) {
+  const userIdStr = encodeURIComponent(JSON.stringify(userId));
+  const result = await axiosPublic.get(`/token/get_token_info?mintAddr=${mintAddr}&userId=${userIdStr}`);
+  return result.data.tokenHolderDistribution;
+}
+
 export async function getMarketId(baseMint, quoteMint) {
   const result = await axiosPublic.get(`/token/get_marketid?baseMint=${baseMint}&quoteMint=${quoteMint}`)
   return result.data;
