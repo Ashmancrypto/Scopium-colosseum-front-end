@@ -11,7 +11,7 @@ import { NATIVE_MINT,
 } from '@solana/spl-token';
 import BN from 'bn.js';
 
-import { PUMPFUN_PROGRAM_ID, REAL_BASE_RESERVES, TOKEN_DECIMALS, VIRT_QUOTE_RESERVES } from './constants';
+import { PUMPFUN_PROGRAM_ID, QUOTE_DECIMALS, REAL_BASE_RESERVES, TOKEN_DECIMALS, VIRT_QUOTE_RESERVES } from './constants';
 import { IDL } from '../../../constants/idl';
 import * as Keys from './keys';
 import { connection } from '../../../config/configSolana';
@@ -204,6 +204,11 @@ export const contract_sellTx = async (wallet, baseToken, sellAmount) => {
     const reserverBaseAta = getAssociatedTokenAddressSync(baseMint, poolStateKey, true);
     const reserverQuoteAta = getAssociatedTokenAddressSync(quoteMint, poolStateKey, true);
     const feeQuoteAta = getAssociatedTokenAddressSync(quoteMint, mainStateInfo.feeRecipient);
+    console.log('debug accounts::', mainStateKey.toBase58(), poolStateKey.toBase58(), 
+        baseMint.toBase58(), quoteMint.toBase58(),
+        seller.toBase58(), sellerBaseAta.toBase58(), sellerQuoteAta.toBase58(),
+        reserverBaseAta.toBase58(), reserverQuoteAta.toBase58(),
+        mainStateInfo.feeRecipient.toBase58(), feeQuoteAta.toBase58());
     const ix = await program.methods
         .sell(sellBalance)
         .accounts({
@@ -273,3 +278,34 @@ export const contract_isPoolComplete = async (wallet, baseToken, quoteMint) => {
 
     return poolStateInfo?.complete;
 };
+
+export const contract_receivableAmountOnBuy = async (wallet, baseToken, quoteMint, inputAmount) => {
+    console.log('debug inputAmount::', inputAmount)
+    const baseMint = new PublicKey(baseToken);
+    const poolStateKey = await Keys.getPoolStateKey(baseMint, quoteMint);
+    const program = getProgram(wallet);
+    const poolStateInfo = await program.account.poolState.fetch(poolStateKey);
+    if (!poolStateInfo) return;
+    console.log('debug pool state info::', poolStateInfo.realBaseReserves.toString(), poolStateInfo.realQuoteReserves.toString(), poolStateInfo.virtBaseReserves.toString(), poolStateInfo.virtQuoteReserves.toString())
+    const quoteReserves = poolStateInfo.realQuoteReserves.add(poolStateInfo.virtQuoteReserves);
+    const baseReservers = poolStateInfo.realBaseReserves;
+    const bnInputAmount = new BN(Math.floor(inputAmount * (10 ** QUOTE_DECIMALS)));
+    console.log('debug bn input::', bnInputAmount.add(quoteReserves).toString())
+    const quoteAmount = baseReservers * bnInputAmount / (bnInputAmount.add(quoteReserves))
+    // console.log('debug pool state info::', typeof poolStateInfo.realBaseReserves, quoteReserves, quoteAmount, bnInputAmount.add(quoteReserves))
+    return quoteAmount
+}
+
+export const contract_receivableAmountOnSell = async (wallet, baseToken, quoteMint, inputAmount) => {
+    const baseMint = new PublicKey(baseToken);
+    const poolStateKey = await Keys.getPoolStateKey(baseMint, quoteMint);
+    const program = getProgram(wallet);
+    const poolStateInfo = await program.account.poolState.fetch(poolStateKey);
+    if (!poolStateInfo) return;
+    const quoteReserves = poolStateInfo.realQuoteReserves.add(poolStateInfo.virtQuoteReserves);
+    const baseReservers = poolStateInfo.realBaseReserves;
+    const bnInputAmount = new BN(Math.floor(inputAmount * (10 ** TOKEN_DECIMALS)));
+    const quoteAmount = quoteReserves * bnInputAmount / (bnInputAmount.add(baseReservers))
+    // console.log('debug pool state info::', typeof poolStateInfo.realBaseReserves, quoteReserves, quoteAmount, bnInputAmount.add(quoteReserves))
+    return quoteAmount
+}

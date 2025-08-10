@@ -1,4 +1,4 @@
-import { TOKEN_DECIMALS, TOKEN_TOTAL_SUPPLY, TREASURY_WALLET } from "../../../contexts/contractsOnSolana/contracts/constants.js";
+import { BACKEND_URL, TOKEN_DECIMALS, TOKEN_TOTAL_SUPPLY, TREASURY_WALLET } from "../../../contexts/contractsOnSolana/contracts/constants.js";
 import {
     Keypair,
     SystemProgram,
@@ -127,7 +127,7 @@ const createMetadata = async (
     let imageUrl, metadataUri;
 
     // Upload metadata and get URLs
-    await fetch("https://launch.scopium.com/api" + '/token/upload_metadata', {
+    await fetch(`${BACKEND_URL}/api` + '/token/upload_metadata', {
         method: 'POST',
         body: formData
     }).then(async res => {

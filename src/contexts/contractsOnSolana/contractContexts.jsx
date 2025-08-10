@@ -1,8 +1,9 @@
-import { createContext, useEffect, useState, useContext } from 'react';
+"use client"
+
+import React, { createContext, useEffect, useState, useContext } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 
-import { 
-    contract_getMainStateInfo, 
+import { contract_getMainStateInfo, 
     contract_isInitialized, 
     contract_initMainState, 
     contract_isPoolCreated, 
@@ -10,38 +11,41 @@ import {
     contract_buyTx, 
     contract_sellTx, 
     contract_updateMainStateInfo, 
-    contract_isPoolComplete
+    contract_isPoolComplete,
+    contract_receivableAmountOnBuy,
+    contract_receivableAmountOnSell
 } from './contracts';
+
 
 export const ContractContext = createContext();
 
 const ContractContextProvider = ({ children }) => {
     const [txLoading, setTxLoading] = useState(false);
-    const wallet = useWallet();
+
+    const walletCtx = useWallet();
 
     useEffect(() => {
-        // Any initialization logic can go here
     }, []);
 
     const getOwnerAddress = async () => {
-        const mainStateInfo = await contract_getMainStateInfo(wallet);
+        const mainStateInfo = await contract_getMainStateInfo(walletCtx);
         if (!mainStateInfo) return null;
         return mainStateInfo.owner;
     };
 
     const getMainStateInfo = async () => {
-        return await contract_getMainStateInfo(wallet);
+        return await contract_getMainStateInfo(walletCtx);
     };
 
     const isContractInitialized = async () => {
-        return await contract_isInitialized(wallet);
+        return await contract_isInitialized(walletCtx);
     };
 
     const initializeContract = async () => {
         setTxLoading(true);
 
         try {
-            await contract_initMainState(wallet);
+            await contract_initMainState(walletCtx);
         } catch (err) {
             console.error(err);
             throw new Error(err.message);
@@ -51,16 +55,16 @@ const ContractContextProvider = ({ children }) => {
     };
 
     const isPoolCreated = async (baseToken, quoteMint) => {
-        return await contract_isPoolCreated(wallet, baseToken, quoteMint);
+        return await contract_isPoolCreated(walletCtx, baseToken, quoteMint);
     };
 
-    const getCreatePoolTx = async (baseToken, quoteMint) => {
+    const getCreatePoolTx = async (baseToken, baseAmount, quoteMint, quoteAmount) => {
         let tx = null;
 
         setTxLoading(true);
 
         try {
-            tx = await contract_createPoolTx(wallet, baseToken, quoteMint);
+            tx = await contract_createPoolTx(walletCtx, baseToken, baseAmount, quoteMint, quoteAmount);
         } catch (err) {
             console.error(err);
             throw new Error(err.message);
@@ -77,7 +81,7 @@ const ContractContextProvider = ({ children }) => {
         setTxLoading(true);
 
         try {
-            tx = await contract_buyTx(wallet, token, amount);
+            tx = await contract_buyTx(walletCtx, token, amount);
         } catch (err) {
             console.error(err);
             throw new Error(err.message);
@@ -94,7 +98,7 @@ const ContractContextProvider = ({ children }) => {
         setTxLoading(true);
 
         try {
-            tx = await contract_sellTx(wallet, token, amount);
+            tx = await contract_sellTx(walletCtx, token, amount);
         } catch (err) {
             console.error(err);
             throw new Error(err.message);
@@ -105,11 +109,11 @@ const ContractContextProvider = ({ children }) => {
         return tx;
     };
 
-    const updateMainStateInfo = async (owner, feeRecipient, tradingFee, creatingFee) => {
+    const updateMainStateInfo = async (owner, feeRecipient, tradingFee) => {
         setTxLoading(true);
 
         try {
-            await contract_updateMainStateInfo(wallet, owner, feeRecipient, tradingFee, creatingFee);
+            await contract_updateMainStateInfo(walletCtx, owner, feeRecipient, tradingFee);
         } catch (err) {
             console.error(err);
             throw new Error(err.message);
@@ -119,11 +123,18 @@ const ContractContextProvider = ({ children }) => {
     };
 
     const isPoolComplete = async (baseToken, quoteMint) => {
-        return await contract_isPoolComplete(wallet, baseToken, quoteMint);
+        return await contract_isPoolComplete(walletCtx, baseToken, quoteMint);
     };
 
+    const getReceivableOnBuy = async (baseToken, quoteMint, inputAmount) => {
+        return await contract_receivableAmountOnBuy(walletCtx, baseToken, quoteMint, inputAmount)
+    }
+
+    const getReceivableOnSell = async (baseToken, quoteMint, inputAmount) => {
+        return await contract_receivableAmountOnSell(walletCtx, baseToken, quoteMint, inputAmount)
+    }
+
     const context = {
-        txLoading,
         getOwnerAddress, 
         getMainStateInfo, 
         isContractInitialized, 
@@ -133,7 +144,9 @@ const ContractContextProvider = ({ children }) => {
         getBuyTx, 
         getSellTx, 
         updateMainStateInfo, 
-        isPoolComplete
+        isPoolComplete,
+        getReceivableOnBuy,
+        getReceivableOnSell
     };
 
     return <ContractContext.Provider value={context}>{children}</ContractContext.Provider>

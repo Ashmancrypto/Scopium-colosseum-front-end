@@ -2,13 +2,14 @@ import bs58 from "bs58";
 import { Keypair } from "@solana/web3.js";
 import { axiosPrivate } from "../axiosPrivate"
 import { axiosPublic } from "../axiosPublic"
+import { BACKEND_URL } from "../../contexts/contractsOnSolana/contracts/constants";
 
 export async function uploadMetadata(logoFile, metadata) {
   const formData = new FormData();
   formData.append('logo', logoFile);
   formData.append('metadata', metadata);
   
-  const response = await fetch('https://launch.scopium.com/api/token/upload_metadata', {
+  const response = await fetch(`${BACKEND_URL}/api/token/upload_metadata`, {
     method: 'POST',
     body: formData
   });

@@ -37,7 +37,7 @@ const TokenPage = () => {
       try {
         const userId = currentUserId || '';
         const data = await getTokenHolderDistribution(tokenAddress, userId);
-        console.log("Holders:", data)
+        // console.log("Holders:", data)
         // Take top 10 holders and transform
         const transformed = data.slice(0, 10).map(holder => ({
           address: holder.username || holder.walletAddr, // Use username if available, else wallet address

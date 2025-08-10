@@ -6,7 +6,7 @@ import {
     LOOKUP_TABLE_CACHE,
 } from "@raydium-io/raydium-sdk";
 
-export const isMainNet = true;
+export const isMainNet = false;
 
 export const networkUrl = !isMainNet 
     ? "https://api.devnet.solana.com"
