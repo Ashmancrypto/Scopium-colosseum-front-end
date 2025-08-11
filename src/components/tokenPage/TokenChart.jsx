@@ -188,7 +188,11 @@ const TokenChart = ({ token }) => {
     //     overflow: 'hidden'
     //   }}
     // />
-    <div id="tv_chart_container" style={{ height: chartHeight, backgroundColor: 'black' }} />
+    <div id="tv_chart_container"
+      ref={chartRef}
+      className="rounded tv-chart-container"
+      style={{ height: chartHeight, backgroundColor: 'black' }}
+    />
   );
 };
 
