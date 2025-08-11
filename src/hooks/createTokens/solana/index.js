@@ -202,7 +202,7 @@ export const createToken = async (
 ) => {
     try {
         let createTxs = [];
-
+        console.log('debug socials::', websiteLink, twitterLink, tgLink)
         /* Step 1 - Create mint (freezeAuthority disabled) */
         const { keypair: mintKeypair, txs: createMintTxs } = await createMint(wallet.publicKey, null, TOKEN_DECIMALS, category);
         createTxs = createMintTxs;

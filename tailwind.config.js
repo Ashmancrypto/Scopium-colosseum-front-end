@@ -3,6 +3,12 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      screens: {
+        // Apply styles up to and including 425px
+        vs: { max: '425px' },
+        // (optional) a min-width twin if you ever need “from 425px and up”
+        xs: '425px',
+      },
       boxShadow: {
         'pink-bottom': '0 4px 6px -1px #ec4899',
         'green-bottom': '0 4px 6px -1px #01DB75',

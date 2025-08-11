@@ -18,8 +18,8 @@ import { swap } from '../../engine/swap.js'
 import { connection } from '../../config/configSolana/index.js';
 import { QUOTE_DECIMALS, TOKEN_DECIMALS, TRADING_FEE } from '../../contexts/contractsOnSolana/contracts/constants.js';
 
-const TradingInterface = ({ token }) => {
-  // console.log('debug trading interface::', token)
+const TradingInterface = ({ token, isTrading, setIsTrading }) => {
+  // console.log('debug trading interface::', token, isTrading, setIsTrading)
   const { isDark } = useTheme();
   const { connected } = useWallet();
   const walletCtx = useWallet();
@@ -31,20 +31,18 @@ const TradingInterface = ({ token }) => {
   const [orderType, setOrderType] = useState('instant');
   const [amount, setAmount] = useState('');
   const [outAmount, setOutAmount] = useState('');
-  const [isTrading, setIsTrading] = useState(false);
 
   const handleSwitchTab = (tab) => {
     setActiveTab(tab);
     setAmount('')
     setOutAmount('')
   }
+
   const handleChangeOnBuy = async (_inputAmount) => {
-    console.log('debug handle change::', _inputAmount)
     setAmount(_inputAmount);
     if (activeTab === 'buy') {
       if (_inputAmount > TRADING_FEE) {
         const quoteAmount = await getReceivableOnBuy(token.mintAddr, NATIVE_MINT, (_inputAmount - TRADING_FEE));
-        console.log('debug quote amount::', quoteAmount, typeof quoteAmount, 10 ** TOKEN_DECIMALS)
         setOutAmount(quoteAmount / (10 ** TOKEN_DECIMALS));
       }
     } else {
@@ -109,8 +107,8 @@ const TradingInterface = ({ token }) => {
           toast.success('Swap complete!');
 
           await trade(tokenMint, isBuy,
-            isBuy ? 0 : Number(amount), // To do - cryptoprince
-            isBuy ? Number(amount) : 0, // To do - cryptoprince
+            isBuy ? outAmount : Number(amount), // To do - cryptoprince
+            isBuy ? Number(amount) : outAmount, // To do - cryptoprince
             txHashes[0],
             comment.current.value
           );
@@ -149,8 +147,8 @@ const TradingInterface = ({ token }) => {
         await trade(
           tokenMint,
           isBuy,
-          isBuy ? 0 : Number(amount), // To do - cryptoprince
-          isBuy ? Number(amount) : 0, // To do - cryptoprince
+          isBuy ? outAmount : Number(amount), // To do - cryptoprince
+          isBuy ? Number(amount) : outAmount, // To do - cryptoprince
           txHash,
           ""
           // comment.current.value

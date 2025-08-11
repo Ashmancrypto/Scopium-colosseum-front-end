@@ -13,7 +13,8 @@ import { contract_getMainStateInfo,
     contract_updateMainStateInfo, 
     contract_isPoolComplete,
     contract_receivableAmountOnBuy,
-    contract_receivableAmountOnSell
+    contract_receivableAmountOnSell,
+    contract_tokenBalance
 } from './contracts';
 
 
@@ -134,6 +135,9 @@ const ContractContextProvider = ({ children }) => {
         return await contract_receivableAmountOnSell(walletCtx, baseToken, quoteMint, inputAmount)
     }
 
+    const getTokenBalance = async (baseToken) => {
+        return await contract_tokenBalance(walletCtx, baseToken)
+    }
     const context = {
         getOwnerAddress, 
         getMainStateInfo, 
@@ -146,7 +150,8 @@ const ContractContextProvider = ({ children }) => {
         updateMainStateInfo, 
         isPoolComplete,
         getReceivableOnBuy,
-        getReceivableOnSell
+        getReceivableOnSell,
+        getTokenBalance
     };
 
     return <ContractContext.Provider value={context}>{children}</ContractContext.Provider>

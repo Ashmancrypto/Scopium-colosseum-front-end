@@ -172,9 +172,7 @@ const TokenChart = ({ token }) => {
       timezone: TIMEZONE[offset][0],
     }));
 
-    console.log('debug widget', widget);
     widget.onChartReady(async () => {
-      console.log('debug chart ready', interval)
       widget.activeChart().setTimezone('UTC');
     });
 

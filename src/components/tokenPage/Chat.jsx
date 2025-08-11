@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useToastContext } from '../../contexts/ToastContext';
+import { useContract } from '../../contexts/contractsOnSolana/contractContexts';
 import { formatTimeAgo } from '../../utils/formatters';
 import { Send } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { axiosPrivate } from '../../api/axiosPrivate';
+import { MIN_TOKEN_BALNCE_CHAT } from '../../contexts/contractsOnSolana/contracts/constants';
+
 
 const DEBUG = false;
 const MESSAGES_PER_PAGE = 10;
@@ -99,6 +102,7 @@ const Message = React.memo(({ msg, currentUserId, walletAddress, isDark }) => {
 const Chat = ({ tokenAddress, currentUserId }) => {
   const { publicKey } = useWallet();
   const toast = useToastContext();
+  const { getTokenBalance } = useContract();
   const { isDark } = useTheme();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
@@ -112,6 +116,7 @@ const Chat = ({ tokenAddress, currentUserId }) => {
   const [adjustScroll, setAdjustScroll] = useState(false);
   const [latestTimestamp, setLatestTimestamp] = useState(null);
   const [token, setToken] = useState(null);
+  const [baseTokenBalance, setBaseTokenBalance] = useState(0);
   const ws = useRef(null);
   const chatContainerRef = useRef(null);
   const oldScrollHeightRef = useRef(0);
@@ -385,9 +390,27 @@ const Chat = ({ tokenAddress, currentUserId }) => {
     }
   }, [messages, loadingMore, isAtBottom, lastMessageIsOwn]);
 
-  const handleSendMessage = async () => {
-    if (!newMessage.trim()) return;
 
+  useEffect(() => {
+    async function fetchTokenBalance() {
+      const _balance = await getTokenBalance(tokenAddress);
+      setBaseTokenBalance(_balance);
+    }
+    if(tokenAddress && walletAddress) {
+      fetchTokenBalance()
+    }
+  }, [tokenAddress, walletAddress, currentUserId, publicKey])
+
+  const handleSendMessage = async () => {
+    if (!newMessage.trim()) {
+      toast.warning("No Message", `Please type your message to send`)
+      return;
+      return;
+    }
+    if(baseTokenBalance < MIN_TOKEN_BALNCE_CHAT) {
+      toast.warning("Insufficient Token Balance", `Should have more than ${MIN_TOKEN_BALNCE_CHAT} token`)
+      return;
+    }
     try {
       const response = await axiosPrivate.post(`/chat/history/${tokenAddress}`, {
         content: newMessage.trim(),

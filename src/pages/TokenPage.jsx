@@ -31,6 +31,7 @@ const TokenPage = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatMessage, setChatMessage] = useState('');
   const [holderDistribution, setHolderDistribution] = useState([]);
+  const [isTrading, setIsTrading] = useState(false);
 
   useEffect(() => {
     const fetchHolderDistribution = async () => {
@@ -71,6 +72,7 @@ const TokenPage = () => {
       const result = await getToken(tokenAddress, userId);
       if (result) {
         setToken(result);
+        console.log('debug token result::', result)
         setIsWatchlisted(result.isFavorited || false);
       } else {
         setError('Token not found');
@@ -96,6 +98,13 @@ const TokenPage = () => {
       setLoadingTransactions(false);
     }
   };
+
+  useEffect(() => {
+    if (!isTrading) {
+      fetchTransactions()
+    }
+  }, [isTrading])
+
 
   const handleWatchlistToggle = async () => {
     const currentUser = getUser();
@@ -173,7 +182,7 @@ const TokenPage = () => {
               className={`text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center space-x-2 mx-auto ${isDark
                 ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700'
                 : 'bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700'
-              }`}
+                }`}
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Go Back</span>
@@ -262,7 +271,7 @@ const TokenPage = () => {
                 )}
               </div>
             </div>
-            <TradingInterface token={token} />
+            <TradingInterface token={token} isTrading={isTrading} setIsTrading={setIsTrading} />
           </div>
           <div>
             <div className={`rounded-xl border-2 ${isDark ? 'border-[#122a21]' : 'border-[#d2d2d2]'} h-[500px] ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#f7f7f7]'} overflow-hidden`}>
@@ -272,7 +281,7 @@ const TokenPage = () => {
                   className={`mx-2 px-4 py-1 my-2 text-sm font-${activeTab === 'chart' ? 'bold' : 'normal'} rounded-xl transition-colors ${activeTab === 'chart'
                     ? `${isDark ? 'bg-[#d8ffe0] text-black' : 'bg-[#ffd7ec] text-black'}`
                     : `bg-transparent ${isDark ? 'text-gray-400 hover:text-gray-200' : 'text-gray-600 hover:text-gray-900'}`
-                  }`}
+                    }`}
                 >
                   Chart
                 </button>
@@ -281,7 +290,7 @@ const TokenPage = () => {
                   className={`mx-2 px-4 py-1 my-2 text-sm font-${activeTab === 'holders' ? 'bold' : 'normal'} rounded-xl transition-colors ${activeTab === 'holders'
                     ? `${isDark ? 'bg-[#d8ffe0] text-black' : 'bg-[#ffd7ec] text-black'}`
                     : `bg-transparent ${isDark ? 'text-gray-400 hover:text-gray-200' : 'text-gray-600 hover:text-gray-900'}`
-                  }`}
+                    }`}
                 >
                   Bubblemap
                 </button>
