@@ -38,14 +38,15 @@ const TokenPage = () => {
       try {
         const userId = currentUserId || '';
         const data = await getTokenHolderDistribution(tokenAddress, userId);
+        console.log('debug data::', data)
         // console.log("Holders:", data)
         // Take top 10 holders and transform
         const transformed = data.slice(0, 10).map(holder => ({
           address: holder.username || holder.walletAddr, // Use username if available, else wallet address
           percentage: parseFloat(holder.holdPercent.toFixed(2)), // Format to 2 decimal places
           isNegative: false, // Backend does not provide this information yet
-          solAmount: null, // Placeholder until backend provides SOL amount
-          createdAt: null,  // Placeholder until backend provides unix timestamp like 1754417665000
+          solAmount: Number(holder.solAmount.toFixed(3)), // Placeholder until backend provides SOL amount
+          createdAt: holder.createdAt * 1000,  // Placeholder until backend provides unix timestamp like 1754417665000
           avatar: holder.avatar // Include avatar from backend
         }));
         setHolderDistribution(transformed);
