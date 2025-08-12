@@ -100,6 +100,19 @@ export const formatAddress = (address, startChars = 6, endChars = 4) => {
 };
 
 /**
+ * Format a wallet address for display (shortened)
+ * @param {string} address - The wallet address
+ * @param {number} startChars - Characters to show at start (default: 6)
+ * @param {number} endChars - Characters to show at end (default: 4)
+ * @returns {string} - Formatted address
+ */
+export const formatAddressFront = (address, startChars = 6) => {
+  if (!address) return '';
+  if (address.length <= startChars) return address;
+  return `${address.slice(0, startChars)}`;
+};
+
+/**
  * Format a timestamp to a readable date
  * @param {number} timestamp - Unix timestamp
  * @param {object} options - Intl.DateTimeFormat options
