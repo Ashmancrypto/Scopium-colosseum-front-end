@@ -178,7 +178,6 @@ export const useTokens = () => {
     }
   }, [allTokens, filters.category, filterTokensByCategory]);
 
-  console.log('debug all tokens::', allTokens)
   // Calculate pagination info
   const filteredTokens = filterTokensByCategory(allTokens, filters.category);
   const favoriteTokens = allTokens.filter(token => token.isFavorited);
