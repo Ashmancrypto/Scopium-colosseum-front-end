@@ -176,7 +176,7 @@ const TransactionTable = ({ transactions, loading, onRefresh }) => {
                   <td className="p-3">
                     <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'
                       }`}>
-                      {/* {tx.walletAddr.slice(0, 5) || 'USERNAME'} */}
+                      {tx.walletAddr.slice(0, 5) || 'USERNAME'}
                     </span>
                   </td>
                   <td className="p-3 hidden xs:flex">

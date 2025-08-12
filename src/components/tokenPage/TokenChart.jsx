@@ -86,7 +86,6 @@ const TokenChart = ({ token }) => {
   const chartHeight = 600
   useEffect(() => {
     if (!window.TradingView || !tokenId) return;
-    console.log('debug tv chart')
     //============= Not working
     // const widget = new window.TradingView.widget({
     //   container_id: 'tv_chart_container',

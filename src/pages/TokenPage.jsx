@@ -38,7 +38,6 @@ const TokenPage = () => {
       try {
         const userId = currentUserId || '';
         const data = await getTokenHolderDistribution(tokenAddress, userId);
-        console.log('debug data::', data)
         // console.log("Holders:", data)
         // Take top 10 holders and transform
         const transformed = data.slice(0, 10).map(holder => ({
@@ -73,7 +72,6 @@ const TokenPage = () => {
       const result = await getToken(tokenAddress, userId);
       if (result) {
         setToken(result);
-        console.log('debug token result::', result)
         setIsWatchlisted(result.isFavorited || false);
       } else {
         setError('Token not found');

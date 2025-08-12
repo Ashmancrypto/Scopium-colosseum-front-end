@@ -19,7 +19,6 @@ const HomePage = () => {
   const { isDark } = useTheme();
   const [selectedNetwork, setSelectedNetwork] = useState('Solana');
   const { allTokens, favoriteTokens, trendingTokens, loading, loadingTrending } = useTokens();
-  console.log('debug all tokens on Home::', allTokens)
   const tokens = useMemo(() => {
     const map = new Map();
     favoriteTokens.forEach(token => map.set(token.tokenId, token));

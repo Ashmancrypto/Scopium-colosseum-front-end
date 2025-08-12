@@ -12,6 +12,12 @@ const Newly = ({ newlyTokens, loading }) => {
     setShowAll(!showAll);
   };
 
+  const handleTokenClick = (tokenAddress) => {
+    if (tokenAddress) {
+      window.location.href = `/token/${tokenAddress}`;
+    }
+  }
+
   return (
     <div className={`w-48 space-y-3`}>
       <div className={`flex items-center justify-between mb-6 p-2 rounded-xl ${
@@ -32,6 +38,7 @@ const Newly = ({ newlyTokens, loading }) => {
         <div
           key={token.tokenId}
           className='w-full rounded-lg ransition-all duration-200 cursor-pointer hover:scale-105 border border-gray-700 hover:bg-gray-750 p-1 flex flex-col items-center'
+          onClick={() => handleTokenClick(token.mintAddr)}
         >
           <div>
             <img src={token.logo} alt="Token Logo" className='w-44 h-44 border rounded-lg' />
@@ -57,6 +64,7 @@ const Newly = ({ newlyTokens, loading }) => {
                 <div
                   key={token.tokenId}
                   className='w-full rounded-lg ransition-all duration-200 cursor-pointer hover:scale-105 border border-gray-700 hover:bg-gray-750 p-1 flex flex-col items-center'
+                  onClick={() => handleTokenClick(token.mintAddr)}
                 >
                   <div>
                     <img src={token.logo} alt="Token Logo" className='w-44 h-44 border rounded-lg' />
