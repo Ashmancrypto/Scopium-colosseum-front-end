@@ -254,20 +254,26 @@ const TokenPage = () => {
                   {token.desc}
                 </p>
               )}
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 justify-between">
                 {token.website && (
                   <a href={token.website} target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300">
-                    <ExternalLink className="w-5 h-5" />
+                    {/* <ExternalLink className="w-5 h-5" /> */}
+                    <img src={`/images/socials/${isDark ? 'website-dark.png' : 'website-light.png'}`} alt="Website" className="w-8 h-8" />
                   </a>
                 )}
                 {token.twitter && (
                   <a href={token.twitter} target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300">
-                    <img src="/images/icons/x.svg" alt="X" className="w-5 h-5" />
+                    <img src={`/images/socials/${isDark ? 'x-dark.png' : 'x-light.png'}`} alt="X" className="w-8 h-8" />
                   </a>
                 )}
                 {token.telegram && (
                   <a href={token.telegram} target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300">
-                    <img src="/images/icons/telegram.svg" alt="Telegram" className="w-5 h-5" />
+                    <img src={`/images/socials/${isDark ? 'telegram-dark.png' : 'telegram-light.png'}`} alt="Telegram" className="w-8 h-8" />
+                  </a>
+                )}
+                {token.discord && (
+                  <a href={token.discord} target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300">
+                    <img src={`/images/socials/${isDark ? 'discord-dark.png' : 'discord-light.png'}`} alt="Discord" className="w-8 h-8" />
                   </a>
                 )}
               </div>
