@@ -262,6 +262,7 @@ const TradingInterface = ({ token, isTrading, setIsTrading }) => {
                   className={`w-full text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}
                   type="number"
                   value={amount}
+                  min={TRADING_FEE}
                   // onChange={(e) => { setAmount(e.target.value) }}
                   onChange={(e) => handleChangeOnBuy(e.target.value)}
                 />

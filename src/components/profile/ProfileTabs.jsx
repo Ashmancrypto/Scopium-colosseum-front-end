@@ -7,8 +7,9 @@ const ProfileTabs = ({ activeTab, onTabChange, isOwnProfile }) => {
   const tabs = [
     { id: 'balances', label: 'Balances' },
     { id: 'created', label: 'Created' },
-    { id: 'replies', label: 'Replies' },
-    ...(isOwnProfile ? [{ id: 'notifications', label: 'Notifications' }] : [])
+    { id: 'trades', label: 'Trades'},
+    // { id: 'replies', label: 'Replies' },
+    // ...(isOwnProfile ? [{ id: 'notifications', label: 'Notifications' }] : [])
   ];
 
   return (

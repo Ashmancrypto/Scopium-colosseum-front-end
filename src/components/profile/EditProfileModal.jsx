@@ -167,7 +167,7 @@ const EditProfileModal = ({ isOpen, onClose, user, onSave }) => {
                 ) : (
                   <div className="w-full h-full flex items-center justify-center p-3">
                     <img 
-                      src="/images/logo.svg" 
+                      src={isDark ? "/images/Logo-dark.png" : "/images/Logo.png"} 
                       alt="Default Avatar" 
                       className="w-full h-full object-contain"
                     />

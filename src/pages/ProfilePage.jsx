@@ -72,20 +72,27 @@ const ProfilePage = () => {
         return <BalancesTab userProfile={userProfile} isOwnProfile={isOwnProfile} />;
       case 'created':
         return <CreatedTab userProfile={userProfile} isOwnProfile={isOwnProfile} />;
-      case 'replies':
+      case 'trades':
         return (
-          <EmptyTab 
-            title="No replies yet"
+          <EmptyTab
+            title="No trades yet"
             description={isOwnProfile ? 'Your replies will appear here' : 'This user hasn\'t made any replies yet'}
           />
         );
-      case 'notifications':
-        return isOwnProfile ? (
-          <EmptyTab 
-            title="No notifications"
-            description="Your notifications will appear here"
-          />
-        ) : null;
+      // case 'replies':
+      //   return (
+      //     <EmptyTab
+      //       title="No replies yet"
+      //       description={isOwnProfile ? 'Your replies will appear here' : 'This user hasn\'t made any replies yet'}
+      //     />
+      //   );
+      // case 'notifications':
+      //   return isOwnProfile ? (
+      //     <EmptyTab
+      //       title="No notifications"
+      //       description="Your notifications will appear here"
+      //     />
+      //   ) : null;
       default:
         return null;
     }
@@ -94,14 +101,12 @@ const ProfilePage = () => {
   // Loading state
   if (loadingProfile) {
     return (
-      <div className={`min-h-screen md:mt-40 transition-colors duration-300 ${
-        isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
-      }`}>
+      <div className={`min-h-screen md:mt-40 transition-colors duration-300 ${isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
+        }`}>
         <Header />
         <div className="pt-16 flex">
-          <div className={`flex-1 p-3 sm:p-4 lg:p-6 transition-colors duration-300 ${
-            isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
-          }`}>
+          <div className={`flex-1 p-3 sm:p-4 lg:p-6 transition-colors duration-300 ${isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
+            }`}>
             <div className="max-w-4xl mx-auto">
               <LoadingProfile />
             </div>
@@ -114,14 +119,12 @@ const ProfilePage = () => {
   // Profile not found state
   if (profileNotFound) {
     return (
-      <div className={`min-h-screen md:mt-40 transition-colors duration-300 ${
-        isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
-      }`}>
+      <div className={`min-h-screen md:mt-40 transition-colors duration-300 ${isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
+        }`}>
         <Header />
         <div className="pt-16 flex">
-          <div className={`flex-1 p-3 sm:p-4 lg:p-6 transition-colors duration-300 ${
-            isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
-          }`}>
+          <div className={`flex-1 p-3 sm:p-4 lg:p-6 transition-colors duration-300 ${isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
+            }`}>
             <div className="max-w-4xl mx-auto">
               <ProfileNotFound username={username} onBackClick={handleBackClick} />
             </div>
@@ -132,26 +135,23 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className={`min-h-screen md:mt-40 transition-colors duration-300 ${
-      isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
-    }`}>
+    <div className={`min-h-screen md:mt-40 transition-colors duration-300 ${isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
+      }`}>
       <Header />
-      
+
       <div className="pt-16 flex">
         {/* Main Content */}
-        <div className={`flex-1 p-2 sm:p-4 lg:p-6 min-h-screen transition-colors duration-300 ${
-          isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
-        }`}>
+        <div className={`flex-1 p-2 sm:p-4 lg:p-6 min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
+          }`}>
           <div className="max-w-4xl mx-auto">
             {/* Back Button (only for other user profiles) */}
             {isViewingOtherProfile && (
               <button
                 onClick={handleBackClick}
-                className={`flex items-center space-x-2 transition-colors mb-4 lg:mb-6 ${
-                  isDark 
-                    ? 'text-gray-400 hover:text-white' 
+                className={`flex items-center space-x-2 transition-colors mb-4 lg:mb-6 ${isDark
+                    ? 'text-gray-400 hover:text-white'
                     : 'text-gray-600 hover:text-gray-900'
-                }`}
+                  }`}
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back</span>
@@ -182,11 +182,10 @@ const ProfilePage = () => {
                 />
 
                 {/* Tab Content */}
-                <div className={`backdrop-blur-md rounded-xl border transition-colors duration-300 ${
-                  isDark 
-                    ? 'bg-gray-900/90 border-gray-700' 
+                <div className={`backdrop-blur-md rounded-xl border transition-colors duration-300 ${isDark
+                    ? 'bg-gray-900/90 border-gray-700'
                     : 'bg-white/90 border-gray-200'
-                }`}>
+                  }`}>
                   {renderTabContent()}
                 </div>
               </>
@@ -197,7 +196,7 @@ const ProfilePage = () => {
 
       {/* Edit Profile Modal (only for own profile) */}
       {isOwnProfile && (
-        <EditProfileModal 
+        <EditProfileModal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
           user={userProfile}

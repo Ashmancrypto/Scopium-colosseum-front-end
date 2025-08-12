@@ -26,7 +26,10 @@ export default {
         gray: {
           900: '#1A1A1A',
         },
-      }
+      },
+      width: {
+        44: '176px', // 👈 custom w-44 (overrides default)
+      },
     },
   },
   plugins: [],

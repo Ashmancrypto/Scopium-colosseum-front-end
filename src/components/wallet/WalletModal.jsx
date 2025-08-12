@@ -188,7 +188,7 @@ const WalletModal = ({ userData, isOpen, onClose }) => {
             {/* Avatar */}
             <div className="relative flex justify-center">
               <img
-                src="/images/Logo.png"
+                src={isDark ? "/images/Logo-dark.png" : "/images/Logo.png"}
                 alt="Default Avatar"
                 className={`w-12 h-12 rounded-full object-cover p-2 transition-colors duration-300 ${isDark ? 'bg-gray-700' : 'bg-gray-200'
                   }`}

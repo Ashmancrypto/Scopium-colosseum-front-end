@@ -4,6 +4,7 @@ import { useHeaderSearch } from '../hooks/useHeaderSearch.js';
 import {
   HeroLiveStream,
   LiveNow,
+  Newly,
   Trending,
   FavoriteTokens,
   StreamCategories,
@@ -17,8 +18,8 @@ import { useTokens } from '../hooks/useTokens.js';
 const HomePage = () => {
   const { isDark } = useTheme();
   const [selectedNetwork, setSelectedNetwork] = useState('Solana');
-  const { favoriteTokens, trendingTokens, loading, loadingTrending } = useTokens();
-
+  const { allTokens, favoriteTokens, trendingTokens, loading, loadingTrending } = useTokens();
+  console.log('debug all tokens on Home::', allTokens)
   const tokens = useMemo(() => {
     const map = new Map();
     favoriteTokens.forEach(token => map.set(token.tokenId, token));
@@ -53,12 +54,15 @@ const HomePage = () => {
       <div className="flex flex-1">
         {/* Fixed Sidebar */}
         <div
-          className={`hidden lg:flex flex-col w-128 fixed top-20 bottom-0 pt-20 backdrop-blur-md border-r transition-colors duration-300 ${
-            isDark ? 'bg-gray-900 border-gray-700' : 'bg-white/90 border-gray-200'
-          }`}
+          className={`hidden lg:flex flex-col w-128 fixed top-20 bottom-0 pt-20 backdrop-blur-md border-r transition-colors duration-300 ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-white/90 border-gray-200'
+            }`}
         >
-          <div className="p-4">
-            <NetworkSidebar />
+          <div className="p-4 overflow-y-scroll">
+            {/* <NetworkSidebar /> */}
+            <Newly
+              newlyTokens={allTokens}
+              loading={loadingTrending}
+            />
           </div>
         </div>
 
@@ -106,7 +110,7 @@ const HomePage = () => {
 
         {/* Fixed Right Sidebar */}
         <div className="hidden lg:flex fixed top-20 right-0 bottom-0 pt-20">
-          <RightSidebar 
+          <RightSidebar
             livestreamers={[]}
             tokens={trendingTokens.slice(0, 10)}
           />
