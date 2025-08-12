@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TokenCard, LiveStreamCard, SectionHeader } from './index.js';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 import DragScroll from '../../hooks/dragScroll/DragScroll.jsx';
