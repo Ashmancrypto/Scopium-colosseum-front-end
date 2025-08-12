@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Heart, Share2, ExternalLink, TrendingUp, TrendingDown, Users, DollarSign, Activity, MessageCircle, X, Send, Plus } from 'lucide-react';
+import { ArrowLeft, Heart, Share2, ExternalLink, TrendingUp, TrendingDown, Users, DollarSign, Activity, MessageCircle, X, Send, Plus, Minus } from 'lucide-react';
 import Header from '../components/Header.jsx';
 import { useTheme } from '../contexts/ThemeContext.jsx';
 import { getToken, getTradeHistory, getTokenHolderDistribution } from '../api/token/index.js';
-import { setFavor } from '../api/user/index.js';
+import { setFavor, setWatchList } from '../api/user/index.js';
 import { useToastContext } from '../contexts/ToastContext.jsx';
 import { getUser } from '../utils/index.js';
 import { solPriceContext } from '../contexts/SolPriceContext.jsx';
@@ -25,6 +25,7 @@ const TokenPage = () => {
   const [transactions, setTransactions] = useState([]);
   const [loadingTransactions, setLoadingTransactions] = useState(true);
   const [isWatchlisted, setIsWatchlisted] = useState(false);
+  const [isTogglingWatch, setIsTogglingWatch] = useState(false);
   const [activeTab, setActiveTab] = useState('chart');
   const user = getUser();
   const currentUserId = user?._id;
@@ -72,7 +73,7 @@ const TokenPage = () => {
       const result = await getToken(tokenAddress, userId);
       if (result) {
         setToken(result);
-        setIsWatchlisted(result.isFavorited || false);
+        setIsWatchlisted(result.isWatchListed || false);
       } else {
         setError('Token not found');
       }
@@ -149,6 +150,45 @@ const TokenPage = () => {
     return num >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />;
   };
 
+  const handleWatchList = async () => {
+    if (!user) {
+      toast.warning('Login Required', 'Please log in to add tokens to favorites.');
+      return;
+    }
+    if (isTogglingWatch) return;
+    const previousState = isWatchlisted;
+    try {
+      setIsTogglingWatch(true);
+      
+      const result = await setWatchList(token.tokenId || token.id);
+
+      if (result && typeof result.status === 'boolean') {
+        setIsWatchlisted(result.status);
+
+        toast.success(
+          result.status ? 'Added to WatchLists' : 'Removed from WatchLists',
+          result.status
+            ? `${token.ticker || token.name} has been added to your watchlists.`
+            : `${token.ticker || token.name} has been removed from your watchlists.`
+        );
+      } else {
+        setIsWatchlisted(previousState);
+        toast.error(
+          'Failed to Update WatchLists',
+          result?.message || 'Unable to update favorite status. Please try again.'
+        );
+      }
+    } catch (error) {
+      console.error('Error updating watch list status:', error);
+      setIsWatchlisted(previousState);
+      toast.error(
+        'Failed to Update WatchLists',
+        error.message || 'Unable to update watch list status. Please try again.'
+      );
+    } finally {
+      setIsTogglingWatch(false);
+    }
+  }
   if (loading) {
     return (
       <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900' : 'bg-[#EBEBEB]'}`}>
@@ -239,8 +279,11 @@ const TokenPage = () => {
                 ✓
               </div>
             </div>
-            <button className="w-8 h-8 flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white rounded-full transition">
-              <Plus className="w-4 h-4" />
+            <button
+              className="w-8 h-8 flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white rounded-full transition"
+              onClick={() => { handleWatchList() }}
+            >
+              {!isWatchlisted ? <Plus className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
             </button>
           </div>
         </div>

@@ -180,6 +180,7 @@ export const useTokens = () => {
   // Calculate pagination info
   const filteredTokens = filterTokensByCategory(allTokens, filters.category);
   const favoriteTokens = allTokens.filter(token => token.isFavorited);
+  const watchListedTokens = allTokens.filter(token => token.isWatchListed);
   const totalTokens = filteredTokens.length;
   const totalPages = Math.ceil(totalTokens / TOKENS_PER_PAGE);
   const hasNextPage = currentPage < totalPages;
@@ -202,6 +203,7 @@ export const useTokens = () => {
     allTokens: filteredTokens,
     trendingTokens,
     favoriteTokens,
+    watchListedTokens,
     loading,
     loadingTrending,
     error,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Plus } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 
-const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
+const RightSidebar = ({ livestreamers = [], watchListedTokens = [] }) => {
   const { isDark } = useTheme();
 
   // Fix duplicate IDs in mock data
@@ -55,7 +55,7 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
       <div className="flex-1 flex flex-col min-h-0">
         <div className="flex-1 overflow-y-auto scrollbar-hide py-2">
           <div className="space-y-2 px-2">
-            {tokens.map((token) => (
+            {watchListedTokens.map((token) => (
               <div key={token.tokenId || token.address || token.id} className="cursor-pointer group" title={token.name}>
                 <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 hover:border-white/40 transition-colors bg-gradient-to-br from-pink-500 to-violet-500 flex items-center justify-center">
                   <img

@@ -18,17 +18,18 @@ import { useTokens } from '../hooks/useTokens.js';
 const HomePage = () => {
   const { isDark } = useTheme();
   const [selectedNetwork, setSelectedNetwork] = useState('Solana');
-  const { allTokens, favoriteTokens, trendingTokens, loading, loadingTrending } = useTokens();
+  const { allTokens, favoriteTokens, trendingTokens, watchListedTokens, loading, loadingTrending } = useTokens();
   const tokens = useMemo(() => {
     const map = new Map();
     favoriteTokens.forEach(token => map.set(token.tokenId, token));
+    watchListedTokens.forEach(token => map.set(token.tokenId, token));
     trendingTokens.forEach(token => {
       if (!map.has(token.tokenId)) {
         map.set(token.tokenId, token);
       }
     });
     return Array.from(map.values());
-  }, [favoriteTokens, trendingTokens]);
+  }, [favoriteTokens, trendingTokens, watchListedTokens]);
 
   const {
     searchQuery,
@@ -111,7 +112,7 @@ const HomePage = () => {
         <div className="hidden lg:flex fixed top-20 right-0 bottom-0 pt-20">
           <RightSidebar
             livestreamers={[]}
-            tokens={trendingTokens.slice(0, 10)}
+            watchListedTokens={watchListedTokens.slice(0, 10)}
           />
         </div>
       </div>

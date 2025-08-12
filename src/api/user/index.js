@@ -41,3 +41,8 @@ export async function setFavor(tokenId) {
   const result = await axiosPrivate.post(`/user/favor`, { tokenId: tokenId })
   return result.data
 }
+
+export async function setWatchList(tokenId) {
+  const result = await axiosPrivate.post(`/user/watchlist`, { tokenId: tokenId })
+  return result.data
+}
