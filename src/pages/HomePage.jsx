@@ -10,7 +10,8 @@ import {
   StreamCategories,
   NetworkSidebar,
   SearchResults,
-  RightSidebar
+  RightSidebar,
+  Migrated
 } from '../components/homepage/index.js';
 import { useTheme } from '../contexts/ThemeContext.jsx';
 import { useTokens } from '../hooks/useTokens.js';
@@ -18,11 +19,12 @@ import { useTokens } from '../hooks/useTokens.js';
 const HomePage = () => {
   const { isDark } = useTheme();
   const [selectedNetwork, setSelectedNetwork] = useState('Solana');
-  const { allTokens, favoriteTokens, trendingTokens, watchListedTokens, loading, loadingTrending } = useTokens();
+  const { allTokens, favoriteTokens, trendingTokens, watchListedTokens, migratedTokens, loading, loadingTrending } = useTokens();
   const tokens = useMemo(() => {
     const map = new Map();
     favoriteTokens.forEach(token => map.set(token.tokenId, token));
     watchListedTokens.forEach(token => map.set(token.tokenId, token));
+    migratedTokens.forEach(token => map.set(token.tokenId, token));
     trendingTokens.forEach(token => {
       if (!map.has(token.tokenId)) {
         map.set(token.tokenId, token);
@@ -88,6 +90,12 @@ const HomePage = () => {
                 <div id="live-now">
                   <LiveNow />
                 </div>
+                <div id="migrated">
+                  <Migrated
+                    migratedTokens={migratedTokens}
+                    loading={loadingTrending}
+                  />
+                  </div>
                 <div id="trending">
                   <Trending
                     trendingTokens={trendingTokens}

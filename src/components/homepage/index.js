@@ -3,6 +3,7 @@ export { default as HeroLiveStream } from './HeroLiveStream.jsx';
 export { default as LiveNow } from './LiveNow.jsx';
 export { default as Newly } from './Newly.jsx';
 export { default as Trending } from './Trending.jsx';
+export { default as Migrated } from './Migrated.jsx';
 export { default as FavoriteTokens } from './FavoriteTokens.jsx';
 export { default as LiveStreamCard } from './LiveStreamCard.jsx';
 export { default as TokenCard } from './TokenCard.jsx';

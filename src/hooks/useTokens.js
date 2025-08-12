@@ -6,6 +6,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { getUser } from '../utils/index.js';
 import { useLogout } from './auth/useLogout.js';
 import { AuthContext } from '../contexts/AuthContext.jsx';
+import { REAL_SOL_THRESHOLD } from '../contexts/contractsOnSolana/contracts/constants.js';
 
 export const useTokens = () => {
 
@@ -177,10 +178,12 @@ export const useTokens = () => {
     }
   }, [allTokens, filters.category, filterTokensByCategory]);
 
+  console.log('debug all tokens::', allTokens)
   // Calculate pagination info
   const filteredTokens = filterTokensByCategory(allTokens, filters.category);
   const favoriteTokens = allTokens.filter(token => token.isFavorited);
   const watchListedTokens = allTokens.filter(token => token.isWatchListed);
+  const migratedTokens = allTokens.filter(token => token.quoteReserve / 10 ** 9 >= REAL_SOL_THRESHOLD)
   const totalTokens = filteredTokens.length;
   const totalPages = Math.ceil(totalTokens / TOKENS_PER_PAGE);
   const hasNextPage = currentPage < totalPages;
@@ -204,6 +207,7 @@ export const useTokens = () => {
     trendingTokens,
     favoriteTokens,
     watchListedTokens,
+    migratedTokens,
     loading,
     loadingTrending,
     error,
