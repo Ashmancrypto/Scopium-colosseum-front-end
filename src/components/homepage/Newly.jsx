@@ -22,11 +22,11 @@ const Newly = ({ newlyTokens, loading }) => {
     <div className={`w-48 space-y-3`}>
       <div className={`flex items-center justify-between mb-6 p-2 rounded-xl ${isDark ? 'bg-green-500' : 'bg-pink-500'
         }`}>
-        <div class="flex items-center space-x-3">
-          <div class="h-8 flex items-center justify-center">
-            <img src="/images/icons/section.png" alt="Section" class="w-12 h-16 filter" />
+        <div className="flex items-center space-x-3">
+          <div className="h-8 flex items-center justify-center">
+            <img src="/images/icons/section.png" alt="Section" className="w-12 h-16 filter" />
           </div>
-          <h2 class="text-xl font-bold text-[#F7F7F7]">New Tokens</h2>
+          <h2 className="text-xl font-bold text-[#F7F7F7]">New Tokens</h2>
         </div>
         {/* <img
           src={isDark ? '/images/icons/section-dark.png' : '/images/icons/section.png'}

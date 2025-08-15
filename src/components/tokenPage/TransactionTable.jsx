@@ -7,6 +7,7 @@ import { isMainNet } from '../../config/configSolana/index.js';
 import { MAX_TXN_COL } from '../../contexts/contractsOnSolana/contracts/constants.js';
 
 const TransactionTable = ({ transactions, loading, onRefresh }) => {
+  console.log('debug table::', transactions)
   const { isDark } = useTheme();
   const [sortBy, setSortBy] = useState('Most Recent');
   const [transactionFee, setTransactionFee] = useState('All');
@@ -164,7 +165,7 @@ const TransactionTable = ({ transactions, loading, onRefresh }) => {
               </tr>
             ) : displayTransactions.length > 0 ? (
               displayTransactions
-              .filter((_, index) => index > currentPage * MAX_TXN_COL && index < (currentPage + 1) * MAX_TXN_COL)
+              .filter((_, index) => index >= currentPage * MAX_TXN_COL && index < (currentPage + 1) * MAX_TXN_COL)
               .map((tx, index) => (
                 <tr
                   key={tx.id || index}
