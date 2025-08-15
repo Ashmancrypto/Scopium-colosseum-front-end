@@ -5,7 +5,7 @@ export const PUMPFUN_PROGRAM_ID = isMainNet ? new PublicKey("61dBiC1bHGUzJJw5sdy
 export const MAINSTATE_PREFIX_SEED = "main";
 export const POOLSTATE_PREFIX_SEED = "pool";
 
-export const BACKEND_URL = "http://localhost:4002"
+export const BACKEND_URL = "https://launch.scopium.com"
 
 export const TOKEN_TOTAL_SUPPLY = 1_000_000_000;
 export const TOKEN_DECIMALS = 6;

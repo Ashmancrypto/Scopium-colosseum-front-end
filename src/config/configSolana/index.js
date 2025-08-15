@@ -6,8 +6,12 @@ import {
     LOOKUP_TABLE_CACHE,
 } from "@raydium-io/raydium-sdk";
 
-export const isMainNet = false;
+import.meta.env.VITE_IS_MAINNET === 'true';
 
+// export const isMainNet = false;
+export const isMainNet = import.meta.env.VITE_IS_MAINNET === 'true';
+
+console.log('debug isMainNet', isMainNet);
 export const networkUrl = !isMainNet 
     ? "https://api.devnet.solana.com"
     : 'https://mainnet.helius-rpc.com/?api-key=3af51399-dce8-4b13-a7d7-07e45a62a116';
