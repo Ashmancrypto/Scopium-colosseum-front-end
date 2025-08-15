@@ -105,6 +105,7 @@ const createMetadata = async (
     symbol,
     description,
     imgFile,
+    bannerFile,
     websiteLink,
     twitterLink,
     tgLink,
@@ -122,9 +123,10 @@ const createMetadata = async (
 
     const formData = new FormData();
     formData.append('logo', imgFile);
+    formData.append('banner', bannerFile);
     formData.append('metadata', JSON.stringify(metadata));
 
-    let imageUrl, metadataUri;
+    let imageUrl, metadataUri, bannerUrl;
 
     // Upload metadata and get URLs
     await fetch(`${BACKEND_URL}/api` + '/token/upload_metadata', {
@@ -134,9 +136,10 @@ const createMetadata = async (
         let datas = await res.json();
         imageUrl = datas.imageUrl;
         metadataUri = datas.metadataUri;
+        bannerUrl = datas.bannerUrl;
     });
 
-    if (!imageUrl || !metadataUri) {
+    if (!imageUrl || !metadataUri || !bannerUrl) {
         throw new Error("Failed to upload metadata!");
     }
 
@@ -175,7 +178,7 @@ const createMetadata = async (
         }
     });
 
-    return { imageUrl, tx };
+    return { imageUrl, tx, bannerUrl };
 };
 
 const revokeMintAuthority = async (mint, mintAuthority) => {
@@ -196,6 +199,7 @@ export const createToken = async (
     description,
     category,
     imgFile,
+    bannerFile,
     websiteLink,
     twitterLink,
     tgLink
@@ -208,7 +212,7 @@ export const createToken = async (
         createTxs = createMintTxs;
 
         /* Step 2 - Create metadata */
-        const { imageUrl, tx: metadataTx } = await createMetadata(wallet, mintKeypair.publicKey, name, ticker, description, imgFile, websiteLink, twitterLink, tgLink, wallet.publicKey, wallet.publicKey);
+        const { imageUrl, tx: metadataTx, bannerUrl } = await createMetadata(wallet, mintKeypair.publicKey, name, ticker, description, imgFile, bannerFile, websiteLink, twitterLink, tgLink, wallet.publicKey, wallet.publicKey);
         createTxs.push(metadataTx);
 
         /* Step 3 - Mint 80% tokens to owner */
@@ -241,6 +245,7 @@ export const createToken = async (
         return {
             mintKeypair,
             imageUrl,
+            bannerUrl,
             createTxs,
             mintAddress: mintKeypair.publicKey.toBase58()
         };

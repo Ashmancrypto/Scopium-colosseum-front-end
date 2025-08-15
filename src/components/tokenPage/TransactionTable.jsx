@@ -241,29 +241,29 @@ const TransactionTable = ({ transactions, loading, onRefresh }) => {
             className='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none border border-input bg-background hover:bg-accent hover:text-accent-foreground disabled:bg-neutral1 h-[32px] w-[32px] p-0'
             onClick={() => handleFirst()}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-first" aria-hidden="true"><path d="m17 18-6-6 6-6"></path><path d="M7 6v12"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-first" aria-hidden="true"><path d="m17 18-6-6 6-6"></path><path d="M7 6v12"></path></svg>
           </button>
           <button
             className='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none border border-input bg-background hover:bg-accent hover:text-accent-foreground disabled:bg-neutral1 h-[32px] w-[32px] p-0'
             onClick={() => handlePrev()}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-left" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
           </button>
-          <div class="not-italic font-normal text-neutral7 text-[14px] leading-[24px]">Page {currentPage + 1} of {Math.floor(transactions.length / MAX_TXN_COL) + 1}</div>
+          <div className="not-italic font-normal text-neutral7 text-[14px] leading-[24px]">Page {currentPage + 1} of {Math.floor(transactions.length / MAX_TXN_COL) + 1}</div>
           <button
-            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none border border-input bg-background hover:bg-accent hover:text-accent-foreground disabled:bg-neutral1 h-[32px] w-[32px] p-0"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none border border-input bg-background hover:bg-accent hover:text-accent-foreground disabled:bg-neutral1 h-[32px] w-[32px] p-0"
             onClick={() => handleNext()}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right" aria-hidden="true">
               <path d="m9 18 6-6-6-6">
               </path>
             </svg>
           </button>
           <button
-            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none border border-input bg-background hover:bg-accent hover:text-accent-foreground disabled:bg-neutral1 h-[32px] w-[32px] p-0"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none border border-input bg-background hover:bg-accent hover:text-accent-foreground disabled:bg-neutral1 h-[32px] w-[32px] p-0"
             onClick={() => handleLast()}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-last" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-last" aria-hidden="true">
               <path d="m7 18 6-6-6-6"></path><
                 path d="M17 6v12"></path>
             </svg>

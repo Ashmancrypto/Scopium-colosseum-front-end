@@ -159,7 +159,7 @@ const TokenPage = () => {
     const previousState = isWatchlisted;
     try {
       setIsTogglingWatch(true);
-      
+
       const result = await setWatchList(token.tokenId || token.id);
 
       if (result && typeof result.status === 'boolean') {
@@ -237,12 +237,18 @@ const TokenPage = () => {
       <Header />
       <div className="pt-14 md:pt-40">
         <div className="relative h-32 md:h-48 bg-gradient-to-r from-purple-600 to-pink-600 overflow-hidden">
-          <img
-            src="https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="Token Banner"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/20" />
+          {token.banner ? (
+            <img src={token.banner} alt={token.name} className="w-full h-full object-cover" />
+          ) : (
+            <>
+              <img
+                src="https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                alt="Token Banner"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/20" />
+            </>
+          )}
         </div>
         <div className="mb-4 px-4 md:px-6 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
           <div className="z-[1] flex flex-col sm:flex-row sm:items-end sm:space-x-4 -mt-16">

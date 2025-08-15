@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { useNavigate } from 'react-router-dom';
 import { NATIVE_MINT } from '@solana/spl-token';
 import { createToken, executeTokenCreation, sendTransaction } from './solana/index.js';
 import { useToastContext } from '../../contexts/ToastContext.jsx';
@@ -11,6 +12,7 @@ import { TransactionMessage, VersionedTransaction } from '@solana/web3.js';
 
 export const useTokenCreationSolana = () => {
     const wallet = useWallet();
+    const navigate = useNavigate();
     const toast = useToastContext();
     const { 
         isContractInitialized,
@@ -51,17 +53,19 @@ export const useTokenCreationSolana = () => {
                 category,
                 socialLinks,
                 coinImage,
+                bannerImage,
                 firstBuyAmount
             } = tokenData;
 
             // Create token instructions
-            const { mintKeypair, imageUrl, createTxs: allTxs, mintAddress } = await createToken(
+            const { mintKeypair, imageUrl, bannerUrl, createTxs: allTxs, mintAddress } = await createToken(
                 wallet,
                 coinName,
                 ticker,
                 description || '',
                 category,
                 coinImage.file,
+                bannerImage.file,
                 socialLinks.website || '',
                 socialLinks.twitter || '',
                 socialLinks.telegram || ''
@@ -129,6 +133,7 @@ export const useTokenCreationSolana = () => {
                     ticker: ticker,
                     description: description || '',
                     logo: imageUrl,
+                    banner: bannerUrl,
                     twitter: socialLinks.twitter || '',
                     telegram: socialLinks.telegram || '',
                     website: socialLinks.website || '',
@@ -141,6 +146,7 @@ export const useTokenCreationSolana = () => {
                     backendData.ticker,
                     backendData.description,
                     backendData.logo,
+                    backendData.banner,
                     backendData.twitter,
                     backendData.telegram,
                     backendData.website,
@@ -160,7 +166,7 @@ export const useTokenCreationSolana = () => {
                     `${coinName} (${ticker}) has been deployed to Solana with bonding curve and saved to database. Ready for trading!`,
                     txHash
                 );
-
+                navigate(`/token/${mintKeypair.publicKey.toBase58()}`);
             } catch (backendError) {
                 console.error('Backend update failed:', backendError);
                 
@@ -182,6 +188,7 @@ export const useTokenCreationSolana = () => {
                 mintAddress,
                 txHash,
                 imageUrl,
+                bannerUrl,
                 poolCreated: !!poolCreationTx,
                 firstBuyExecuted: !!firstBuyTx,
                 success: true

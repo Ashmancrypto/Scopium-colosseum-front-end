@@ -18,9 +18,9 @@ export async function uploadMetadata(logoFile, metadata) {
   return { imageUrl: data.imageUrl, metadataUri: data.metadataUri };
 }
 
-export async function updateToken(name, ticker, desc, logo, twitter, telegram, website, mintAddr, category) {
+export async function updateToken(name, ticker, desc, logo, banner, twitter, telegram, website, mintAddr, category) {
   const result = await axiosPrivate.post(`/token/update_token`, {
-    name, ticker, desc, logo, twitter, telegram, website, mintAddr, category
+    name, ticker, desc, logo, banner, twitter, telegram, website, mintAddr, category
   });
   return result.data;
 }
