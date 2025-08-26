@@ -19,8 +19,8 @@
 
 .dark {
   color-scheme: dark;
-  --text-primary: #FFFFFF;
-  --text-secondary: #D1D5DB;
+  --text-primary: #ffffff;
+  --text-secondary: #dbd6d1;
   --text-tertiary: #9CA3AF;
   --bg-primary: #1E1E1E;
   --bg-secondary: #1F2937;
@@ -28,56 +28,17 @@
   --border-secondary: #4B5563;
 }
 
-/* Custom scrollbar styling */
+/* Hide scrollbars globally */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  display: none;
+  width: 0;
+  height: 0;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(31, 41, 55, 0.3);
-  border-radius: 4px;
-}
-
-.light ::-webkit-scrollbar-track {
-  background: rgba(229, 231, 235, 0.3);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(75, 85, 99, 0.8);
-  border-radius: 4px;
-  border: 1px solid rgba(31, 41, 55, 0.5);
-}
-
-.light ::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.8);
-  border: 1px solid rgba(229, 231, 235, 0.5);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(107, 114, 128, 0.9);
-}
-
-.light ::-webkit-scrollbar-thumb:hover {
-  background: rgba(107, 114, 128, 0.9);
-}
-
-::-webkit-scrollbar-corner {
-  background: rgba(31, 41, 55, 0.3);
-}
-
-.light ::-webkit-scrollbar-corner {
-  background: rgba(229, 231, 235, 0.3);
-}
-
-/* Firefox scrollbar styling */
+/* Firefox scrollbar styling - hide scrollbars */
 * {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(75, 85, 99, 0.8) rgba(31, 41, 55, 0.3);
-}
-
-.light * {
-  scrollbar-color: rgba(156, 163, 175, 0.8) rgba(229, 231, 235, 0.3);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 /* Hide scrollbar for specific elements if needed */
@@ -155,8 +116,10 @@
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Toast animations */
@@ -165,6 +128,7 @@
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -175,6 +139,7 @@
   from {
     width: 100%;
   }
+
   to {
     width: 0%;
   }
@@ -232,7 +197,8 @@
 }
 
 .shadow-pink-bottom {
-  box-shadow: 0 2px 4px 0 rgba(250, 78, 171, 0.25); /* adjust spread & blur if needed */
+  box-shadow: 0 2px 4px 0 rgba(250, 78, 171, 0.25);
+  /* adjust spread & blur if needed */
 }
 
 .shadow-green-bottom {
@@ -244,6 +210,7 @@
   0% {
     background-position: -200px 0;
   }
+
   100% {
     background-position: calc(200px + 100%) 0;
   }

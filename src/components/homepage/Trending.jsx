@@ -61,6 +61,7 @@ const Trending = ({ trendingTokens, loading }) => {
     }
   ];
 
+
   const handleViewAll = () => {
     setShowAll(!showAll);
   };

@@ -59,7 +59,7 @@ const HomePage = () => {
           className={`hidden lg:flex flex-col w-128 fixed top-20 bottom-0 pt-20 backdrop-blur-md border-r transition-colors duration-300 ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-white/90 border-gray-200'
             }`}
         >
-          <div className="p-4 overflow-y-scroll">
+          <div className="p-4 overflow-y-scroll h-full no-scrollbar">
             {/* <NetworkSidebar /> */}
             <Newly
               newlyTokens={allTokens}

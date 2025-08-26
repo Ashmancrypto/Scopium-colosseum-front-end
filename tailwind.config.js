@@ -28,7 +28,7 @@ export default {
         },
       },
       width: {
-        44: '176px', // 👈 custom w-44 (overrides default)
+        44: '176px',
       },
     },
   },
