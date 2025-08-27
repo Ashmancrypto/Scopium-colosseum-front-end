@@ -71,12 +71,13 @@ const LiveNow = () => {
   };
 
   return (
-    <div className="px-4 lg:pl-14 lg:pr-6">
+    <div className="">
       <div className="max-w-7xl mx-auto">
         <SectionHeader
           title="Live Now"
           onViewAll={handleViewAll}
           viewAllText={showAllStreams ? "Show Less" : "View All"}
+          paddingX={20}
         />
 
         {/* Stream Cards Container */}
@@ -89,7 +90,7 @@ const LiveNow = () => {
           </div>
         ) : (
           // Horizontal scroll layout for default view
-          <DragScroll className="flex space-x-4 overflow-x-auto pb-4">
+          <DragScroll className="px-6 flex space-x-4 overflow-x-auto py-4 items-stretch">
             {liveStreams.slice(0, 4).map((stream) => (
               <div key={stream.id} className="flex-shrink-0 w-80">
                 <LiveStreamCard stream={stream} />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
+import { div } from 'motion/react-client';
 
 const SectionHeader = ({ 
   icon, 
@@ -7,14 +8,16 @@ const SectionHeader = ({
   onViewAll, 
   showViewAll = true,
   viewAllText = "View All",
-  className = '' 
+  className = '',
+  paddingX = 0
 }) => {
   const { isDark } = useTheme();
 
   return (
+    <div style={{paddingLeft: `${paddingX}px`, paddingRight: `${paddingX}px`}}>
     <div className={`flex items-center justify-between mb-6 p-2 rounded-xl ${
       isDark ? 'bg-green-500' : 'bg-pink-500'
-    }`}>
+    }`} style={{backgroundImage: 'url(images/textures/netBackground.png)', backgroundSize: 'cover', backgroundPosition: '75%', backgroundRepeat: 'no-repeat'}}>
       <div className="flex items-center space-x-3">
         <div className="h-8 flex items-center justify-center">
           <img 
@@ -37,6 +40,7 @@ const SectionHeader = ({
           {viewAllText}
         </button>
       )}
+    </div>
     </div>
   );
 };

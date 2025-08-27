@@ -50,13 +50,14 @@ const StreamCategories = () => {
   };
 
   return (
-    <div className="px-4 lg:pl-14 lg:pr-6">
+    <div className="">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <SectionHeader
           title="Stream Categories"
           onViewAll={handleViewAll}
           viewAllText={showAll ? "Show Less" : "View All"}
+          paddingX={20}
         />
 
         {/* Categories Grid */}
@@ -97,7 +98,7 @@ const StreamCategories = () => {
           </div>
         ) : (
           // Horizontal scroll layout (default)
-          <DragScroll className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide">
+          <DragScroll className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide px-6 py-4 items-stretch">
             {categories.map((category) => (
               <div
                 key={category.id}
@@ -105,8 +106,11 @@ const StreamCategories = () => {
                 className={`group cursor-pointer rounded-xl p-6 transition-all duration-300 hover:scale-105 border flex-shrink-0 w-48 ${
                   isDark 
                     ? 'bg-gray-900/90 border-gray-700 hover:bg-gray-700/90 hover:border-gray-600' 
-                    : 'bg-white/90 border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                    : 'bg-white/90 border-gray-400 hover:bg-gray-50 hover:border-gray-500'
                 }`}
+                style={{
+                  boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
+                }}
               >
                 <div className="flex flex-col items-center text-center space-y-3">
                   {/* Icon */}

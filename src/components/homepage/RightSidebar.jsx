@@ -103,7 +103,7 @@ const RightSidebar = ({ livestreamers = [], watchListedTokens = [] }) => {
       animate={{ width: isExpanded ? "250px" : "80px" }}
     >
       {/* Collapse Button */}
-      <div className="flex p-1 pt-2 relative">
+      <div className="flex p-1 my-2 pt-2 relative">
         <motion.button
           className={`p-2 rounded-lg transition-all duration-300 ${
             isDark ? "hover:bg-green-500/30" : "hover:bg-pink-500/30"
@@ -221,8 +221,8 @@ const RightSidebar = ({ livestreamers = [], watchListedTokens = [] }) => {
       <div className="h-[2px] w-[90%] bg-[#0A0A0A99] mx-auto my-2 rounded"></div>
 
       {/* Bottom Half - Tokens */}
-      <div className="flex-1 flex flex-col items-center justify-center min-h-0">
-        <div className="flex-1 overflow-y-auto scrollbar-hide py-2 px-2">
+      <div className="flex-1 flex flex-col items-center justify-center min-h-0 w-full px-4">
+        <div className="flex-1 overflow-y-auto scrollbar-hide py-2 w-full">
           <AnimatePresence mode="wait">
             {!isExpanded ? (
               <motion.div
@@ -262,7 +262,7 @@ const RightSidebar = ({ livestreamers = [], watchListedTokens = [] }) => {
             ) : (
               <motion.div
                 key="expanded"
-                className="space-y-2 px-2"
+                className="space-y-2 w-full"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

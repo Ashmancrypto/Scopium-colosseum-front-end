@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { TokenCard, LiveStreamCard, SectionHeader } from './index.js';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 import DragScroll from '../../hooks/dragScroll/DragScroll.jsx';
+import NewlyFollowedTokenCard from './NewlyFollowedTokenCard.jsx';
 
 const Trending = ({ trendingTokens, loading }) => {
   const { isDark } = useTheme();
@@ -67,12 +68,13 @@ const Trending = ({ trendingTokens, loading }) => {
   };
 
   return (
-    <div className="px-4 lg:pl-14 lg:pr-6">
+    <div className="">
       <div className="max-w-7xl mx-auto">
         <SectionHeader
           title="Trending"
           onViewAll={handleViewAll}
           viewAllText={showAll ? "Show Less" : "View All"}
+          paddingX={20}
         />
 
         {showAll ? (
@@ -128,7 +130,7 @@ const Trending = ({ trendingTokens, loading }) => {
           <div className="space-y-8">
             {/* Trending Tokens - Horizontal Scroll */}
             <div>
-              <DragScroll className='flex space-x-4 overflow-x-auto'>
+              <DragScroll className='flex space-x-4 overflow-x-auto px-6 py-4 items-stretch'>
                 {loading ? (
                   [...Array(6)].map((_, index) => (
                     <div
@@ -147,7 +149,7 @@ const Trending = ({ trendingTokens, loading }) => {
                 ) : (
                   trendingTokens.slice(0, 6).map((token) => (
                     <div key={token._id || token.tokenId} className="min-w-[200px] flex-shrink-0">
-                      <TokenCard token={token} />
+                      <NewlyFollowedTokenCard tokenImage={token.image} tokenSymbol={token.name} tokenValue={token.value} tokenValueChangePercentage={token.tokenValueChangePercentage} backgroundColor='white'/>
                     </div>
                   ))
                 )}
@@ -155,7 +157,7 @@ const Trending = ({ trendingTokens, loading }) => {
             </div>
 
             {/* Trending Live Streams - Horizontal Scroll */}
-            <DragScroll className='flex space-x-4 overflow-x-auto pb-2'>
+            <DragScroll className='flex space-x-4 overflow-x-auto px-6 items-stretch'>
               {trendingStreams.map((stream) => (
                 <div key={stream.id} className="w-80 flex-shrink-0">
                   <LiveStreamCard stream={stream} />

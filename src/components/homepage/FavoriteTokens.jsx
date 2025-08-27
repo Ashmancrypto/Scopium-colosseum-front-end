@@ -13,12 +13,13 @@ const FavoriteTokens = ({ favoriteTokens, loading }) => {
   };
 
   return (
-    <div className="px-4 lg:pl-14 lg:pr-6">
+    <div className="">
       <div className="max-w-7xl mx-auto">
         <SectionHeader
           title="Your Favorite Tokens"
           onViewAll={handleViewAll}
           viewAllText={showAllFavorites ? "Show Less" : "View All"}
+          paddingX={20}
         />
 
         {/* Favorite Tokens Grid */}

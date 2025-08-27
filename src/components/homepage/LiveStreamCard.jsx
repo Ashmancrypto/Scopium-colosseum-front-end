@@ -6,7 +6,7 @@ const LiveStreamCard = ({ stream }) => {
   const { isDark } = useTheme();
 
   return (
-    <div className={`rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer ${
+    <div className={`rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer h-full ${
       isDark ? 'bg-gray-900' : 'bg-white'
     }`}>
       {/* Stream Thumbnail */}
