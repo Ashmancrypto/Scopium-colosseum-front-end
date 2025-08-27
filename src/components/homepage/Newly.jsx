@@ -20,7 +20,7 @@ const Newly = ({ newlyTokens, loading }) => {
   };
 
   return (
-    <div className={`w-48 space-y-3`}>
+    <div className={`w-[192px] space-y-3 p-4`}>
       <div>
         <h2
           className={`text-[min(18px,1.5vw)] font-bold ${
@@ -151,25 +151,11 @@ const Newly = ({ newlyTokens, loading }) => {
       }
       {/* // placeholder tokens */}
       <div className="space-y-[min(16px,1vw)]">
-        <NewlyTokenCard
-          tokenImage="/images/placeholders/tokenPlaceholders/pepe.png"
-          tokenSymbol="$WIF"
-          tokenValue="$42.6M"
-          linkToToken="#"
-        />
-        <NewlyTokenCard
-          tokenImage="\images\placeholders\tokenPlaceholders\shiba.png"
-          tokenSymbol="$WIF"
-          tokenValue="$42.6M"
-          linkToToken="#"
-        />
-        <NewlyTokenCard
-          tokenImage="\images\placeholders\tokenPlaceholders\dog.png"
-          tokenSymbol="$WIF"
-          tokenValue="$42.6M"
-          linkToToken="#"
-        />
-      </div>
+        <NewlyTokenCard tokenImage="/images/placeholders/tokenPlaceholders/pepe.png" tokenSymbol="$WIF" tokenValue="$42.6M" linkToToken="#"/>
+        <NewlyTokenCard tokenImage="\images\placeholders\tokenPlaceholders\shiba.png" tokenSymbol="$WIF" tokenValue="$42.6M" linkToToken="#"/>
+        <NewlyTokenCard tokenImage="\images\placeholders\tokenPlaceholders\dog.png" tokenSymbol="$WIF" tokenValue="$42.6M" linkToToken="#"/>
+        </div>
+      
     </div>
   );
 };

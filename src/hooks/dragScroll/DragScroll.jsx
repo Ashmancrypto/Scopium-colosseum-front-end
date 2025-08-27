@@ -28,7 +28,7 @@ export default function DragScroll({ children, className = '' }) {
     <>
       <div
         ref={containerRef}
-        className={`cursor-grab no-scrollbar ${className}`}
+        className={`cursor-grab no-scrollbar py-6 ${className}`}
       >
         {children}
 

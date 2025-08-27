@@ -32,6 +32,38 @@ const HomePage = () => {
     });
     return Array.from(map.values());
   }, [favoriteTokens, trendingTokens, watchListedTokens]);
+  const trendingTokensMockup = [
+    {
+      id: 1,
+      name: "Token 1",
+      image: "/images/placeholders/tokenPlaceholders/dog.png",
+      tokenValueChangePercentage: -2.4,
+    },
+    {
+      id: 2,
+      name: "Token 2",
+      image: "/images/placeholders/tokenPlaceholders/shiba.png",
+      tokenValueChangePercentage: 1.8,
+    },
+    {
+      id: 3,
+      name: "Token 3",
+      image: "/images/placeholders/tokenPlaceholders/pepe.png",
+      tokenValueChangePercentage: -3.1,
+    },
+    {
+      id: 4,
+      name: "Token 1",
+      image: "/images/placeholders/tokenPlaceholders/dog.png",
+      tokenValueChangePercentage: 2.5,
+    },
+    {
+      id: 5,
+      name: "Token 2",
+      image: "/images/placeholders/tokenPlaceholders/shiba.png",
+      tokenValueChangePercentage: -1.9,
+    },
+  ]
 
   const {
     searchQuery,
@@ -59,7 +91,7 @@ const HomePage = () => {
           className={`hidden lg:flex flex-col w-128 fixed top-20 bottom-0 pt-20 backdrop-blur-md border-r transition-colors duration-300 ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-white/90 border-gray-200'
             }`}
         >
-          <div className="p-4 overflow-y-scroll h-full no-scrollbar">
+          <div className="overflow-y-scroll h-full no-scrollbar">
             {/* <NetworkSidebar /> */}
             <Newly
               newlyTokens={allTokens}
@@ -69,7 +101,7 @@ const HomePage = () => {
         </div>
 
         {/* Main content shifted to the right of the fixed sidebar */}
-        <div className="flex-1 lg:ml-64 lg:mr-16 overflow-auto">
+        <div className="flex-1 lg:ml-[192px] lg:mr-[80px] overflow-auto">
           <div className="space-y-8 pb-16">
             {hasSearched || isSearching ? (
               <SearchResults
@@ -98,7 +130,7 @@ const HomePage = () => {
                   </div>
                 <div id="trending">
                   <Trending
-                    trendingTokens={trendingTokens}
+                    trendingTokens={trendingTokensMockup}
                     loading={loadingTrending}
                   />
                 </div>

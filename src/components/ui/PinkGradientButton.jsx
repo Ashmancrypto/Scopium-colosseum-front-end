@@ -21,11 +21,11 @@ const PinkGradientButton = ({
 
   const variantClasses = {
     primary: isDark 
-      ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700' 
-      : 'bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700',
+      ? 'bg-green-500 hover:bg-green-600' 
+      : 'bg-pink-500 hover:bg-pink-600',
     secondary: isDark 
-      ? 'bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600'
-      : 'bg-gradient-to-r from-pink-400 to-pink-500 hover:from-pink-500 hover:to-pink-600'
+      ? 'bg-green-400 hover:bg-green-500'
+      : 'bg-pink-400 hover:bg-pink-500'
   };
 
   return (

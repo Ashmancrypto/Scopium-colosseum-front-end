@@ -7,9 +7,9 @@ const StreamPlayer = ({ stream }) => {
   const { isDark } = useTheme();
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto">
+    <div className="relative w-full mx-auto">
       {/* Main Stream Container */}
-      <div className={`relative rounded-2xl overflow-hidden shadow-2xl ${
+      <div className={`relative rounded-2xl md:rounded-none overflow-hidden shadow-2xl ${
         isDark ? 'bg-gray-900' : 'bg-white'
       }`}>
         {/* Stream Video Area */}

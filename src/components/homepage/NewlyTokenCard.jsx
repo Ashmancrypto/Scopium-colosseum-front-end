@@ -10,7 +10,7 @@ const NewlyTokenCard = ({
 
   return (
     
-    <div className={`w-full rounded-[12px] border p-[12px] ${isDark? 'border-[rgba(1,219,117,0.3)]':'border-[rgba(10,10,10,0.4)]'}`}>
+    <div className={`w-full rounded-[12px] border p-[12px] ${isDark? 'border-[rgba(1,219,117,0.3)] bg-[rgba(46,46,46,1)]':'border-[rgba(10,10,10,0.4)]'}`}>
       <img
         src={tokenImage}
         alt={tokenSymbol}

@@ -63,7 +63,7 @@ const NewlyFollowedTokenCard = ({
           viewBox="0 0 20 18"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="self-start cursor-pointer"
+          className="self-start cursor-pointer w-6 h-6"
 					onClick={() => setLiked(!liked)}
         >
           <path

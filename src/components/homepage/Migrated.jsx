@@ -13,12 +13,13 @@ const Migrated = ({ migratedTokens, loading }) => {
   };
 
   return (
-    <div className="px-4 lg:pl-14 lg:pr-6">
+    <div className="">
       <div className="max-w-7xl mx-auto">
         <SectionHeader
           title="Migrated"
           onViewAll={handleViewAll}
           viewAllText={showAll ? "Show Less" : "View All"}
+          paddingX={20}
         />
 
         {showAll ? (
