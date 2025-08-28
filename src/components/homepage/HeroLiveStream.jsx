@@ -1,6 +1,6 @@
-import React from 'react';
-import { StreamPlayer } from './index.js';
-import { useTheme } from '../../contexts/ThemeContext.jsx';
+import React from "react";
+import { StreamPlayer } from "./index.js";
+import { useTheme } from "../../contexts/ThemeContext.jsx";
 
 const HeroLiveStream = () => {
   const { isDark } = useTheme();
@@ -15,11 +15,11 @@ const HeroLiveStream = () => {
     thumbnail: "/images/sample/sample3.png",
     viewCount: "9.3k",
     isLive: true,
-    categories: ["Category tag", "Category tag"]
+    categories: ["Category tag", "Category tag"],
   };
 
   return (
-    <div className="pt-20 md:pt-40 px-4 md:px-0 lg:pt-40">
+    <div className="px-4 md:px-0 pt-20">
       <div className="max-w-7xl mx-auto">
         <StreamPlayer stream={mainStream} />
       </div>

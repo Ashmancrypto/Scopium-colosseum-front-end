@@ -1,18 +1,17 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
-import { findTokens } from '../api/token/index.js';
-import { getTrendingTokens } from '../api/token/index.js';
-import { useLogin } from './auth/useLogin.js';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { getUser } from '../utils/index.js';
-import { useLogout } from './auth/useLogout.js';
-import { AuthContext } from '../contexts/AuthContext.jsx';
-import { REAL_SOL_THRESHOLD } from '../contexts/contractsOnSolana/contracts/constants.js';
+import { useState, useEffect, useCallback, useContext } from "react";
+import { findTokens } from "../api/token/index.js";
+import { getTrendingTokens } from "../api/token/index.js";
+import { useLogin } from "./auth/useLogin.js";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { getUser } from "../utils/index.js";
+import { useLogout } from "./auth/useLogout.js";
+import { AuthContext } from "../contexts/AuthContext.jsx";
+import { REAL_SOL_THRESHOLD } from "../contexts/contractsOnSolana/contracts/constants.js";
 
 export const useTokens = () => {
-
   const { user } = useContext(AuthContext);
 
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
   const [allTokens, setAllTokens] = useState([]);
   const [trendingTokens, setTrendingTokens] = useState([]);
   const [tokens, setTokens] = useState([]);
@@ -22,11 +21,11 @@ export const useTokens = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [filters, setFilters] = useState({
-    name: '',
-    sortCondition: 'creation time',
-    sortOrder: 'desc',
+    name: "",
+    sortCondition: "creation time",
+    sortOrder: "desc",
     nsfw: false,
-    category: 'All Tokens'
+    category: "All Tokens",
   });
   const { publicKey, disconnecting } = useWallet();
 
@@ -58,31 +57,38 @@ export const useTokens = () => {
         setAllTokens([]);
       }
     } catch (err) {
-      console.error('Error fetching tokens:', err);
-      setError(err.message || 'Failed to fetch tokens');
+      console.error("Error fetching tokens:", err);
+      setError(err.message || "Failed to fetch tokens");
       setAllTokens([]);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const fetchTrendingTokens = async () => {
     try {
       setLoadingTrending(true);
       const user = getUser();
-      const userId = user?.userId || '';
+      const userId = user?.userId || "";
+
+      console.log("Fetching trending tokens for userId:", userId);
 
       // Fetch tokens sorted by market cap (trending)
       const result = await getTrendingTokens(userId);
 
+      console.log("Trending tokens API result:", result);
+
       if (result && Array.isArray(result)) {
         // Take first 20 tokens for trending section
-        setTrendingTokens(result.slice(0, 20));
+        const tokensToSet = result.slice(0, 20);
+        console.log("Setting trending tokens:", tokensToSet);
+        setTrendingTokens(tokensToSet);
       } else {
+        console.log("No trending tokens or invalid format:", result);
         setTrendingTokens([]);
       }
     } catch (error) {
-      console.error('Error fetching trending tokens:', error);
+      console.error("Error fetching trending tokens:", error);
       setTrendingTokens([]);
     } finally {
       setLoadingTrending(false);
@@ -91,19 +97,19 @@ export const useTokens = () => {
 
   // Filter tokens by category
   const filterTokensByCategory = useCallback((tokens, category) => {
-    if (category === 'All Tokens') {
+    if (category === "All Tokens") {
       return tokens;
     }
 
     const categoryMap = {
-      'Meme Tokens': 1,
-      'Fame Tokens': 2,
-      'AI Tokens': 3
+      "Meme Tokens": 1,
+      "Fame Tokens": 2,
+      "AI Tokens": 3,
     };
 
     const categoryId = categoryMap[category];
     if (categoryId !== undefined) {
-      const filtered = tokens.filter(token => token.category === categoryId);
+      const filtered = tokens.filter((token) => token.category === categoryId);
       return filtered;
     }
 
@@ -125,25 +131,40 @@ export const useTokens = () => {
   useEffect(() => {
     fetchTokens();
     fetchTrendingTokens();
-  }, [filters.name, filters.sortCondition, filters.sortOrder, filters.nsfw, userId]);
+  }, [
+    filters.name,
+    filters.sortCondition,
+    filters.sortOrder,
+    filters.nsfw,
+    userId,
+  ]);
 
   const updateFilters = useCallback((newFilters) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
+    setFilters((prev) => ({ ...prev, ...newFilters }));
     // Reset to first page when filters change
     setCurrentPage(1);
   }, []);
 
-  const searchTokens = useCallback((searchTerm) => {
-    updateFilters({ name: searchTerm });
-  }, [updateFilters]);
+  const searchTokens = useCallback(
+    (searchTerm) => {
+      updateFilters({ name: searchTerm });
+    },
+    [updateFilters]
+  );
 
-  const sortTokens = useCallback((sortCondition, sortOrder = 'desc') => {
-    updateFilters({ sortCondition, sortOrder });
-  }, [updateFilters]);
+  const sortTokens = useCallback(
+    (sortCondition, sortOrder = "desc") => {
+      updateFilters({ sortCondition, sortOrder });
+    },
+    [updateFilters]
+  );
 
-  const setCategory = useCallback((category) => {
-    updateFilters({ category });
-  }, [updateFilters]);
+  const setCategory = useCallback(
+    (category) => {
+      updateFilters({ category });
+    },
+    [updateFilters]
+  );
 
   const refreshTokens = useCallback(() => {
     fetchTokens();
@@ -170,19 +191,27 @@ export const useTokens = () => {
     }
   }, [currentPage]);
 
-  const goToPage = useCallback((page) => {
-    const filteredTokens = filterTokensByCategory(allTokens, filters.category);
-    const totalPages = Math.ceil(filteredTokens.length / TOKENS_PER_PAGE);
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  }, [allTokens, filters.category, filterTokensByCategory]);
+  const goToPage = useCallback(
+    (page) => {
+      const filteredTokens = filterTokensByCategory(
+        allTokens,
+        filters.category
+      );
+      const totalPages = Math.ceil(filteredTokens.length / TOKENS_PER_PAGE);
+      if (page >= 1 && page <= totalPages) {
+        setCurrentPage(page);
+      }
+    },
+    [allTokens, filters.category, filterTokensByCategory]
+  );
 
   // Calculate pagination info
   const filteredTokens = filterTokensByCategory(allTokens, filters.category);
-  const favoriteTokens = allTokens.filter(token => token.isFavorited);
-  const watchListedTokens = allTokens.filter(token => token.isWatchListed);
-  const migratedTokens = allTokens.filter(token => token.quoteReserve / 10 ** 9 >= REAL_SOL_THRESHOLD)
+  const favoriteTokens = allTokens.filter((token) => token.isFavorited);
+  const watchListedTokens = allTokens.filter((token) => token.isWatchListed);
+  const migratedTokens = allTokens.filter(
+    (token) => token.quoteReserve / 10 ** 9 >= REAL_SOL_THRESHOLD
+  );
   const totalTokens = filteredTokens.length;
   const totalPages = Math.ceil(totalTokens / TOKENS_PER_PAGE);
   const hasNextPage = currentPage < totalPages;
@@ -197,7 +226,7 @@ export const useTokens = () => {
     hasPrevPage,
     nextPage,
     prevPage,
-    goToPage
+    goToPage,
   };
 
   return {
@@ -218,6 +247,6 @@ export const useTokens = () => {
     updateFilters,
     refreshTokens,
     toggleNSFW,
-    fetchTrendingTokens
-  }
+    fetchTrendingTokens,
+  };
 };

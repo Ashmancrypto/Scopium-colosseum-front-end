@@ -1,22 +1,24 @@
-import React from 'react';
-import { Eye, Play } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext.jsx';
+import React from "react";
+import { Eye, Play } from "lucide-react";
+import { useTheme } from "../../contexts/ThemeContext.jsx";
 
 const LiveStreamCard = ({ stream }) => {
   const { isDark } = useTheme();
 
   return (
-    <div className={`rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer h-full ${
-      isDark ? 'bg-gray-900' : 'bg-white'
-    }`}>
+    <div
+      className={`rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer h-full ${
+        isDark ? "bg-gray-900" : "bg-white"
+      }`}
+    >
       {/* Stream Thumbnail */}
       <div className="relative aspect-video bg-gradient-to-br from-purple-600 to-pink-600">
-        <img 
-          src={stream.thumbnail} 
+        <img
+          src={stream.thumbnail}
           alt={stream.title}
           className="w-full h-full object-cover"
         />
-        
+
         {/* Live Badge */}
         <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold flex items-center space-x-1">
           <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
@@ -42,8 +44,8 @@ const LiveStreamCard = ({ stream }) => {
         <div className="flex items-start space-x-3">
           {/* Avatar */}
           <div className="relative flex-shrink-0">
-            <img 
-              src={stream.avatar} 
+            <img
+              src={stream.avatar}
               alt={stream.username}
               className="w-10 h-10 rounded-full object-cover"
             />
@@ -52,21 +54,27 @@ const LiveStreamCard = ({ stream }) => {
 
           {/* Stream Details */}
           <div className="flex-1 min-w-0">
-            <h3 className={`font-semibold text-sm mb-1 line-clamp-2 ${
-              isDark ? 'text-white' : 'text-gray-900'
-            }`}>
+            <h3
+              className={`font-semibold text-sm mb-1 line-clamp-2 ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
+            >
               {stream.title}
             </h3>
-            
-            <p className={`text-xs mb-1 ${
-              isDark ? 'text-gray-300' : 'text-gray-600'
-            }`}>
+
+            <p
+              className={`text-xs mb-1 ${
+                isDark ? "text-gray-300" : "text-gray-600"
+              }`}
+            >
               {stream.username}
             </p>
-            
-            <p className={`text-xs ${
-              isDark ? 'text-gray-400' : 'text-gray-500'
-            }`}>
+
+            <p
+              className={`text-xs ${
+                isDark ? "text-gray-400" : "text-gray-500"
+              }`}
+            >
               {stream.followers}
             </p>
           </div>

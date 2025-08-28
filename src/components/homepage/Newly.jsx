@@ -4,11 +4,13 @@ import { useTheme } from "../../contexts/ThemeContext.jsx";
 import DragScroll from "../../hooks/dragScroll/DragScroll.jsx";
 import NewlyTokenCard from "./NewlyTokenCard.jsx";
 import NewlyFollowedTokenCard from "./NewlyFollowedTokenCard.jsx";
+import { useTokens } from "../../hooks/useTokens.js";
 
-const Newly = ({ newlyTokens, loading }) => {
+const Newly = () => {
   const { isDark } = useTheme();
   const [showAll, setShowAll] = useState(false);
-
+  const { allTokens, loading } = useTokens();
+  console.log("all tokens from api ", allTokens);
   const handleViewAll = () => {
     setShowAll(!showAll);
   };
@@ -125,37 +127,33 @@ const Newly = ({ newlyTokens, loading }) => {
                   ></div>
                 </div>
               ))
-            : newlyTokens.map((token) => (
+            : allTokens.map((token) => (
                 <div
                   key={token.tokenId}
-                  className="w-full rounded-lg ransition-all duration-200 cursor-pointer hover:scale-105 border border-gray-700 hover:bg-gray-750 p-1 flex flex-col items-center"
+                  className={`w-full rounded-[12px] ransition-all duration-200 cursor-pointer hover:scale-105 border p-[12px] pb-[16px] flex flex-col items-center gap-[16px] ${isDark ? "bg-[rgba(46,46,46,1)] border-[rgba(1,219,117,0.3)]" : "bg-white border-gray-700 hover:bg-gray-750"}`}
                   onClick={() => handleTokenClick(token.mintAddr)}
                 >
-                  <div>
+                  
                     <img
                       src={token.logo}
                       alt="Token Logo"
-                      className="w-44 h-44 border rounded-lg"
+                      className="w-44 aspect-square rounded-lg object-cover"
                     />
-                  </div>
+                  
                   <div
-                    className={`font-bold text-sm ${
+                    className={`text-[14px] leading-none ${
                       isDark ? "text-white" : "text-gray-900"
                     }`}
                   >
-                    {token.ticker}
+                    <div className="flex items-center gap-[24px]">
+                      <h3 className="font-bold">${token.ticker.toUpperCase().slice(0, 5)}</h3>
+                      <h3>${token.marketCap > 1000000 ? (token.marketCap / 1000000).toFixed(2) + "M" : (token.marketCap / 1000).toFixed(2) + "K"}</h3>
+                    </div>
                   </div>
                 </div>
               ))}
         </div>
       }
-      {/* // placeholder tokens */}
-      <div className="space-y-[min(16px,1vw)]">
-        <NewlyTokenCard tokenImage="/images/placeholders/tokenPlaceholders/pepe.png" tokenSymbol="$WIF" tokenValue="$42.6M" linkToToken="#"/>
-        <NewlyTokenCard tokenImage="\images\placeholders\tokenPlaceholders\shiba.png" tokenSymbol="$WIF" tokenValue="$42.6M" linkToToken="#"/>
-        <NewlyTokenCard tokenImage="\images\placeholders\tokenPlaceholders\dog.png" tokenSymbol="$WIF" tokenValue="$42.6M" linkToToken="#"/>
-        </div>
-      
     </div>
   );
 };

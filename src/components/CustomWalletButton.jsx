@@ -1,16 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletReadyState } from '@solana/wallet-adapter-base';
-import { Wallet, ChevronDown, Loader } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { formatAddress } from '../utils/formatters.js';
-import { useLogout } from '../hooks/auth/useLogout.js';
-import { WalletSelectionModal, WalletDropdown, WalletModal } from './wallet/index.js';
-import { getUser } from '../utils/index.js';
-import { useTheme } from '../contexts/ThemeContext.jsx';
-import { AuthContext } from '../contexts/AuthContext.jsx';
+import React, { useState, useEffect, useContext } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletReadyState } from "@solana/wallet-adapter-base";
+import { Wallet, ChevronDown, Loader } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { formatAddress } from "../utils/formatters.js";
+import { useLogout } from "../hooks/auth/useLogout.js";
+import {
+  WalletSelectionModal,
+  WalletDropdown,
+  WalletModal,
+} from "./wallet/index.js";
+import { SecondaryButton } from "./ui/index.js";
+import { getUser } from "../utils/index.js";
+import { useTheme } from "../contexts/ThemeContext.jsx";
+import { AuthContext } from "../contexts/AuthContext.jsx";
 
-const CustomWalletButton = ({ className = '' }) => {
+const CustomWalletButton = ({ className = "" }) => {
   const navigate = useNavigate();
   const { isDark } = useTheme();
   const {
@@ -22,12 +27,12 @@ const CustomWalletButton = ({ className = '' }) => {
     disconnecting,
     select,
     connect,
-    disconnect
+    disconnect,
   } = useWallet();
 
   const { isAuthenticated, user, setUser } = useContext(AuthContext);
 
-  const { logout } = useLogout();  
+  const { logout } = useLogout();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -37,17 +42,17 @@ const CustomWalletButton = ({ className = '' }) => {
   // Prevent body scroll when modal is open
   useEffect(() => {
     if (isModalOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isModalOpen]);
 
-  const shortAddress = publicKey ? formatAddress(publicKey.toString()) : '';
+  const shortAddress = publicKey ? formatAddress(publicKey.toString()) : "";
 
   const handleConnect = async () => {
     if (connected) {
@@ -59,7 +64,7 @@ const CustomWalletButton = ({ className = '' }) => {
       try {
         await connect();
       } catch (error) {
-        console.error('Failed to connect:', error);
+        console.error("Failed to connect:", error);
       }
     } else {
       setIsModalOpen(true);
@@ -72,7 +77,7 @@ const CustomWalletButton = ({ className = '' }) => {
       setIsModalOpen(false);
       // The autoConnect feature will handle the connection automatically
     } catch (error) {
-      console.error('Failed to select wallet:', error);
+      console.error("Failed to select wallet:", error);
     }
   };
 
@@ -83,7 +88,7 @@ const CustomWalletButton = ({ className = '' }) => {
       setUser(null);
       setIsDropdownOpen(false);
     } catch (error) {
-      console.error('Failed to disconnect:', error);
+      console.error("Failed to disconnect:", error);
     }
   };
 
@@ -110,11 +115,11 @@ const CustomWalletButton = ({ className = '' }) => {
   );
 
   const buttonText = () => {
-    if (connecting) return 'Connecting...';
-    if (disconnecting) return 'Disconnecting...';
-    if (isAuthenticated) return 'Logging in...';
+    if (connecting) return "Connecting...";
+    if (disconnecting) return "Disconnecting...";
+    if (isAuthenticated) return "Logging in...";
     if (connected) return user?.username;
-    return 'Log In';
+    return "Log In";
   };
 
   const isLoading = connecting || disconnecting || isAuthenticated;
@@ -122,22 +127,11 @@ const CustomWalletButton = ({ className = '' }) => {
   return (
     <div className={`relative ${className}`}>
       {/* Main Button */}
-      <button
+      <SecondaryButton
         onClick={handleConnect}
         disabled={isLoading}
-        className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed bg-transparent ${
-          isDark 
-            ? 'hover:bg-[#01DB75] active:bg-[#00C766]' 
-            : 'hover:bg-[#FA4EAB] active:bg-[#FB6AB9]'
-        } ${
-          isDark 
-            ? 'text-white hover:text-white' 
-            : 'text-gray-900 hover:text-white'
-        } ${className}`}
-        style={{
-          border: isDark ? '2px solid #01DB75' : '2px solid #FA4EAB',
-          borderRadius: '0.75rem' // 12px - same as xl radius used by Launch App button
-        }}
+        size="md"
+        className={`flex items-center space-x-2 ${className}`}
       >
         {isLoading ? (
           <Loader className="w-4 h-4 animate-spin" />
@@ -146,7 +140,7 @@ const CustomWalletButton = ({ className = '' }) => {
         )}
         <span className="text-sm">{buttonText()}</span>
         {connected && !isLoading && <ChevronDown className="w-3 h-3" />}
-      </button>
+      </SecondaryButton>
 
       {/* Connected Wallet Dropdown - New Design */}
       <WalletDropdown

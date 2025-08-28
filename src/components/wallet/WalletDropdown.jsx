@@ -1,33 +1,48 @@
-import React from 'react';
-import { User, Eye, LogOut } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext.jsx';
+import React from "react";
+import { User, Eye, LogOut } from "lucide-react";
+import { useTheme } from "../../contexts/ThemeContext.jsx";
 
-const WalletDropdown = ({ 
-  isOpen, 
-  onProfileClick, 
-  onViewWallet, 
+const WalletDropdown = ({
+  isOpen,
+  onProfileClick,
+  onViewWallet,
   onDisconnect,
-  onClose 
+  onClose,
 }) => {
   const { isDark } = useTheme();
 
   if (!isOpen) return null;
 
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <>
-      {/* Dropdown */}
-      <div className={`absolute top-full right-0 mt-2 w-48 backdrop-blur-md border rounded-lg shadow-2xl z-50 overflow-hidden transition-colors duration-200 ${
-        isDark 
-          ? 'bg-gray-900 border-gray-600' 
-          : 'bg-white border-gray-200'
-      }`}>
+    <div
+      className="fixed top-0 left-0 right-0 bottom-0 z-[9999] h-screen w-screen flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
+    >
+      {/* Backdrop */}
+      <div className="absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-black/80 backdrop-blur-sm"></div>
+
+      {/* Dropdown Modal */}
+      <div
+        className={`relative w-full max-w-xs backdrop-blur-md border rounded-lg shadow-2xl overflow-hidden transition-colors duration-200 ${
+          isDark
+            ? "bg-gray-900/95 border-gray-600"
+            : "bg-white/95 border-gray-200"
+        }`}
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Profile Option */}
         <button
           onClick={onProfileClick}
           className={`w-full flex items-center space-x-3 px-4 py-3 transition-colors text-left ${
-            isDark 
-              ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' 
-              : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/50'
+            isDark
+              ? "text-gray-300 hover:text-white hover:bg-gray-700/50"
+              : "text-gray-700 hover:text-gray-900 hover:bg-gray-100/50"
           }`}
         >
           <User className="w-4 h-4" />
@@ -38,9 +53,9 @@ const WalletDropdown = ({
         <button
           onClick={onViewWallet}
           className={`w-full flex items-center space-x-3 px-4 py-3 transition-colors text-left ${
-            isDark 
-              ? 'text-gray-300 hover:text-white hover:bg-gray-700/50' 
-              : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/50'
+            isDark
+              ? "text-gray-300 hover:text-white hover:bg-gray-700/50"
+              : "text-gray-700 hover:text-gray-900 hover:bg-gray-100/50"
           }`}
         >
           <Eye className="w-4 h-4" />
@@ -48,7 +63,11 @@ const WalletDropdown = ({
         </button>
 
         {/* Divider */}
-        <div className={`border-t my-1 ${isDark ? 'border-gray-600' : 'border-gray-200'}`}></div>
+        <div
+          className={`border-t my-1 ${
+            isDark ? "border-gray-600" : "border-gray-200"
+          }`}
+        ></div>
 
         {/* Log Out Option */}
         <button
@@ -59,13 +78,7 @@ const WalletDropdown = ({
           <span className="text-sm">Log out</span>
         </button>
       </div>
-
-      {/* Click outside handler */}
-      <div
-        className="fixed inset-0 z-40"
-        onClick={onClose}
-      ></div>
-    </>
+    </div>
   );
 };
 

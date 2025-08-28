@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
-import Header from '../components/Header.jsx';
-import { FilterSidebar, TokenSections, FilteredTokensList } from '../components/allTokens/index.js';
-import { ListFilter } from 'lucide-react';
-import { RightSidebar } from '../components/homepage/index.js';
-import { useTokens } from '../hooks/useTokens.js';
-import { useTheme } from '../contexts/ThemeContext.jsx';
-import { PinkGradientButton } from '../components/ui/index.js';
+import React, { useState } from "react";
+import Header from "../components/Header.jsx";
+import {
+  FilterSidebar,
+  TokenSections,
+  FilteredTokensList,
+} from "../components/allTokens/index.js";
+import { ListFilter } from "lucide-react";
+import { RightSidebar } from "../components/homepage/index.js";
+import { useTokens } from "../hooks/useTokens.js";
+import { useTheme } from "../contexts/ThemeContext.jsx";
+import { MainCtaButton } from "../components/ui/index.js";
 
 const AllTokensPage = () => {
   const { isDark } = useTheme();
@@ -14,29 +18,25 @@ const AllTokensPage = () => {
     trending: [],
     marketCap: [],
     categories: [],
-    userSpecific: []
+    userSpecific: [],
   });
 
-  const {
-    tokens,
-    allTokens,
-    trendingTokens,
-    loading,
-    error,
-    refreshTokens
-  } = useTokens();
+  const { tokens, allTokens, trendingTokens, loading, error, refreshTokens } =
+    useTokens();
 
   // Check if any filters are active
   const hasActiveFilters = () => {
-    return Object.values(activeFilters).some(filterArray => filterArray.length > 0);
+    return Object.values(activeFilters).some(
+      (filterArray) => filterArray.length > 0
+    );
   };
 
   const handleFilterChange = (filterType, filterValue, isActive) => {
-    setActiveFilters(prev => ({
+    setActiveFilters((prev) => ({
       ...prev,
       [filterType]: isActive
         ? [...prev[filterType], filterValue]
-        : prev[filterType].filter(f => f !== filterValue)
+        : prev[filterType].filter((f) => f !== filterValue),
     }));
   };
 
@@ -45,7 +45,7 @@ const AllTokensPage = () => {
       trending: [],
       marketCap: [],
       categories: [],
-      userSpecific: []
+      userSpecific: [],
     });
   };
 
@@ -54,17 +54,23 @@ const AllTokensPage = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 pb-1 ${isDark ? 'bg-neutral-950' : 'bg-[#EBEBEB]'
-      }`}>
+    <div
+      className={`min-h-screen transition-colors duration-300 pb-1 ${
+        isDark ? "bg-neutral-950" : "bg-[#EBEBEB]"
+      }`}
+    >
       <Header />
 
-      <div className="pt-16 md:pt-40 flex">
+      <div className="pt-16 md:pt-24 flex">
         {/* Filter Sidebar */}
         {isFilterBarVisible && (
-          <div className={`w-64 backdrop-blur-md border-r min-h-screen shadow-lg transition-colors duration-300 ${isDark
-              ? 'bg-gray-900/90 border-gray-700'
-              : 'bg-white/90 border-gray-200'
-            }`}>
+          <div
+            className={`w-64 backdrop-blur-md border-r min-h-screen shadow-lg transition-colors duration-300 ${
+              isDark
+                ? "bg-gray-900/90 border-gray-700"
+                : "bg-white/90 border-gray-200"
+            }`}
+          >
             <FilterSidebar
               activeFilters={activeFilters}
               onFilterChange={handleFilterChange}
@@ -75,15 +81,21 @@ const AllTokensPage = () => {
         )}
 
         {/* Main Content - adjusted for right sidebar */}
-        <div className={`flex-1 lg:mr-16 p-4 lg:p-6 min-h-screen transition-colors duration-300 ${isDark ? 'bg-neutral-950' : 'bg-gray-50'
-          }`}>
+        <div
+          className={`flex-1 lg:mr-16 p-4 lg:p-6 min-h-screen transition-colors duration-300 ${
+            isDark ? "bg-neutral-950" : "bg-gray-50"
+          }`}
+        >
           {/* All Filters Button (when filter bar is hidden) */}
           {!isFilterBarVisible && (
             <div className="mb-6">
-              <PinkGradientButton onClick={toggleFilterBar} className="flex items-center space-x-2 px-4 py-2">
+              <MainCtaButton
+                onClick={toggleFilterBar}
+                className="flex items-center space-x-2 px-4 py-2"
+              >
                 <span>All Filters</span>
                 <ListFilter className="w-5 h-5" />
-              </PinkGradientButton>
+              </MainCtaButton>
             </div>
           )}
 

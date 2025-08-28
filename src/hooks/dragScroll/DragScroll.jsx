@@ -1,13 +1,17 @@
 import { useRef, useEffect, useState, } from 'react';
 import useDragScroll from './useDragScroll';
+import { useTheme } from '../../contexts/ThemeContext.jsx';
+
 
 export default function DragScroll({ children, className = '' }) {
   const [scrollProgress, setScrollProgress] = useState(0)
 
+  const { isDark } = useTheme();
   const containerRef = useRef(null);
   useDragScroll(containerRef);
 
   const handleScroll = () => {
+
     if (containerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = containerRef.current
       const maxScroll = scrollWidth - clientWidth
@@ -36,7 +40,7 @@ export default function DragScroll({ children, className = '' }) {
       <div className="flex justify-center mt-4">
         <div className="w-2/5 h-1 bg-gray-300 rounded-full overflow-hidden">
           <div
-            className="h-full bg-pink-500 rounded-full transition-all duration-300 ease-out"
+            className={`h-full ${isDark ? 'bg-green-500' : 'bg-pink-500'} rounded-full transition-all duration-300 ease-out`}
             style={{ width: `${scrollProgress}%` }}
           />
         </div>

@@ -12,31 +12,38 @@ const StreamCategories = () => {
       id: 'trending',
       title: 'Trending Streamers',
       icon: '/images/categories/Trending.png',
+      iconDark: '/images/categories/Trending-dark.png',
+
     },
     {
       id: 'crypto_education',
       title: 'Crypto Education',
       icon: '/images/categories/Education.png',
+      iconDark: '/images/categories/Education-dark.png',
     },
     {
       id: 'most_popular',
       title: 'Most Popular',
       icon: '/images/categories/Popular.png',
+      iconDark: '/images/categories/Popular-dark.png',
     },
     {
       id: 'gaming',
       title: 'Gaming',
       icon: '/images/categories/Gaming.png',
+      iconDark: '/images/categories/Gaming-dark.png',
     },
     {
       id: 'market_insights',
       title: 'Market Insights',
       icon: '/images/categories/Market.png',
+      iconDark: '/images/categories/Market-dark.png',
     },
     {
       id: 'sponsored',
       title: 'Sponsored',
       icon: '/images/categories/Sponsored.png',
+      iconDark: '/images/categories/Sponsored-dark.png',
     }
   ];
 
@@ -50,7 +57,7 @@ const StreamCategories = () => {
   };
 
   return (
-    <div className="">
+    <div>
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <SectionHeader
@@ -63,7 +70,7 @@ const StreamCategories = () => {
         {/* Categories Grid */}
         {showAll ? (
           // Grid layout for "Show All"
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 px-6">
             {categories.map((category) => (
               <div
                 key={category.id}
@@ -78,7 +85,7 @@ const StreamCategories = () => {
                   {/* Icon */}
                   <div className="w-16 h-16 flex items-center justify-center">
                     <img 
-                      src={category.icon} 
+                      src={isDark ? category.iconDark : category.icon} 
                       alt={category.title}
                       className="w-12 h-12 object-contain"
                     />
@@ -116,7 +123,7 @@ const StreamCategories = () => {
                   {/* Icon */}
                   <div className="w-24 h-24 flex items-center justify-center">
                     <img 
-                      src={category.icon} 
+                      src={isDark ? category.iconDark : category.icon} 
                       alt={category.title}
                       className="w-24 h-24 object-contain"
                     />
@@ -125,7 +132,7 @@ const StreamCategories = () => {
                   {/* Title */}
                   <h3 className={`font-semibold text-sm transition-colors ${
                     isDark 
-                      ? 'text-white group-hover:text-pink-400' 
+                      ? 'text-white group-hover:text-green-300' 
                       : 'text-gray-900 group-hover:text-pink-600'
                   }`}>
                     {category.title}
