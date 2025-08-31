@@ -19,7 +19,7 @@ const HeroLiveStream = () => {
   };
 
   return (
-    <div className="px-4 md:px-0 pt-20">
+    <div className="px-4 md:px-0">
       <div className="max-w-7xl mx-auto">
         <StreamPlayer stream={mainStream} />
       </div>

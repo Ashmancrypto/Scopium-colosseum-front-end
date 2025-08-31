@@ -6,12 +6,15 @@ import NewlyFollowedTokenCard from "./NewlyFollowedTokenCard.jsx";
 import { formatTokenMarketCap } from "../../utils/formatters.js";
 import { solPriceContext } from "../../contexts/SolPriceContext.jsx";
 import { useTokens } from "../../hooks/useTokens.js";
+import { setFavor } from "../../api/user/index.js";
+
 
 const Trending = () => {
   const { isDark } = useTheme();
   const { solPrice } = useContext(solPriceContext);
   const [showAll, setShowAll] = useState(false);
   const { trendingTokens, loading } = useTokens();
+
   // Mock trending live streams
   const trendingStreams = [
     {
@@ -69,6 +72,8 @@ const Trending = () => {
   const handleViewAll = () => {
     setShowAll(!showAll);
   };
+
+  
 
   return (
     <div className="">
@@ -131,6 +136,7 @@ const Trending = () => {
                   : trendingTokens.map((token, index) => (
                       <NewlyFollowedTokenCard
                         key={token.tokenId || index}
+                        tokenId={token.tokenId || token.mintAddr || token.id}
                         tokenImage={token.logo}
                         tokenSymbol={token.ticker || token.name || "Unknown"}
                         tokenValue={

@@ -1,18 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useHeaderSearch } from "../hooks/useHeaderSearch.js";
-import { Menu, X, Search, ChevronDown, Briefcase } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
 import { MainCtaButton } from "./ui/index.js";
 import CustomWalletButton from "./CustomWalletButton.jsx";
 import ThemeToggle from "./ThemeToggle.jsx";
-import { MobileNetworkMenu } from "./ui/index.js";
-import MobileBottomNav from "./MobileBottomNav.jsx";
-import { CreateTokenModal } from "./createModal/index.js";
 import { useTheme } from "../contexts/ThemeContext.jsx";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
+import Newly from "./homepage/Newly.jsx";
+import RightSidebar from "./homepage/RightSidebar.jsx";
 
-const Header = ({ selectedNetwork, setSelectedNetwork, onSearch }) => {
+const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { handleSearch } = useHeaderSearch();
@@ -163,128 +162,129 @@ const Header = ({ selectedNetwork, setSelectedNetwork, onSearch }) => {
   }, [isCreateDropdownOpen]);
 
   return (
-    <>
-      <header
-        className={`fixed top-0 left-0 w-full z-40 border-b transition-colors duration-200 md:-translate-y-1/2
+    <header
+      className={`md:mt-20 max-h-40 sticky top-0 left-0 z-40 border-b transition-colors duration-200 md:-translate-y-1/2
           ${
             isDark ? "border-black shadow-green-bottom" : "shadow-pink-bottom"
           }`}
-        style={{
-          backgroundImage: isDark
-            ? "url(/images/header-image-dark.png)"
-            : "url(/images/header-image.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <AnimatePresence>
-          {isNavigationMenuOpen && (
-            <div
-              className="lg:hidden min-h-screen bg-black/50 absolute bottom-0 w-full translate-y-full z-30 backdrop-blur-sm"
-              onClick={toggleNavigationMenu}
+      style={{
+        backgroundImage: isDark
+          ? "url(/images/header-image-dark.png)"
+          : "url(/images/header-image.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <AnimatePresence>
+        {isNavigationMenuOpen && (
+          <div
+            className="lg:hidden min-h-screen bg-black/50 absolute bottom-0 w-full translate-y-full z-30 backdrop-blur-sm"
+            onClick={toggleNavigationMenu}
+          >
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              key="navigation-menu-mobile"
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className={`w-[308px] h-full absolute top-0 left-0 z-10 pt-[28px] pb-[300px] px-[24px] text-[14px] leading-none overflow-y-scroll no-scrollbar ${
+                isDark ? "bg-[rgba(46,46,46,1)]" : "bg-white"
+              }`}
+              style={{
+                boxShadow: isDark
+                  ? "inset 0px 8px 10px -8px rgba(1,219,117,0.25)"
+                  : "inset 0px 8px 10px -8px rgba(250, 78, 171, 0.25)",
+              }}
             >
-              <motion.div
-                onClick={(e) => e.stopPropagation()}
-                key="navigation-menu-mobile"
-                initial={{ x: "-100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "-100%" }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className={`w-[308px] h-full absolute top-0 left-0 z-10 pt-[28px] pb-[300px] px-[24px] text-[14px] leading-none overflow-y-scroll no-scrollbar ${
-                  isDark ? "bg-[rgba(46,46,46,1)]" : "bg-white"
-                }`}
-                style={{
-                  boxShadow: isDark
-                    ? "inset 0px 8px 10px -8px rgba(1,219,117,0.25)"
-                    : "inset 0px 8px 10px -8px rgba(250, 78, 171, 0.25)",
-                }}
+              <svg
+                width="22"
+                height="16"
+                viewBox="0 0 22 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="absolute top-6 right-6 cursor-pointer"
+                onClick={toggleNavigationMenu}
               >
-                <svg
-                  width="22"
-                  height="16"
-                  viewBox="0 0 22 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="absolute top-6 right-6 cursor-pointer"
-                  onClick={toggleNavigationMenu}
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M7.60729 1.952C7.82799 2.177 7.95196 2.482 7.95196 2.8C7.95196 3.118 7.82799 3.423 7.60729 3.648L4.51157 6.8L16.1071 6.8C16.4197 6.8 16.7195 6.92643 16.9405 7.15147C17.1615 7.37652 17.2857 7.68174 17.2857 8C17.2857 8.31826 17.1615 8.62348 16.9405 8.84853C16.7195 9.07357 16.4197 9.2 16.1071 9.2L4.51157 9.2L7.60729 12.352C7.81547 12.5795 7.9288 12.8804 7.92342 13.1912C7.91803 13.5021 7.79434 13.7987 7.57841 14.0186C7.36247 14.2385 7.07115 14.3644 6.76582 14.3699C6.46049 14.3754 6.16499 14.26 5.94157 14.048L0 8L5.94 1.952C6.04945 1.84049 6.17941 1.75203 6.32245 1.69168C6.46549 1.63132 6.61881 1.60026 6.77364 1.60026C6.92848 1.60026 7.0818 1.63132 7.22484 1.69168C7.36788 1.75203 7.49784 1.84049 7.60729 1.952ZM19.6429 14.8C19.6429 15.1183 19.767 15.4235 19.9881 15.6485C20.2091 15.8736 20.5089 16 20.8214 16C21.134 16 21.4338 15.8736 21.6548 15.6485C21.8758 15.4235 22 15.1183 22 14.8V1.2C22 0.88174 21.8758 0.576516 21.6548 0.351472C21.4338 0.126429 21.134 -1.39116e-08 20.8214 0C20.5089 1.39116e-08 20.2091 0.126429 19.9881 0.351473C19.767 0.576516 19.6429 0.88174 19.6429 1.2V14.8Z"
-                    fill={isDark ? "#F7F7F7" : "#0A0A0A"}
-                  />
-                </svg>
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M7.60729 1.952C7.82799 2.177 7.95196 2.482 7.95196 2.8C7.95196 3.118 7.82799 3.423 7.60729 3.648L4.51157 6.8L16.1071 6.8C16.4197 6.8 16.7195 6.92643 16.9405 7.15147C17.1615 7.37652 17.2857 7.68174 17.2857 8C17.2857 8.31826 17.1615 8.62348 16.9405 8.84853C16.7195 9.07357 16.4197 9.2 16.1071 9.2L4.51157 9.2L7.60729 12.352C7.81547 12.5795 7.9288 12.8804 7.92342 13.1912C7.91803 13.5021 7.79434 13.7987 7.57841 14.0186C7.36247 14.2385 7.07115 14.3644 6.76582 14.3699C6.46049 14.3754 6.16499 14.26 5.94157 14.048L0 8L5.94 1.952C6.04945 1.84049 6.17941 1.75203 6.32245 1.69168C6.46549 1.63132 6.61881 1.60026 6.77364 1.60026C6.92848 1.60026 7.0818 1.63132 7.22484 1.69168C7.36788 1.75203 7.49784 1.84049 7.60729 1.952ZM19.6429 14.8C19.6429 15.1183 19.767 15.4235 19.9881 15.6485C20.2091 15.8736 20.5089 16 20.8214 16C21.134 16 21.4338 15.8736 21.6548 15.6485C21.8758 15.4235 22 15.1183 22 14.8V1.2C22 0.88174 21.8758 0.576516 21.6548 0.351472C21.4338 0.126429 21.134 -1.39116e-08 20.8214 0C20.5089 1.39116e-08 20.2091 0.126429 19.9881 0.351473C19.767 0.576516 19.6429 0.88174 19.6429 1.2V14.8Z"
+                  fill={isDark ? "#F7F7F7" : "#0A0A0A"}
+                />
+              </svg>
 
-                <div
-                  id="general"
-                  className="flex flex-col gap-[28px] mb-[24px]"
-                >
-                  <h3 className="font-bold text-[16px]">General</h3>
-                  {navigationMenuItems.general.map((item, index) => (
-                    <Link
-                      key={index}
-                      to={item.path}
-                      className={`transition-colors duration-200 ${
-                        isDark ? "hover:text-green-500" : "hover:text-pink-500 "
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-                <div
-                  className={`border ${
-                    isDark
-                      ? "border-[rgba(247,247,247,0.6)]"
-                      : "border-[rgba(10,10,10,0.2)]"
-                  }`}
-                ></div>
-                <div id="legal" className="flex flex-col gap-[28px] mt-[24px]">
-                  <h3 className="font-bold text-[16px]">Legal</h3>
-                  {navigationMenuItems.legal.map((item, index) => (
-                    <Link
-                      key={index}
-                      to={item.path}
-                      className={`transition-colors duration-200 ${
-                        isDark ? "hover:text-green-500" : "hover:text-pink-500 "
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
-        <div className="relative w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center md:items-end justify-between h-14 md:h-40 md:py-4 w-full">
-            {/* Left Side - Logo and Create Button (Far Left Edge) */}
-            <div className="flex items-center space-x-10 flex-shrink-0">
-              <img
-                src={`${isDark ? "/images/Logo-dark.png" : "/images/Logo.png"}`}
-                alt="Scopium Logo"
-                className="h-8 w-auto cursor-pointer hover:opacity-80 transition-opacity duration-200"
-                onClick={handleLogoClick}
-              />
-              <div className="hidden md:block relative ml-4" ref={dropdownRef}>
-                <MainCtaButton
-                  onClick={handleCreateClick}
-                  className="flex items-center space-x-2"
-                >
-                  <span>Create</span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-white transition-transform duration-200 ${
-                      isCreateDropdownOpen ? "rotate-180" : ""
+              <div id="general" className="flex flex-col gap-[28px] mb-[24px]">
+                <h3 className="font-bold text-[16px]">General</h3>
+                {navigationMenuItems.general.map((item, index) => (
+                  <Link
+                    key={index}
+                    to={item.path}
+                    className={`transition-colors duration-200 ${
+                      isDark ? "hover:text-green-500" : "hover:text-pink-500 "
                     }`}
-                  />
-                </MainCtaButton>
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+              <div
+                className={`border ${
+                  isDark
+                    ? "border-[rgba(247,247,247,0.6)]"
+                    : "border-[rgba(10,10,10,0.2)]"
+                }`}
+              ></div>
+              <div id="legal" className="flex flex-col gap-[28px] mt-[24px]">
+                <h3 className="font-bold text-[16px]">Legal</h3>
+                {navigationMenuItems.legal.map((item, index) => (
+                  <Link
+                    key={index}
+                    to={item.path}
+                    className={`transition-colors duration-200 ${
+                      isDark ? "hover:text-green-500" : "hover:text-pink-500 "
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+      <div className="relative w-full px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center md:items-end justify-between h-14 md:h-40 md:py-4 w-full">
+          {/* Left Side - Logo and Create Button (Far Left Edge) */}
+          <div className="flex items-center space-x-10 flex-shrink-0">
+            <img
+              src={`${isDark ? "/images/Logo-dark.png" : "/images/Logo.png"}`}
+              alt="Scopium Logo"
+              className="h-8 w-auto cursor-pointer hover:opacity-80 transition-opacity duration-200"
+              onClick={handleLogoClick}
+            />
+            <div className="hidden md:block relative ml-4" ref={dropdownRef}>
+              <MainCtaButton
+                onClick={handleCreateClick}
+                className="flex items-center space-x-2"
+              >
+                <span>Create</span>
+                <ChevronDown
+                  className={`w-4 h-4 text-white transition-transform duration-200 ${
+                    isCreateDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </MainCtaButton>
 
-                {/* Create Dropdown Menu */}
+              {/* Create Dropdown Menu */}
+              <AnimatePresence>
                 {isCreateDropdownOpen && (
-                  <div
+                  <motion.div
+                    initial={{ opacity: 0, translateY: "-10%" }}
+                    animate={{ opacity: 1, translateY: "0%" }}
+                    exit={{ opacity: 0, translateY: "-10%" }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
                     className={`absolute top-full left-0 mt-2 w-48 rounded-lg shadow-lg border py-2 z-50 transition-colors duration-300 ${
                       isDark
                         ? "bg-gray-900 border-gray-600"
@@ -311,257 +311,202 @@ const Header = ({ selectedNetwork, setSelectedNetwork, onSearch }) => {
                     >
                       Create Stream
                     </button>
-                  </div>
+                  </motion.div>
                 )}
-              </div>
-              {/*Dropdown menu button*/}
-              <div className="relative z-10">
-                <AnimatePresence>
-                  <button
-                    className="p-2 w-10 h-10 flex items-center justify-center"
-                    onClick={toggleNavigationMenu}
-                  >
-                    {isNavigationMenuOpen ? (
-                      <motion.svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        key="close-icon"
-                      >
-                        <path
-                          d="M19 1L1 19M1 1L19 19"
-                          stroke={isDark ? "white" : "#0A0A0A"}
-                          strokeOpacity={isDark ? "1" : "0.6"}
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </motion.svg>
-                    ) : (
-                      <motion.svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        key="open-icon"
-                      >
-                        <path
-                          d="M0 17V14.6667H20V17H0ZM0 11.1667V8.83333H20V11.1667H0ZM0 5.33333V3H20V5.33333H0Z"
-                          fill={isDark ? "white" : "#0A0A0A"}
-                          fillOpacity={isDark ? "1" : "0.6"}
-                        />
-                      </motion.svg>
-                    )}
-                  </button>
-                  {isNavigationMenuOpen && (
-                    <motion.div
-                      className={`lg:block hidden p-[20px] rounded-[12px] absolute bottom-0 left-0  translate-y-full w-[186px] text-[14px] leading-none ${
-                        isDark
-                          ? "border bg-[rgba(46,46,46,1)] border-[rgba(1,219,117,0.3)]"
-                          : "bg-white"
-                      }`}
-                      style={{
-                        boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.15)",
-                      }}
-                      initial={{ opacity: 0, translateY: "95%" }}
-                      animate={{ opacity: 1, translateY: "100%" }}
-                      exit={{ opacity: 0, translateY: "95%" }}
-                      transition={{ duration: 0.2, ease: "easeInOut" }}
-                      key="navigation-menu"
+              </AnimatePresence>
+            </div>
+            {/*Dropdown menu button*/}
+            <div className="relative z-10">
+              <AnimatePresence>
+                <button
+                  className="p-2 w-10 h-10 flex items-center justify-center"
+                  onClick={toggleNavigationMenu}
+                >
+                  {isNavigationMenuOpen ? (
+                    <motion.svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      key="close-icon"
                     >
-                      <div
-                        id="general"
-                        className="flex flex-col gap-[20px] mb-[16px]"
-                      >
-                        <h3 className="font-bold">General</h3>
-                        {navigationMenuItems.general.map((item, index) => (
-                          <Link
-                            key={index}
-                            to={item.path}
-                            className={`transition-colors duration-200 ${
-                              isDark
-                                ? "hover:text-green-500"
-                                : "hover:text-pink-500 "
-                            }`}
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
-                      </div>
-                      <div
-                        className={`border ${
-                          isDark
-                            ? "border-[rgba(247,247,247,0.6)]"
-                            : "border-[rgba(10,10,10,0.2)]"
-                        }`}
-                      ></div>
-                      <div
-                        id="legal"
-                        className="flex flex-col gap-[20px] mt-[16px]"
-                      >
-                        <h3 className="font-bold">Legal</h3>
-                        {navigationMenuItems.legal.map((item, index) => (
-                          <Link
-                            key={index}
-                            to={item.path}
-                            className={`transition-colors duration-200 ${
-                              isDark
-                                ? "hover:text-green-500"
-                                : "hover:text-pink-500 "
-                            }`}
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </motion.div>
+                      <path
+                        d="M19 1L1 19M1 1L19 19"
+                        stroke={isDark ? "white" : "#0A0A0A"}
+                        strokeOpacity={isDark ? "1" : "0.6"}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </motion.svg>
+                  ) : (
+                    <motion.svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      key="open-icon"
+                    >
+                      <path
+                        d="M0 17V14.6667H20V17H0ZM0 11.1667V8.83333H20V11.1667H0ZM0 5.33333V3H20V5.33333H0Z"
+                        fill={isDark ? "white" : "#0A0A0A"}
+                        fillOpacity={isDark ? "1" : "0.6"}
+                      />
+                    </motion.svg>
                   )}
-                </AnimatePresence>
-              </div>
-            </div>
-
-            {/* Middle - Search Bar (Centered with flex-grow) */}
-            <div className="hidden md:flex flex-1 justify-center px-8">
-              <form onSubmit={handleSearchSubmit} className="w-full max-w-md">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    className={`w-full pl-10 pr-4 py-2 border rounded-[12px] focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all text-sm ${
+                </button>
+                {isNavigationMenuOpen && (
+                  <motion.div
+                    className={`lg:block hidden p-[20px] rounded-[12px] absolute bottom-0 left-0  translate-y-full w-[186px] text-[14px] leading-none ${
                       isDark
-                        ? "border-gray-600 bg-gray-900 text-white placeholder-gray-400"
-                        : "border-[#0A0A0A99] bg-[#EBEBEB] text-gray-900 placeholder-gray-500"
+                        ? "border bg-[rgba(46,46,46,1)] border-[rgba(1,219,117,0.3)]"
+                        : "bg-white"
                     }`}
-                  />
-                  <Search
-                    className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors duration-300 ${
-                      isDark ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  />
-                </div>
-              </form>
-            </div>
-
-            {/* Right Side - Navigation, Theme Toggle, and Login (Far Right Edge) */}
-            <div className="hidden md:flex items-center space-x-6 flex-shrink-0">
-              {navItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => handleNavClick(item.path)}
-                  className={`relative text-sm font-medium transition-colors duration-200 ${
-                    isActivePage(item.path)
-                      ? `${
-                          isDark
-                            ? "text-green-400 hover:text-green-400"
-                            : "text-pink-300 font-bold"
-                        }`
-                      : `${
-                          isDark
-                            ? "text-[#F7F7F7] hover:text-green-400"
-                            : "text-[#0A0A0A99] hover:text-pink-300"
-                        }`
-                  }`}
-                >
-                  {item.name}
-                  {isActivePage(item.path) && (
+                    style={{
+                      boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.15)",
+                    }}
+                    initial={{ opacity: 0, translateY: "95%" }}
+                    animate={{ opacity: 1, translateY: "100%" }}
+                    exit={{ opacity: 0, translateY: "95%" }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                    key="navigation-menu"
+                  >
                     <div
-                      className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${
-                        isDark ? "bg-green-400" : "bg-pink-400"
+                      id="general"
+                      className="flex flex-col gap-[20px] mb-[16px]"
+                    >
+                      <h3 className="font-bold">General</h3>
+                      {navigationMenuItems.general.map((item, index) => (
+                        <Link
+                          key={index}
+                          to={item.path}
+                          className={`transition-colors duration-200 ${
+                            isDark
+                              ? "hover:text-green-500"
+                              : "hover:text-pink-500 "
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                    <div
+                      className={`border ${
+                        isDark
+                          ? "border-[rgba(247,247,247,0.6)]"
+                          : "border-[rgba(10,10,10,0.2)]"
                       }`}
-                    />
-                  )}
-                </button>
-              ))}
-              <ThemeToggle
-                className={`p-2 ${
-                  isDark ? "text-white" : "text-[#0A0A0A99]"
-                } hover:text-pink-300 transition-colors`}
-              />
-              <CustomWalletButton className="w-auto justify-center" />
+                    ></div>
+                    <div
+                      id="legal"
+                      className="flex flex-col gap-[20px] mt-[16px]"
+                    >
+                      <h3 className="font-bold">Legal</h3>
+                      {navigationMenuItems.legal.map((item, index) => (
+                        <Link
+                          key={index}
+                          to={item.path}
+                          className={`transition-colors duration-200 ${
+                            isDark
+                              ? "hover:text-green-500"
+                              : "hover:text-pink-500 "
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
+          </div>
 
-            <div className="md:hidden flex items-center space-x-2 flex-shrink-0">
-              <ThemeToggle
-                className={`p-2 ${
-                  isDark ? "text-white" : "text-[#0A0A0A99]"
-                } hover:text-pink-300 transition-colors`}
-              />
-              <CustomWalletButton className="w-auto justify-center" />
-              {/* <button
-                onClick={toggleMobileMenu}
-                className={`p-2 ${isDark? "white" : "text-[#0A0A0A99]"} hover:text-pink-300 transition-colors`}
+          {/* Middle - Search Bar (Centered with flex-grow) */}
+          <div className="hidden md:flex flex-1 justify-center px-8">
+            <form onSubmit={handleSearchSubmit} className="w-full max-w-md">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className={`w-full pl-10 pr-4 py-2 border rounded-[12px] focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all text-sm ${
+                    isDark
+                      ? "border-gray-600 bg-gray-900 text-white placeholder-gray-400"
+                      : "border-[#0A0A0A99] bg-[#EBEBEB] text-gray-900 placeholder-gray-500"
+                  }`}
+                />
+                <Search
+                  className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors duration-300 ${
+                    isDark ? "text-gray-400" : "text-gray-500"
+                  }`}
+                />
+              </div>
+            </form>
+          </div>
+
+          {/* Right Side - Navigation, Theme Toggle, and Login (Far Right Edge) */}
+          <div className="hidden md:flex items-center space-x-6 flex-shrink-0">
+            {navItems.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => handleNavClick(item.path)}
+                className={`relative text-sm font-medium transition-colors duration-200 ${
+                  isActivePage(item.path)
+                    ? `${
+                        isDark
+                          ? "text-green-400 hover:text-green-400"
+                          : "text-pink-300 font-bold"
+                      }`
+                    : `${
+                        isDark
+                          ? "text-[#F7F7F7] hover:text-green-400"
+                          : "text-[#0A0A0A99] hover:text-pink-300"
+                      }`
+                }`}
               >
-                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button> */}
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Menu */}
-      {/* {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
-          <div className="fixed inset-0 bg-black/50" onClick={toggleMobileMenu}></div>
-          <div
-            className="fixed top-16 left-1/2 -translate-x-1/2 w-11/12 max-w-xs bg-white/90 backdrop-blur-md rounded-xl p-4 space-y-4 shadow-pink-bottom transition-all duration-300"
-          >
-            
-            <MobileNetworkMenu
-              selectedNetwork={selectedNetwork}
-              onNetworkChange={setSelectedNetwork}
-              isVisible
-            />
-            
-            <div className="space-y-2">
-              {navItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => handleNavClick(item.path)}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors duration-200 font-medium ${isActivePage(item.path)
-                      ? 'bg-pink-100 text-pink-600'
-                      : 'text-gray-800 hover:bg-gray-100'
+                {item.name}
+                {isActivePage(item.path) && (
+                  <div
+                    className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${
+                      isDark ? "bg-green-400" : "bg-pink-400"
                     }`}
-                >
-                  <div className="flex items-center space-x-3">
-                    <img
-                      src={item.icon}
-                      alt={item.name}
-                      className="w-5 h-5"
-                    />
-                    <span>{item.name}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
+                  />
+                )}
+              </button>
+            ))}
+            <ThemeToggle
+              className={`p-2 ${
+                isDark ? "text-white" : "text-[#0A0A0A99]"
+              } hover:text-pink-300 transition-colors`}
+            />
+            <CustomWalletButton className="w-auto justify-center" />
+          </div>
+
+          <div className="md:hidden flex items-center space-x-2 flex-shrink-0">
+            <ThemeToggle
+              className={`p-2 ${
+                isDark ? "text-white" : "text-[#0A0A0A99]"
+              } hover:text-pink-300 transition-colors`}
+            />
+            <CustomWalletButton className="w-auto justify-center" />
           </div>
         </div>
-      )} */}
-
-      {/* Create Token Modal */}
-      <CreateTokenModal
-        isOpen={isCreateTokenModalOpen}
-        onClose={handleCloseTokenModal}
-      />
-
-      {/* Mobile Bottom Navigation */}
-      <MobileBottomNav
-        onCreateTokenClick={handleCreateTokenClick}
-        onCreateStreamClick={handleCreateStreamClick}
-      />
-    </>
+      </div>
+      {showNewly && <Newly />}
+      {showRightSidebar && <RightSidebar />}
+    </header>
   );
 };
 

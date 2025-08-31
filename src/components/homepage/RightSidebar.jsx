@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Plus } from "lucide-react";
 import { useTheme } from "../../contexts/ThemeContext.jsx";
 import { motion, AnimatePresence } from "motion/react";
@@ -11,6 +11,14 @@ const RightSidebar = ({ livestreamers = [], watchListedTokens = [] }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [favoriteTokens, setFavoriteTokens] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [height, setHeight] = useState(0);
+  const ref = useRef(null);
+
+  const updateHeight = () => {
+      const bottomOfViewport = window.innerHeight;
+      const topOfElement = ref.current.getBoundingClientRect().top;
+      setHeight(bottomOfViewport - topOfElement);
+  };
 
   // Fetch user's favorite tokens
   useEffect(() => {
@@ -30,6 +38,13 @@ const RightSidebar = ({ livestreamers = [], watchListedTokens = [] }) => {
     };
 
     fetchFavoriteTokens();
+    updateHeight();
+
+    window.addEventListener("scroll", updateHeight);
+    return () => {
+      window.removeEventListener("scroll", updateHeight);
+    };
+
   }, []);
 
   // Use real data if available, otherwise show empty state
@@ -39,11 +54,13 @@ const RightSidebar = ({ livestreamers = [], watchListedTokens = [] }) => {
 
   return (
     <motion.div
-      className={`backdrop-blur-md transition-colors duration-300 flex flex-col ${
+      className={`hidden lg:block backdrop-blur-md transition-colors duration-300 flex flex-col absolute right-0 bottom-0 translate-y-full ${
         isDark ? "bg-green-500/50" : "bg-pink-500/20"
       }`}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       animate={{ width: isExpanded ? "250px" : "80px" }}
+      style={{ height: `${height}px` }}
+      ref={ref}
     >
       {/* Collapse Button */}
       <div className="flex p-1 my-2 pt-2 relative">

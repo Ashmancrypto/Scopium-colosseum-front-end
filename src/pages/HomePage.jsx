@@ -68,24 +68,11 @@ const HomePage = () => {
         selectedNetwork={selectedNetwork}
         setSelectedNetwork={setSelectedNetwork}
         onSearch={handleHeaderSearch}
+        showNewly={true}
+        showRightSidebar={true}
       />
 
       <div className="flex flex-1">
-        {/* Fixed Sidebar */}
-        <div
-          className={`hidden lg:flex flex-col w-128 fixed top-20 bottom-0 backdrop-blur-md border-r transition-colors duration-300 ${
-            isDark
-              ? "bg-gray-900 border-gray-700"
-              : "bg-white/90 border-gray-200"
-          }`}
-        >
-          <div className="overflow-y-scroll h-full no-scrollbar">
-            {/* <NetworkSidebar /> */}
-            <Newly newlyTokens={allTokens} loading={loadingTrending} />
-          </div>
-        </div>
-
-        {/* Main content shifted to the right of the fixed sidebar */}
         <div className="flex-1 lg:ml-[192px] lg:mr-[80px] overflow-auto">
           <div className="space-y-8 pb-16">
             {hasSearched || isSearching ? (
@@ -136,14 +123,6 @@ const HomePage = () => {
               </>
             )}
           </div>
-        </div>
-
-        {/* Fixed Right Sidebar */}
-        <div className="hidden lg:flex fixed top-20 right-0 bottom-0">
-          <RightSidebar
-            livestreamers={[]}
-            watchListedTokens={watchListedTokens.slice(0, 10)}
-          />
         </div>
       </div>
     </div>
