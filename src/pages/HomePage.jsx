@@ -18,6 +18,8 @@ import { useTheme } from "../contexts/ThemeContext.jsx";
 import { useTokens } from "../hooks/useTokens.js";
 
 const HomePage = () => {
+  const [selectedStream, setSelectedStream] = useState(null);
+  const [streams, setStreams] = useState([]);
   const { isDark } = useTheme();
   const [selectedNetwork, setSelectedNetwork] = useState("Solana");
   const {
@@ -56,7 +58,9 @@ const HomePage = () => {
   const handleHeaderSearch = (query) => {
     handleSearch(query);
   };
-
+  const handleStreamSelect = (stream) => {
+    setSelectedStream(stream);
+  };
   return (
     <div
       className={`flex flex-col min-h-screen ${
@@ -89,7 +93,7 @@ const HomePage = () => {
               <>
                 {/* Live Stream Section */}
                 <div id="hero-live-stream">
-                  <HeroLiveStream />
+                  <HeroLiveStream stream={selectedStream} />
                   {/* Advertising Banner */}
                   <div id="advertising-banner">
                     <AdvertisingBanner />
@@ -97,7 +101,11 @@ const HomePage = () => {
                 </div>
 
                 <div id="live-now">
-                  <LiveNow />
+                  <LiveNow
+                    streams={streams}
+                    onStreamSelect={handleStreamSelect}
+                    selectedStream={selectedStream}
+                  />
                 </div>
                 <div id="migrated">
                   <Migrated

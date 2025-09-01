@@ -8,7 +8,6 @@ import { solPriceContext } from "../../contexts/SolPriceContext.jsx";
 import { useTokens } from "../../hooks/useTokens.js";
 import { setFavor } from "../../api/user/index.js";
 
-
 const Trending = () => {
   const { isDark } = useTheme();
   const { solPrice } = useContext(solPriceContext);
@@ -72,8 +71,6 @@ const Trending = () => {
   const handleViewAll = () => {
     setShowAll(!showAll);
   };
-
-  
 
   return (
     <div className="">
@@ -169,7 +166,7 @@ const Trending = () => {
           </div>
         ) : (
           // Default horizontal scroll layout
-          <div className="space-y-8">
+          <div className="">
             {/* Trending Tokens - Horizontal Scroll */}
             <div>
               <DragScroll className="flex space-x-4 overflow-x-auto px-6 py-4 items-stretch">
@@ -214,7 +211,11 @@ const Trending = () => {
                       >
                         <NewlyFollowedTokenCard
                           tokenImage={token.logo}
-                          tokenSymbol={token.ticker.toUpperCase().slice(0, 5) || token.name.toUpperCase().slice(0, 5) || "Unknown"}
+                          tokenSymbol={
+                            token.ticker.toUpperCase().slice(0, 5) ||
+                            token.name.toUpperCase().slice(0, 5) ||
+                            "Unknown"
+                          }
                           tokenValue={
                             token.marketCap
                               ? formatTokenMarketCap(token.marketCap, solPrice)

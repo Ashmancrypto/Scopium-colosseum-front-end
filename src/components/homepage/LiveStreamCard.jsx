@@ -12,9 +12,9 @@ const LiveStreamCard = ({ stream }) => {
       }`}
     >
       {/* Stream Thumbnail */}
-      <div className="relative aspect-video bg-gradient-to-br from-purple-600 to-pink-600">
+      <div className="relative aspect-video bg-gradient-to-br from-purple-600 to-pink-600 ">
         <img
-          src={stream.thumbnail}
+          src={`https://api.scopium.fun${stream.thumbnail}`}
           alt={stream.title}
           className="w-full h-full object-cover"
         />
@@ -28,7 +28,7 @@ const LiveStreamCard = ({ stream }) => {
         {/* View Count */}
         <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white px-2 py-1 rounded text-xs flex items-center space-x-1">
           <Eye className="w-3 h-3" />
-          <span>{stream.viewCount}</span>
+          <span>{stream.viewer_count}</span>
         </div>
 
         {/* Play Button Overlay */}

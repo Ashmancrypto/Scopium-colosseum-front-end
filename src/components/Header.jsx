@@ -124,6 +124,10 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
     setIsNavigationMenuOpen(!isNavigationMenuOpen);
   const isActivePage = (path) => location.pathname === path;
 
+  const handleMenuToggle = (isOpen) => {
+    setIsSidebarOpen(isOpen);
+  };
+
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
@@ -143,6 +147,18 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     // Form submission is handled by onChange for real-time search
+  };
+  const handleStreamCreated = (newStream) => {
+    setStreams((prev) => [...prev, newStream]);
+    setIsModalOpen(false); // Close modal after stream is created
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   useEffect(() => {
@@ -302,7 +318,7 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
                       Create Token
                     </button>
                     <button
-                      onClick={handleCreateStreamClick}
+                      onClick={openModal}
                       className={`w-full text-left px-4 py-3 transition-colors duration-200 text-sm font-medium ${
                         isDark
                           ? "text-gray-200 hover:text-white hover:bg-gray-700/50"

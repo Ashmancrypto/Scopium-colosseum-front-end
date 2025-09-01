@@ -6,7 +6,7 @@ import NewlyFollowedTokenCard from "./NewlyFollowedTokenCard.jsx";
 import { getFavoriteTokens } from "../../api/user/index.js";
 import { getUser } from "../../utils/index.js";
 
-const RightSidebar = ({ livestreamers = [], watchListedTokens = [] }) => {
+const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
   const { isDark } = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
   const [favoriteTokens, setFavoriteTokens] = useState([]);
@@ -15,9 +15,9 @@ const RightSidebar = ({ livestreamers = [], watchListedTokens = [] }) => {
   const ref = useRef(null);
 
   const updateHeight = () => {
-      const bottomOfViewport = window.innerHeight;
-      const topOfElement = ref.current.getBoundingClientRect().top;
-      setHeight(bottomOfViewport - topOfElement);
+    const bottomOfViewport = window.innerHeight;
+    const topOfElement = ref.current.getBoundingClientRect().top;
+    setHeight(bottomOfViewport - topOfElement);
   };
 
   // Fetch user's favorite tokens
@@ -44,7 +44,6 @@ const RightSidebar = ({ livestreamers = [], watchListedTokens = [] }) => {
     return () => {
       window.removeEventListener("scroll", updateHeight);
     };
-
   }, []);
 
   // Use real data if available, otherwise show empty state

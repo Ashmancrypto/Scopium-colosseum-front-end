@@ -5,7 +5,7 @@ import DragScroll from "../../hooks/dragScroll/DragScroll.jsx";
 import NewlyTokenCard from "./NewlyTokenCard.jsx";
 import NewlyFollowedTokenCard from "./NewlyFollowedTokenCard.jsx";
 import { useTokens } from "../../hooks/useTokens.js";
-import {useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
 
 const Newly = () => {
   const { isDark } = useTheme();
