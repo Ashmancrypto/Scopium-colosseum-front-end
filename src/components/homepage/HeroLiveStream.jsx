@@ -6,22 +6,24 @@ const HeroLiveStream = ({ stream }) => {
   const { isDark } = useTheme();
   let passedStream;
 
-  // Mock data for the main live stream
-  const mainStream = {
-    id: 1,
-    title: "Stream title - Live NFT Reveal: Let's See What We Pulled",
-    username: "Username",
-    followers: "225k followers",
+  // Mock data for "no live stream" state - maintains same design with different content
+  const noStreamData = {
+    id: null,
+    title: "No Active Stream",
+    username: "No Streamer",
+    followers: "0 followers",
     avatar: "/images/comingSoon.png",
     thumbnail: "/images/sample/sample3.png",
-    viewCount: "9.3k",
-    isLive: true,
-    categories: ["Category tag", "Category tag"],
+    viewer_count: 0,
+    category: "General",
+    is_live: false,
+    stream_key: null,
   };
-  if (stream) {
+
+  if (stream && stream.is_live && stream.stream_key) {
     passedStream = stream;
   } else {
-    passedStream = mainStream;
+    passedStream = noStreamData;
   }
   return (
     <div className="px-4 md:px-0">

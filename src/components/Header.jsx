@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import Newly from "./homepage/Newly.jsx";
 import RightSidebar from "./homepage/RightSidebar.jsx";
+import StreamCreator from "./homepage/StreamCreator.jsx";
+import { CreateTokenModal } from "./createModal/index.js";
 
 const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCreateDropdownOpen, setIsCreateDropdownOpen] = useState(false);
   const [isCreateTokenModalOpen, setIsCreateTokenModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNavigationMenuOpen, setIsNavigationMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -109,8 +112,7 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   };
 
   const handleCreateStreamClick = () => {
-    // TODO: Implement create stream functionality
-    console.log("Create Stream clicked");
+    setIsModalOpen(true);
     setIsCreateDropdownOpen(false);
     setIsMobileMenuOpen(false);
   };
@@ -119,14 +121,19 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
     setIsCreateTokenModalOpen(false);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleStreamCreated = (newStream) => {
+    console.log("Stream created:", newStream);
+    setIsModalOpen(false);
+  };
+
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const toggleNavigationMenu = () =>
     setIsNavigationMenuOpen(!isNavigationMenuOpen);
   const isActivePage = (path) => location.pathname === path;
-
-  const handleMenuToggle = (isOpen) => {
-    setIsSidebarOpen(isOpen);
-  };
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -147,18 +154,6 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     // Form submission is handled by onChange for real-time search
-  };
-  const handleStreamCreated = (newStream) => {
-    setStreams((prev) => [...prev, newStream]);
-    setIsModalOpen(false); // Close modal after stream is created
-  };
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
   };
 
   useEffect(() => {
@@ -318,7 +313,7 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
                       Create Token
                     </button>
                     <button
-                      onClick={openModal}
+                      onClick={handleCreateStreamClick}
                       className={`w-full text-left px-4 py-3 transition-colors duration-200 text-sm font-medium ${
                         isDark
                           ? "text-gray-200 hover:text-white hover:bg-gray-700/50"
@@ -522,6 +517,52 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
       </div>
       {showNewly && <Newly />}
       {showRightSidebar && <RightSidebar />}
+
+      {/* Create Token Modal */}
+      <CreateTokenModal
+        isOpen={isCreateTokenModalOpen}
+        onClose={handleCloseTokenModal}
+      />
+      {/* create stream */}
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={closeModal}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: "100vw",
+            height: "100vh",
+          }}
+        >
+          <div
+            className={`relative rounded-2xl shadow-2xl w-full max-w-2xl border transition-colors duration-300 ${
+              isDark
+                ? "bg-gray-700 border-gray-600"
+                : "bg-white border-gray-200"
+            }`}
+            style={{ maxHeight: "90vh", overflow: "hidden" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className={`absolute top-4 right-4 p-2 rounded-lg transition-colors z-10 ${
+                isDark
+                  ? "text-gray-400 hover:text-white hover:bg-gray-600"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+              }`}
+              onClick={closeModal}
+            >
+              ×
+            </button>
+            <div style={{ maxHeight: "90vh", overflow: "auto" }}>
+              <StreamCreator onStreamCreated={handleStreamCreated} />
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

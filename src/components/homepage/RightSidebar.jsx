@@ -49,7 +49,7 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
   // Use real data if available, otherwise show empty state
   const displayLivestreamers = livestreamers.length > 0 ? livestreamers : [];
   const displayWatchListedTokens =
-    favoriteTokens.length > 0 ? favoriteTokens : watchListedTokens;
+    favoriteTokens.length > 0 ? favoriteTokens : [];
 
   return (
     <motion.div
