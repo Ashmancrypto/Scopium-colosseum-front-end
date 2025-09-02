@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Heart, Share2, ExternalLink, TrendingUp, TrendingDown, Users, DollarSign, Activity, MessageCircle, X, Send, Plus, Minus } from 'lucide-react';
 import Header from '../components/Header.jsx';
 import { useTheme } from '../contexts/ThemeContext.jsx';
-import { getToken, getTradeHistory, getTokenHolderDistribution } from '../api/token/index.js';
+import { getToken, getTradeHistory, getTokenHolderDistribution, getTokenSecurityRating } from '../api/token/index.js';
 import { setFavor, setWatchList } from '../api/user/index.js';
 import { useToastContext } from '../contexts/ToastContext.jsx';
 import { getUser } from '../utils/index.js';
@@ -33,6 +33,10 @@ const TokenPage = () => {
   const [chatMessage, setChatMessage] = useState('');
   const [holderDistribution, setHolderDistribution] = useState([]);
   const [isTrading, setIsTrading] = useState(false);
+  const [securityInfo, setSecurityInfo] = useState({
+    rating: 0,
+    message: ""
+  });
 
   useEffect(() => {
     const fetchHolderDistribution = async () => {
@@ -55,8 +59,24 @@ const TokenPage = () => {
       }
     };
 
+    const fetchSecurityRating = async () => {
+      try {
+        const data = await getTokenSecurityRating(tokenAddress);
+        console.log('debug security::', tokenAddress, data)
+        if(data.success) {
+          setSecurityInfo({
+            rating: data.data.overallScore,
+            color: data.data.securityRating.color,
+            message: data.data.securityRating.message
+          })
+        }
+      } catch (error) {
+        console.error("Error fetching security rating:", error);
+      }
+    }
     if (tokenAddress) {
       fetchHolderDistribution();
+      fetchSecurityRating();
     }
   }, [tokenAddress]);
 
@@ -280,7 +300,7 @@ const TokenPage = () => {
               />
             </div>
             <div className="flex items-center justify-center gap-2 px-4 py-1 border border-green-500 bg-white text-black text-sm lg:text-base font-semibold rounded-xl">
-              <span>Security rating: 100%</span>
+              <span>Security rating: {securityInfo.rating}%</span>
               <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-bold">
                 ✓
               </div>

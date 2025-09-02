@@ -100,6 +100,11 @@ export async function getTokenHolderDistribution(mintAddr, userId) {
   return result.data.tokenHolderDistribution;
 }
 
+export async function getTokenSecurityRating(mintAddr) {
+  const result = await axiosPublic.get(`/token/security/${mintAddr}`);
+  return result.data;
+}
+
 export async function getMarketId(baseMint, quoteMint) {
   const result = await axiosPublic.get(`/token/get_marketid?baseMint=${baseMint}&quoteMint=${quoteMint}`)
   return result.data;
