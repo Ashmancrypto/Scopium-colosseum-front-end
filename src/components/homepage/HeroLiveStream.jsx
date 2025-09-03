@@ -26,7 +26,7 @@ const HeroLiveStream = ({ stream }) => {
     passedStream = noStreamData;
   }
   return (
-    <div className="px-4 md:px-0">
+    <div className="px-4 md:px-0 py-4 md:py-0 ">
       <div className="max-w-7xl mx-auto">
         <StreamPlayer stream={passedStream} />
       </div>

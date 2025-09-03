@@ -61,7 +61,7 @@ const AllTokensPage = () => {
     >
       <Header />
 
-      <div className="pt-16 md:pt-24 flex">
+      <div className="flex">
         {/* Filter Sidebar */}
         {isFilterBarVisible && (
           <div
@@ -82,7 +82,7 @@ const AllTokensPage = () => {
 
         {/* Main Content - adjusted for right sidebar */}
         <div
-          className={`flex-1 lg:mr-16 p-4 lg:p-6 min-h-screen transition-colors duration-300 ${
+          className={`flex-1 p-4 lg:p-6 min-h-screen transition-colors duration-300 ${
             isDark ? "bg-neutral-950" : "bg-gray-50"
           }`}
         >
