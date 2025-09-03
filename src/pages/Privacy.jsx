@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 const PrivacyPolicy = () => {
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col relative overflow-hidden">
+    <div className="min-h-screen rgba(235,235,235,1) flex flex-col relative overflow-hidden">
       {/* Header */}
       <Header />
 
@@ -475,8 +475,8 @@ const PrivacyPolicy = () => {
                   </p>
 
                   <div className="overflow-x-auto mb-6">
-                    <table className="min-w-full bg-white border border-gray-300">
-                      <thead className="bg-gray-50">
+                    <table className="min-w-full bg-[rgba(235,235,235,1)] border border-gray-300">
+                      <thead className="bg-[rgba(235,235,235,1)]">
                         <tr>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Data Category</th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Retention Period</th>
@@ -578,7 +578,7 @@ const PrivacyPolicy = () => {
                   <p className="text-gray-700 mb-4">
                     To exercise any of your data rights, please contact us at:
                   </p>
-                  <div className="bg-gray-50 p-6 mb-4">
+                  <div className="bg-[rgba(235,235,235,1)] p-6 mb-4">
                     <p className="text-gray-700 mb-2"><strong>Email:</strong> info@Scopium.io</p>
                     <p className="text-gray-700"><strong>Subject Line:</strong> "Data Rights Request – [Your Name]"</p>
                   </div>
@@ -778,7 +778,7 @@ const PrivacyPolicy = () => {
                     If you have any questions, requests, or concerns regarding this Privacy & Cookie Policy, your 
                     personal data, or your rights under applicable law, you may contact us at:
                   </p>
-                  <div className="bg-gray-50 mb-6">
+                  <div className="bg-[rgba(235,235,235,1)] mb-6">
                     <p className="text-gray-700 mb-2"><strong>Scopium / Scopium Exchange</strong></p>
                     <p className="text-gray-700 mb-2"><strong>Attn:</strong> Privacy Compliance</p>
                     <p className="text-gray-700 mb-2"><strong>Email:</strong> info@Scopium.io</p>
@@ -833,7 +833,7 @@ const PrivacyPolicy = () => {
                   <p className="text-gray-700 mb-4">
                     For example:
                   </p>
-                  <div className="bg-gray-50 p-6 mb-4">
+                  <div className="[rgba(235,235,235,1)] p-6 mb-4">
                     <h5 className="text-lg font-medium text-gray-800 mb-3">UK Users:</h5>
                     <p className="text-gray-700 mb-2">Information Commissioner's Office (ICO)</p>
                     <p className="text-gray-700 mb-4">Website: <span className="text-blue-500">https://ico.org.uk</span></p>

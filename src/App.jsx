@@ -13,6 +13,7 @@ import Disclaimer from './pages/Disclaimer.jsx';
 import { SolPriceProvider } from './contexts/SolPriceContext.jsx';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 import TokenPage from './pages/TokenPage.jsx';
+import Agreement from './pages/Agreement.jsx';
 
 function App() {
   return (
@@ -27,12 +28,13 @@ function App() {
                     <Routes>
                       <Route path="/" element={<HomePage />} />
                       <Route path="/all-tokens" element={<AllTokensPage />} />
-                      <Route path="/token/:tokenAddress" element={<TokenPage />} />
                       <Route path="/profile/:username" element={<ProfilePage />} />
                       <Route path="/coming-soon" element={<ComingSoonPage />} />
                       <Route path="/terms-of-service" element={<TermsOfService/>} />
                       <Route path="/privacy" element={<Privacy/>} />
                       <Route path="/disclaimer" element={<Disclaimer/>} />
+                      <Route path="/token/:tokenAddress" element={<TokenPage />} />
+                      <Route path="/agreement" element={<Agreement />} />
                     </Routes>
                   </div>
                 </Router>

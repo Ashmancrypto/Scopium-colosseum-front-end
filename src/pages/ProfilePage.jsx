@@ -119,7 +119,7 @@ const ProfilePage = () => {
   // Profile not found state
   if (profileNotFound) {
     return (
-      <div className={`min-h-screen md:mt-40 transition-colors duration-300 ${isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
+      <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-700' : 'bg-[#EBEBEB]'
         }`}>
         <Header />
         <div className="pt-16 flex">

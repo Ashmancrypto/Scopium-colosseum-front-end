@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 const TermsOfService = () => {
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-[rgba(235,235,235,1)] flex flex-col relative overflow-hidden">
       {/* Header */}
       <Header />
 
@@ -787,7 +787,7 @@ const TermsOfService = () => {
                   <p className="text-gray-700 mb-4">
                     If you have any questions about these Terms, please contact us at:
                   </p>
-                  <div className="bg-gray-50 p-6">
+                  <div className="bg-[rgba(235,235,235,1)] p-6">
                     <p className="text-gray-700 mb-2"><strong>Ashley Cole</strong></p>
                     <p className="text-gray-700 mb-2"><strong>Email:</strong> info@Scopium.io</p>
                     <p className="text-gray-700 mb-2"><strong>Company:</strong> Scopium / Scopium Exchange</p>

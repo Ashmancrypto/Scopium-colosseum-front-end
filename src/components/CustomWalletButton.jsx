@@ -41,7 +41,7 @@ const CustomWalletButton = ({ className = "" }) => {
 
   // Prevent body scroll when modal is open
   useEffect(() => {
-    if (isModalOpen) {
+    if (isModalOpen || isDropdownOpen || isWalletModalOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -50,7 +50,7 @@ const CustomWalletButton = ({ className = "" }) => {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isModalOpen]);
+  }, [isModalOpen, isDropdownOpen, isWalletModalOpen]);
 
   const shortAddress = publicKey ? formatAddress(publicKey.toString()) : "";
 
