@@ -329,3 +329,15 @@ export const contract_tokenBalance = async(wallet, baseToken) => {
     }
 
 }
+
+export const getTokenBalance = async(buyer, baseToken) => {
+    const baseMint = new PublicKey(baseToken);
+    const buyerBaseAta = getAssociatedTokenAddressSync(baseMint, buyer);
+    if(!buyerBaseAta) return 0;
+    const tokenAccountInfo = await getAccount(
+        connection,
+        buyerBaseAta
+    );
+    if ( !tokenAccountInfo) return 0;
+    return Number(tokenAccountInfo.amount / BigInt(10 ** TOKEN_DECIMALS));
+}

@@ -6,12 +6,14 @@ import { useTheme } from '../contexts/ThemeContext.jsx';
 import { getToken, getTradeHistory, getTokenHolderDistribution } from '../api/token/index.js';
 import { setFavor, setWatchList } from '../api/user/index.js';
 import { useToastContext } from '../contexts/ToastContext.jsx';
-import { getUser } from '../utils/index.js';
+import { calculateConcentrationScore, calculateOldWalletsPercentage, calculateOverallSecurityScore, calculateTop25AnalysisScore, calculateTop25HoldersPercentage, calculateVPNScore, calculateWalletAgeScore, getUser } from '../utils/index.js';
 import { solPriceContext } from '../contexts/SolPriceContext.jsx';
 import { formatTokenPrice, formatTokenMarketCap, formatAddress, formatTimeAgo } from '../utils/formatters.js';
 import { TradingInterface, TokenChart, HolderDistribution, TransactionTable } from '../components/tokenPage/index.js';
 import Chat from '../components/tokenPage/Chat';
 import { SecurityInfoModal } from '../components/createModal/index.js';
+import { getTokenBalance } from '../contexts/contractsOnSolana/contracts/index.js';
+import { TOKEN_TOTAL_SUPPLY } from '../engine/consts.js';
 
 const TokenPage = () => {
   const { tokenAddress } = useParams();
@@ -36,9 +38,10 @@ const TokenPage = () => {
   const [isTrading, setIsTrading] = useState(false);
   const [securityInfo, setSecurityInfo] = useState({
     rating: 0,
-    creatorWalletAge: 0,
   });
   const [isSecModalOpen, setIsSecModalOpen] = useState(false);
+  const [userTokenBalance, setUserTokenBalance] = useState(0);
+
 
   useEffect(() => {
     const fetchHolderDistribution = async () => {
@@ -48,6 +51,7 @@ const TokenPage = () => {
         // console.log("Holders:", data)
         // Take top 10 holders and transform
         const transformed = data.slice(0, 10).map(holder => ({
+          walletAddr: holder.walletAddr,
           address: holder.username || holder.walletAddr, // Use username if available, else wallet address
           percentage: parseFloat(holder.holdPercent.toFixed(2)), // Format to 2 decimal places
           isNegative: false, // Backend does not provide this information yet
@@ -125,11 +129,59 @@ const TokenPage = () => {
     }
   };
 
+  const fetchUserTokenBalance = async (user, tokenAddress) => {
+    const tokenBalance = await getTokenBalance(user, tokenAddress);
+    return tokenBalance;
+  }
+
   useEffect(() => {
     if (!isTrading) {
       fetchTransactions()
     }
   }, [isTrading])
+
+
+  useEffect(() => {
+    if (token && holderDistribution) {
+      const top25Holders = holderDistribution.slice(0, 25);
+      const walletAgeScore = calculateWalletAgeScore(token.creatorWalletAge.ageInDays);
+      const vpnScore = calculateVPNScore(token.devIsVPN, token.devVPNScore || 0);
+      const top25Percentage = calculateTop25HoldersPercentage(top25Holders);
+      const concentrationScore = calculateConcentrationScore(top25Percentage);
+      const oldWalletsPercentage = calculateOldWalletsPercentage(top25Holders);
+      const top25AnalysisScore = calculateTop25AnalysisScore(oldWalletsPercentage);
+      // Calculate overall security score
+      const overallScore = calculateOverallSecurityScore({
+        walletAge: walletAgeScore,
+        concentration: concentrationScore,
+        top25Analysis: top25AnalysisScore,
+        vpn: vpnScore
+      });
+      const _totalSolHeld = holderDistribution.reduce((sum, holder) => sum + holder.solAmount, 0);
+      const _currentHeldPercent = holderDistribution.reduce((sum, holder) => sum + holder.percentage, 0);
+      const _creatorTokensCount = token.creatorTokensCount;
+      // const _creatorTokenBalance = await fetchUserTokenBalance(token.walletAddr, tokenAddress)
+      const fetchData = async () => {
+        const _creatorTokenBalance = await getTokenBalance(token.walletAddr, tokenAddress);
+        setSecurityInfo({
+          creatorTokenHeldPercent: _creatorTokenBalance * 100 / TOKEN_TOTAL_SUPPLY,
+        })
+      }
+      fetchData();
+      setSecurityInfo({
+        rating: overallScore,
+        holders: holderDistribution.length,
+        totalSolHeld: _totalSolHeld,
+        currentHeldPercent: _currentHeldPercent,
+        isBonded: token.bondingCurveProgress >= 100 ? true : false,
+        creatorWalletAge: token.creatorWalletAge.ageInDays,
+        creatorTokensCount: _creatorTokensCount,
+        creatorTokenHeldPercent: 0,
+        vpnUsed: token.devIsVPN ? true : false,
+        top10Holders: holderDistribution.slice(0, 10)
+      })
+    }
+  }, [tokenAddress, token, holderDistribution])
 
 
   const handleWatchlistToggle = async () => {
@@ -267,7 +319,7 @@ const TokenPage = () => {
     );
   }
 
-  console.log('debug token page::', token)
+  console.log('debug token page::', token, securityInfo)
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900' : 'bg-[#EBEBEB]'}`}>
       <Header />
@@ -327,6 +379,7 @@ const TokenPage = () => {
             <SecurityInfoModal
               isOpen={isSecModalOpen}
               onClose={handleCloseSecModal}
+              info={securityInfo}
             />
             <button
               className="w-8 h-8 flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white rounded-full transition"

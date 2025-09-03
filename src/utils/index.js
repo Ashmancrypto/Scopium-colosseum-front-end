@@ -203,3 +203,20 @@ export function getSecurityRating(overallScore) {
       };
   }
 }
+
+
+// Helper function to calculate percentage of old wallets in top holders
+export const calculateOldWalletsPercentage = (topHolders, minAgeDays = 90) => {
+  if (!topHolders || topHolders.length === 0) return 0;
+  
+  const oldWallets = topHolders.filter(holder => holder.walletAgeInDays >= minAgeDays);
+  return (oldWallets.length / topHolders.length) * 100;
+};
+
+// Helper function to calculate top 25 holders percentage
+export const calculateTop25HoldersPercentage = (topHolders) => {
+  if (!topHolders || topHolders.length === 0) return 100; // Worst case if no holders
+  
+  const top25 = topHolders.slice(0, Math.min(25, topHolders.length));
+  return top25.reduce((sum, holder) => sum + holder.holdPercent, 0);
+};
