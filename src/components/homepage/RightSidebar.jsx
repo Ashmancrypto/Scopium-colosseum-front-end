@@ -3,14 +3,12 @@ import { Plus } from "lucide-react";
 import { useTheme } from "../../contexts/ThemeContext.jsx";
 import { motion, AnimatePresence } from "motion/react";
 import NewlyFollowedTokenCard from "./NewlyFollowedTokenCard.jsx";
-import { getFavoriteTokens } from "../../api/user/index.js";
-import { getUser } from "../../utils/index.js";
+import { useTokens } from "../../hooks/useTokens.js";
 
 const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
   const { isDark } = useTheme();
+  const { favoriteTokens, watchListedTokens, loading } = useTokens();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [favoriteTokens, setFavoriteTokens] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [height, setHeight] = useState(0);
   const ref = useRef(null);
 
@@ -20,24 +18,7 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
     setHeight(bottomOfViewport - topOfElement);
   };
 
-  // Fetch user's favorite tokens
   useEffect(() => {
-    const fetchFavoriteTokens = async () => {
-      try {
-        const currentUser = getUser();
-        if (currentUser && currentUser._id) {
-          const tokens = await getFavoriteTokens(currentUser._id);
-          setFavoriteTokens(tokens || []);
-        }
-      } catch (error) {
-        console.error("Error fetching favorite tokens:", error);
-        setFavoriteTokens([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFavoriteTokens();
     updateHeight();
 
     window.addEventListener("scroll", updateHeight);
@@ -49,16 +30,21 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
   // Use real data if available, otherwise show empty state
   const displayLivestreamers = livestreamers.length > 0 ? livestreamers : [];
   const displayWatchListedTokens =
-    favoriteTokens.length > 0 ? favoriteTokens : [];
+    favoriteTokens.length > 0 ? favoriteTokens : watchListedTokens;
 
   return (
     <motion.div
-      className={`hidden lg:block backdrop-blur-md transition-colors duration-300 flex flex-col absolute right-0 bottom-0 translate-y-full ${
+      className={`hidden lg:block backdrop-blur-md transition-colors duration-300 absolute right-0 bottom-0 translate-y-full ${
         isDark ? "bg-green-500/50" : "bg-pink-500/20"
       }`}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       animate={{ width: isExpanded ? "250px" : "80px" }}
-      style={{ height: `${height}px` }}
+      style={{
+        height: `${height}px`,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
       ref={ref}
     >
       {/* Collapse Button */}
@@ -114,7 +100,7 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                   ))
                 ) : (
                   <div className="text-center py-4">
-                    <p className="text-sm text-gray-500">No live streams</p>
+                    <p className="text-sm">No live streams</p>
                   </div>
                 )}
               </motion.div>
@@ -140,7 +126,7 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                       title={streamer.username}
                     >
                       <div className="flex items-center gap-[12px] justify-start">
-                        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 hover:border-white/40 transition-colors">
+                        <div className="w-10 h-10 rounded-full overflow-y-hidden border-2 border-white/20 hover:border-white/40 transition-colors">
                           <img
                             src={streamer.avatar}
                             alt={streamer.username}
@@ -192,7 +178,10 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
       <div className="h-[2px] w-[90%] bg-[#0A0A0A99] mx-auto my-2 rounded"></div>
 
       {/* Bottom Half - Tokens */}
-      <div className="flex-1 flex flex-col items-center justify-center min-h-0 w-full px-4">
+      <div
+        id="bottom-half"
+        className="flex-1 flex flex-col items-center justify-center min-h-0 w-full px-4"
+      >
         <div className="flex-1 overflow-y-auto scrollbar-hide py-2 w-full">
           <AnimatePresence mode="wait">
             {!isExpanded ? (
@@ -223,7 +212,7 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                         }
                       }}
                     >
-                      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 hover:border-white/40 transition-colors bg-gradient-to-br from-pink-500 to-violet-500 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full overflow-y-hidden border-2 border-white/20 hover:border-white/40 transition-colors bg-gradient-to-br from-pink-500 to-violet-500 flex items-center justify-center">
                         <img
                           src={token.logo}
                           alt={token.ticker || token.name}
@@ -244,7 +233,7 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                   ))
                 ) : (
                   <div className="text-center py-4">
-                    <p className="text-xs text-gray-500">No favorite tokens</p>
+                    <p className="text-xs">No favorite tokens</p>
                   </div>
                 )}
               </motion.div>
@@ -299,13 +288,12 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
             )}
           </AnimatePresence>
         </div>
-
-        {/* Add Button */}
-        <div className="p-2 justify-center items-center">
-          <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
-            <Plus className="w-5 h-5 text-black" />
-          </button>
-        </div>
+      </div>
+      {/* Add Button */}
+      <div className="p-2 flex justify-center items-center">
+        <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+          <Plus className="w-5 h-5 text-black" />
+        </button>
       </div>
     </motion.div>
   );

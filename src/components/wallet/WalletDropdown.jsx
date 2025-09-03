@@ -1,6 +1,7 @@
-import React from "react";
+import { useEffect, useRef } from "react";
 import { User, Eye, LogOut } from "lucide-react";
 import { useTheme } from "../../contexts/ThemeContext.jsx";
+
 
 const WalletDropdown = ({
   isOpen,
@@ -19,13 +20,23 @@ const WalletDropdown = ({
     }
   };
 
+  const modalRef = useRef(null)
+
+  useEffect(() => {
+      if(window.scrollY < 80) {
+      modalRef.current.style.top = `${0+window.scrollY}px`
+    }else{modalRef.current.style.top = `80px`}
+
+  }, []);
+
   return (
     <div
-      className="fixed top-0 left-0 right-0 bottom-0 z-[9999] h-screen w-screen flex items-center justify-center p-4"
-      onClick={handleBackdropClick}
+      className="fixed h-[calc(100vh+20px)] left-0 z-[9999] w-full flex items-center justify-center p-4"
+      onClick={handleBackdropClick} 
+      ref={modalRef}
     >
       {/* Backdrop */}
-      <div className="absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-black/80 backdrop-blur-sm"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-black/80 backdrop-blur-sm"></div>
 
       {/* Dropdown Modal */}
       <div

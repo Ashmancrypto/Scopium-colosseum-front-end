@@ -174,7 +174,7 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
 
   return (
     <header
-      className={`md:mt-20 max-h-40 sticky top-0 left-0 z-40 border-b transition-colors duration-200 md:-translate-y-1/2
+      className={`md:mt-20 md:-mb-20 max-h-40 sticky top-0 left-0 z-40 border-b transition-colors duration-200 md:-translate-y-1/2
           ${
             isDark ? "border-black shadow-green-bottom" : "shadow-pink-bottom"
           }`}
@@ -190,7 +190,9 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
       <AnimatePresence>
         {isNavigationMenuOpen && (
           <div
-            className="lg:hidden min-h-screen bg-black/50 absolute bottom-0 w-full translate-y-full z-30 backdrop-blur-sm"
+            className={`lg:hidden min-h-screen bg-black/50 absolute bottom-0 w-full translate-y-full z-30 backdrop-blur-sm ${
+              isDark ? "text-black" : "text-white"
+            }`}
             onClick={toggleNavigationMenu}
           >
             <motion.div
@@ -381,7 +383,7 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
                     className={`lg:block hidden p-[20px] rounded-[12px] absolute bottom-0 left-0  translate-y-full w-[186px] text-[14px] leading-none ${
                       isDark
                         ? "border bg-[rgba(46,46,46,1)] border-[rgba(1,219,117,0.3)]"
-                        : "bg-white"
+                        : "bg-white text-black"
                     }`}
                     style={{
                       boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.15)",
@@ -517,7 +519,6 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
       </div>
       {showNewly && <Newly />}
       {showRightSidebar && <RightSidebar />}
-
       {/* Create Token Modal */}
       <CreateTokenModal
         isOpen={isCreateTokenModalOpen}

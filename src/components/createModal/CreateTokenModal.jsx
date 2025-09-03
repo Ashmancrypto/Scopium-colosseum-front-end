@@ -32,22 +32,6 @@ const CreateTokenModal = ({ isOpen, onClose }) => {
   const [showBannerUpload, setShowBannerUpload] = useState(false);
   const [showFirstBuy, setShowFirstBuy] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
-      document.body.style.overflow = 'hidden';
-      return () => {
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        document.body.style.overflow = '';
-        window.scrollTo(0, scrollY);
-      };
-    }
-  }, [isOpen]);
 
   const handleCoinImageChange = (e) => {
     if (e.target.files.length > 0) {
@@ -154,7 +138,15 @@ const CreateTokenModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={handleBackdropClick}>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={handleBackdropClick} style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      width: "100vw",
+      height: "100vh",
+    }}>
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
 
