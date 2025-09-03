@@ -11,6 +11,7 @@ import { solPriceContext } from '../contexts/SolPriceContext.jsx';
 import { formatTokenPrice, formatTokenMarketCap, formatAddress, formatTimeAgo } from '../utils/formatters.js';
 import { TradingInterface, TokenChart, HolderDistribution, TransactionTable } from '../components/tokenPage/index.js';
 import Chat from '../components/tokenPage/Chat';
+import { SecurityInfoModal } from '../components/createModal/index.js';
 
 const TokenPage = () => {
   const { tokenAddress } = useParams();
@@ -35,8 +36,9 @@ const TokenPage = () => {
   const [isTrading, setIsTrading] = useState(false);
   const [securityInfo, setSecurityInfo] = useState({
     rating: 0,
-    message: ""
+    creatorWalletAge: 0,
   });
+  const [isSecModalOpen, setIsSecModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchHolderDistribution = async () => {
@@ -59,24 +61,28 @@ const TokenPage = () => {
       }
     };
 
-    const fetchSecurityRating = async () => {
-      try {
-        const data = await getTokenSecurityRating(tokenAddress);
-        console.log('debug security::', tokenAddress, data)
-        if(data.success) {
-          setSecurityInfo({
-            rating: data.data.overallScore,
-            color: data.data.securityRating.color,
-            message: data.data.securityRating.message
-          })
-        }
-      } catch (error) {
-        console.error("Error fetching security rating:", error);
-      }
-    }
+    // const fetchSecurityRating = async () => {
+    //   try {
+    //     const userId = currentUserId || '';
+    //     console.log('debug sec before::', userId)
+    //     const data = await getTokenSecurityRating(tokenAddress, userId);
+    //     console.log('debug security::', tokenAddress, data)
+    //     if (data.success) {
+    //       setSecurityInfo({
+    //         rating: data.data.overallScore,
+    //         creatorWalletAge: data.data.rawData.creatorWalletAge,
+    //         vpnDetected: data.data.rawData.vpnDetected,
+
+    //       })
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching security rating:", error);
+    //   }
+    // }
+
     if (tokenAddress) {
       fetchHolderDistribution();
-      fetchSecurityRating();
+      // fetchSecurityRating();
     }
   }, [tokenAddress]);
 
@@ -209,6 +215,15 @@ const TokenPage = () => {
       setIsTogglingWatch(false);
     }
   }
+
+  const handleSecRating = () => {
+    setIsSecModalOpen(true);
+  }
+
+  const handleCloseSecModal = () => {
+    setIsSecModalOpen(false);
+  };
+
   if (loading) {
     return (
       <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900' : 'bg-[#EBEBEB]'}`}>
@@ -252,6 +267,7 @@ const TokenPage = () => {
     );
   }
 
+  console.log('debug token page::', token)
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900' : 'bg-[#EBEBEB]'}`}>
       <Header />
@@ -299,12 +315,19 @@ const TokenPage = () => {
                 style={{ width: `${token.bondingCurveProgress}%` }}
               />
             </div>
-            <div className="flex items-center justify-center gap-2 px-4 py-1 border border-green-500 bg-white text-black text-sm lg:text-base font-semibold rounded-xl">
+            <div
+              className="flex items-center justify-center gap-2 px-4 py-1 border border-green-500 bg-white text-black text-sm lg:text-base font-semibold rounded-xl cursor-pointer"
+              onClick={() => { handleSecRating() }}
+            >
               <span>Security rating: {securityInfo.rating}%</span>
               <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-bold">
                 ✓
               </div>
             </div>
+            <SecurityInfoModal
+              isOpen={isSecModalOpen}
+              onClose={handleCloseSecModal}
+            />
             <button
               className="w-8 h-8 flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white rounded-full transition"
               onClick={() => { handleWatchList() }}
