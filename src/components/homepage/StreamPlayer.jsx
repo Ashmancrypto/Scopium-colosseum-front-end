@@ -227,10 +227,7 @@ const StreamPlayer = ({ stream }) => {
         <div className={`${stream.is_live ? "bg-white" : ""} overflow-hidden`}>
           <div className="relative">
             {/* Video/Stream Container */}
-            <div
-              className="w-full relative aspect-video  group cursor-pointer"
-              style={{ height: "70vh" }}
-            >
+            <div className="w-full relative aspect-video  group cursor-pointer">
               {stream.is_live ? (
                 <>
                   <video
@@ -310,74 +307,85 @@ const StreamPlayer = ({ stream }) => {
 
           {/* Stream Info */}
           <div className="absolute bottom-0 left-0 right-0 px-10 pb-10 pt-0 bg-transparent">
-            {/* Top line: Left group + View count */}
-            <div className="flex justify-between items-center mb-2">
-              {/* Left group: avatar + username/followers + follow button */}
-              <div className="flex items-center space-x-4">
-                <div className="relative">
-                  {stream.is_live ? (
-                    <img
-                      src={stream.avatar}
-                      alt={stream.username}
-                      className="w-9 h-9 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-9 h-9 rounded-full bg-gray-600 flex items-center justify-center">
-                      <svg
-                        className="w-5 h-5 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex items-center space-x-3">
-                  <div className="space-y-1">
-                    <div className={`text-sm font-regular text-white`}>
-                      {stream.username}
-                    </div>
-                    <div
-                      className={`text-xs font-regular text-white opacity-60`}
-                    >
-                      {stream.followers}
-                    </div>
+            {/* Desktop view: Full stream info */}
+            <div className="hidden md:block">
+              {/* Top line: Left group + View count */}
+              <div className="flex justify-between items-center mb-2">
+                {/* Left group: avatar + username/followers + follow button */}
+                <div className="flex items-center space-x-4">
+                  <div className="relative">
+                    {stream.is_live ? (
+                      <img
+                        src={stream.avatar}
+                        alt={stream.username}
+                        className="w-9 h-9 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-9 h-9 rounded-full bg-gray-600 flex items-center justify-center">
+                        <svg
+                          className="w-5 h-5 text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                          />
+                        </svg>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Follow Button next to username */}
-                  <FollowButton size="md">Follow</FollowButton>
+                  <div className="flex items-center space-x-3">
+                    <div className="space-y-1">
+                      <div className={`text-sm font-regular text-white`}>
+                        {stream.username}
+                      </div>
+                      <div
+                        className={`text-xs font-regular text-white opacity-60`}
+                      >
+                        {stream.followers}
+                      </div>
+                    </div>
+
+                    {/* Follow Button next to username */}
+                    <FollowButton size="md">Follow</FollowButton>
+                  </div>
+                </div>
+
+                {/* View count box */}
+                <div className="flex items-center space-x-1 bg-gray-200/10 backdrop-blur-sm text-white px-2 py-1.5 rounded-lg text-xs">
+                  <span>{currentViewers}</span>
+                  <EyeFilled className="w-4 h-4" />
                 </div>
               </div>
 
-              {/* View count box */}
-              <div className="flex items-center space-x-1 bg-gray-200/10 backdrop-blur-sm text-white px-2 py-1.5 rounded-lg text-xs">
-                <span>{currentViewers}</span>
-                <EyeFilled className="w-4 h-4" />
+              {/* Bottom line: Stream title + Categories */}
+              <div className="flex justify-between items-center">
+                {/* Stream Title */}
+                <h1 className={`text-2xl font-bold text-white`}>
+                  {stream.title}
+                </h1>
+
+                {/* Categories */}
+                <div className="flex flex-wrap gap-2 justify-end">
+                  <span
+                    className={`px-2 py-1.5 rounded-lg text-xs text-white font-medium bg-gray-200/10`}
+                  >
+                    {stream.category}
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Bottom line: Stream title + Categories */}
-            <div className="flex justify-between items-center">
-              {/* Stream Title */}
-              <h1 className={`text-2xl font-bold text-white`}>
-                {stream.title}
-              </h1>
-
-              {/* Categories */}
-              <div className="flex flex-wrap gap-2 justify-end">
-                <span
-                  className={`px-2 py-1.5 rounded-lg text-xs text-white font-medium bg-gray-200/10`}
-                >
-                  {stream.category}
-                </span>
+            {/* Mobile view: Only viewer count */}
+            <div className="md:hidden flex justify-end">
+              <div className="flex items-center space-x-1 bg-gray-200/10 backdrop-blur-sm text-white px-2 py-1.5 rounded-lg text-xs">
+                <span>{currentViewers}</span>
+                <EyeFilled className="w-4 h-4" />
               </div>
             </div>
           </div>

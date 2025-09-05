@@ -34,14 +34,13 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
 
   return (
     <motion.div
-      className={`hidden lg:block backdrop-blur-md transition-colors duration-300 absolute right-0 bottom-0 translate-y-full ${
+      className={`hidden lg:flex backdrop-blur-md transition-colors duration-300 absolute right-0 bottom-0 translate-y-full ${
         isDark ? "bg-green-500/50" : "bg-pink-500/20"
       }`}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       animate={{ width: isExpanded ? "250px" : "80px" }}
       style={{
         height: `${height}px`,
-        display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
       }}
@@ -100,7 +99,7 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                   ))
                 ) : (
                   <div className="text-center py-4">
-                    <p className="text-sm">No live streams</p>
+                    <p className={`text-sm ${isDark ? "text-white" : "text-black"}`}>No live streams</p>
                   </div>
                 )}
               </motion.div>
@@ -165,7 +164,7 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                   ))
                 ) : (
                   <div className="text-center py-4">
-                    <p className="text-sm text-gray-500">No live streams</p>
+                    <p className={`text-sm ${isDark ? "text-white" : "text-black"}`}>No live streams</p>
                   </div>
                 )}
               </motion.div>
@@ -233,7 +232,7 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                   ))
                 ) : (
                   <div className="text-center py-4">
-                    <p className="text-xs">No favorite tokens</p>
+                    <p className={`text-xs ${isDark ? "text-white" : "text-black"}`}>No favorite tokens</p>
                   </div>
                 )}
               </motion.div>
@@ -278,8 +277,8 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                   ))
                 ) : (
                   <div className="text-center py-8">
-                    <p className="text-sm text-gray-500">No favorite tokens</p>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className={`text-sm ${isDark ? "text-white" : "text-black"}`}>No favorite tokens</p>
+                    <p className={`text-xs ${isDark ? "text-white" : "text-black"} mt-1`}>
                       Add tokens to favorites to see them here
                     </p>
                   </div>

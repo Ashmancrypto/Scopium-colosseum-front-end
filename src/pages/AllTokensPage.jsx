@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Header from "../components/Header.jsx";
 import {
   FilterSidebar,
@@ -6,10 +6,10 @@ import {
   FilteredTokensList,
 } from "../components/allTokens/index.js";
 import { ListFilter } from "lucide-react";
-import { RightSidebar } from "../components/homepage/index.js";
 import { useTokens } from "../hooks/useTokens.js";
 import { useTheme } from "../contexts/ThemeContext.jsx";
 import { MainCtaButton } from "../components/ui/index.js";
+import {motion, AnimatePresence} from 'motion/react';
 
 const AllTokensPage = () => {
   const { isDark } = useTheme();
@@ -59,12 +59,18 @@ const AllTokensPage = () => {
         isDark ? "bg-neutral-950" : "bg-[#EBEBEB]"
       }`}
     >
-      <Header />
+      <Header showRightSidebar={true}/>
 
       <div className="flex">
         {/* Filter Sidebar */}
+        <AnimatePresence mode="sync">
         {isFilterBarVisible && (
-          <div
+          <motion.div
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            key="filter-sidebar"
             className={`w-64 backdrop-blur-md border-r min-h-screen shadow-lg transition-colors duration-300 ${
               isDark
                 ? "bg-gray-900/90 border-gray-700"
@@ -77,12 +83,13 @@ const AllTokensPage = () => {
               onClearFilters={clearAllFilters}
               onHideFilters={toggleFilterBar}
             />
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
 
         {/* Main Content - adjusted for right sidebar */}
         <div
-          className={`flex-1 p-4 lg:p-6 min-h-screen transition-colors duration-300 ${
+          className={`flex-1 p-4 lg:p-6 pr-0 lg:pr-[80px] min-h-screen transition-colors duration-300 ${
             isDark ? "bg-neutral-950" : "bg-gray-50"
           }`}
         >
@@ -116,14 +123,6 @@ const AllTokensPage = () => {
               onRefresh={refreshTokens}
             />
           )}
-        </div>
-
-        {/* Fixed Right Sidebar */}
-        <div className="hidden lg:flex fixed top-20 right-0 bottom-0 pt-20">
-          <RightSidebar
-            livestreamers={[]}
-            tokens={trendingTokens.slice(0, 10)}
-          />
         </div>
       </div>
     </div>

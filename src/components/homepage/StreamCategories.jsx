@@ -67,84 +67,86 @@ const StreamCategories = () => {
         />
 
         {/* Categories Grid */}
-        {showAll ? (
-          // Grid layout for "Show All"
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 px-6">
-            {categories.map((category) => (
-              <div
-                key={category.id}
-                onClick={() => handleCategoryClick(category.id)}
-                className={`group cursor-pointer rounded-xl p-6 transition-all duration-300 hover:scale-105 border ${
-                  isDark
-                    ? "bg-gray-900/90 border-gray-700 hover:bg-gray-700/90 hover:border-gray-600"
-                    : "bg-white/90 border-gray-200 hover:bg-gray-50 hover:border-gray-300"
-                }`}
-              >
-                <div className="flex flex-col items-center text-center space-y-3">
-                  {/* Icon */}
-                  <div className="w-16 h-16 flex items-center justify-center">
-                    <img
-                      src={isDark ? category.iconDark : category.icon}
-                      alt={category.title}
-                      className="w-12 h-12 object-contain"
-                    />
-                  </div>
+        <div className="mt-7">
+          {showAll ? (
+            // Grid layout for "Show All"
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 px-5">
+              {categories.map((category) => (
+                <div
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category.id)}
+                  className={`group cursor-pointer rounded-xl p-6 transition-all duration-300 hover:scale-105 border ${
+                    isDark
+                      ? "bg-gray-900/90 border-gray-700 hover:bg-gray-700/90 hover:border-gray-600"
+                      : "bg-white/90 border-gray-200 hover:bg-gray-50 hover:border-gray-300"
+                  }`}
+                >
+                  <div className="flex flex-col items-center text-center space-y-3">
+                    {/* Icon */}
+                    <div className="w-16 h-16 flex items-center justify-center">
+                      <img
+                        src={isDark ? category.iconDark : category.icon}
+                        alt={category.title}
+                        className="w-12 h-12 object-contain"
+                      />
+                    </div>
 
-                  {/* Title */}
-                  <h3
-                    className={`font-semibold text-sm transition-colors ${
-                      isDark
-                        ? "text-white group-hover:text-pink-400"
-                        : "text-gray-900 group-hover:text-pink-600"
-                    }`}
-                  >
-                    {category.title}
-                  </h3>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          // Horizontal scroll layout (default)
-          <DragScroll className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide px-6 py-4 items-stretch">
-            {categories.map((category) => (
-              <div
-                key={category.id}
-                onClick={() => handleCategoryClick(category.id)}
-                className={`group cursor-pointer rounded-xl p-6 transition-all duration-300 hover:scale-105 border flex-shrink-0 w-48 ${
-                  isDark
-                    ? "bg-gray-900/90 border-gray-700 hover:bg-gray-700/90 hover:border-gray-600"
-                    : "bg-white/90 border-gray-400 hover:bg-gray-50 hover:border-gray-500"
-                }`}
-                style={{
-                  boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.2)",
-                }}
-              >
-                <div className="flex flex-col items-center text-center space-y-3">
-                  {/* Icon */}
-                  <div className="w-24 h-24 flex items-center justify-center">
-                    <img
-                      src={isDark ? category.iconDark : category.icon}
-                      alt={category.title}
-                      className="w-24 h-24 object-contain"
-                    />
+                    {/* Title */}
+                    <h3
+                      className={`font-semibold text-sm transition-colors ${
+                        isDark
+                          ? "text-white group-hover:text-pink-400"
+                          : "text-gray-900 group-hover:text-pink-600"
+                      }`}
+                    >
+                      {category.title}
+                    </h3>
                   </div>
-
-                  {/* Title */}
-                  <h3
-                    className={`font-semibold text-sm transition-colors ${
-                      isDark
-                        ? "text-white group-hover:text-green-300"
-                        : "text-gray-900 group-hover:text-pink-600"
-                    }`}
-                  >
-                    {category.title}
-                  </h3>
                 </div>
-              </div>
-            ))}
-          </DragScroll>
-        )}
+              ))}
+            </div>
+          ) : (
+            // Horizontal scroll layout (default)
+            <DragScroll className="flex space-x-4 overflow-x-auto pb-7 scrollbar-hide pl-5 pr-6 items-stretch">
+              {categories.map((category) => (
+                <div
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category.id)}
+                  className={`group cursor-pointer rounded-xl p-6 transition-all duration-300 hover:scale-105 border flex-shrink-0 w-48 ${
+                    isDark
+                      ? "bg-gray-900/90 border-gray-700 hover:bg-gray-700/90 hover:border-gray-600"
+                      : "bg-white/90 border-gray-400 hover:bg-gray-50 hover:border-gray-500"
+                  }`}
+                  style={{
+                    boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.2)",
+                  }}
+                >
+                  <div className="flex flex-col items-center text-center space-y-3">
+                    {/* Icon */}
+                    <div className="w-24 h-24 flex items-center justify-center">
+                      <img
+                        src={isDark ? category.iconDark : category.icon}
+                        alt={category.title}
+                        className="w-24 h-24 object-contain"
+                      />
+                    </div>
+
+                    {/* Title */}
+                    <h3
+                      className={`font-semibold text-sm transition-colors ${
+                        isDark
+                          ? "text-white group-hover:text-green-300"
+                          : "text-gray-900 group-hover:text-pink-600"
+                      }`}
+                    >
+                      {category.title}
+                    </h3>
+                  </div>
+                </div>
+              ))}
+            </DragScroll>
+          )}
+        </div>
       </div>
     </div>
   );

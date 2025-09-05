@@ -1,51 +1,49 @@
-import { useRef, useEffect, useState, } from 'react';
-import useDragScroll from './useDragScroll';
-import { useTheme } from '../../contexts/ThemeContext.jsx';
+import { useRef, useEffect, useState } from "react";
+import useDragScroll from "./useDragScroll";
+import { useTheme } from "../../contexts/ThemeContext.jsx";
 
-
-export default function DragScroll({ children, className = '' }) {
-  const [scrollProgress, setScrollProgress] = useState(0)
+export default function DragScroll({ children, className = "" }) {
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const { isDark } = useTheme();
   const containerRef = useRef(null);
   useDragScroll(containerRef);
 
   const handleScroll = () => {
-
     if (containerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current
-      const maxScroll = scrollWidth - clientWidth
-      const progress = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0
-      setScrollProgress(progress)
+      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+      const maxScroll = scrollWidth - clientWidth;
+      const progress = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
+      setScrollProgress(progress);
     }
-  }
+  };
 
   useEffect(() => {
-    const container = containerRef.current
+    const container = containerRef.current;
     if (container) {
-      container.addEventListener("scroll", handleScroll)
-      return () => container.removeEventListener("scroll", handleScroll)
+      container.addEventListener("scroll", handleScroll);
+      return () => container.removeEventListener("scroll", handleScroll);
     }
-  }, [])
+  }, []);
 
   return (
     <>
       <div
         ref={containerRef}
-        className={`cursor-grab no-scrollbar py-6 ${className}`}
+        className={`cursor-grab no-scrollbar ${className}`}
       >
         {children}
-
       </div>
       <div className="flex justify-center mt-2">
-        <div className="w-2/5 h-1 bg-gray-300 rounded-full overflow-hidden">
+        <div className="w-3/5 xl:w-2/5 h-1 bg-[#FFD7EC] rounded-full overflow-hidden">
           <div
-            className={`h-full ${isDark ? 'bg-green-500' : 'bg-pink-500'} rounded-full transition-all duration-300 ease-out`}
+            className={`h-full ${
+              isDark ? "bg-green-500" : "bg-pink-500"
+            } rounded-full transition-all duration-300 ease-out`}
             style={{ width: `${scrollProgress}%` }}
           />
         </div>
       </div>
     </>
-
   );
 }

@@ -82,163 +82,209 @@ const Trending = () => {
           paddingX={20}
         />
 
-        {showAll ? (
-          // Grid layout for "Show All" - Tokens first, then livestreams
-          <div className="space-y-8 px-6">
-            {/* All Trending Tokens in Grid */}
-            {console.log(
-              "Trending tokens length check:",
-              trendingTokens?.length
-            )}
-            <div>
-              <h3
-                className={`text-lg font-semibold mb-4 ${
-                  isDark ? "text-white" : "text-gray-900"
-                }`}
-              >
-                Trending Tokens ({trendingTokens?.length || 0})
-                {!trendingTokens && " - Loading..."}
-                {trendingTokens?.length === 0 && " - No tokens found"}
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
-                {loading
-                  ? [...Array(12)].map((_, index) => (
-                      <div
-                        key={index}
-                        className={`animate-pulse rounded-xl p-4 ${
-                          isDark ? "bg-gray-900" : "bg-white"
-                        }`}
-                      >
-                        <div className="flex items-center space-x-3">
+        <div className="mt-7">
+          {trendingTokens && trendingTokens.length > 0 ? (
+            showAll ? (
+              // Grid layout for "Show All" - Tokens first, then livestreams
+              <div className="space-y-8 px-5">
+                {/* All Trending Tokens in Grid */}
+                {console.log(
+                  "Trending tokens length check:",
+                  trendingTokens?.length
+                )}
+                <div>
+                  <h3
+                    className={`text-lg font-semibold mb-4 ${
+                      isDark ? "text-white" : "text-gray-900"
+                    }`}
+                  >
+                    Trending Tokens ({trendingTokens?.length || 0})
+                    {!trendingTokens && " - Loading..."}
+                    {trendingTokens?.length === 0 && " - No tokens found"}
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
+                    {loading
+                      ? [...Array(12)].map((_, index) => (
                           <div
-                            className={`w-12 h-12 rounded-full ${
-                              isDark ? "bg-gray-700" : "bg-gray-300"
+                            key={index}
+                            className={`animate-pulse rounded-xl p-4 ${
+                              isDark ? "bg-gray-900" : "bg-white"
                             }`}
-                          ></div>
-                          <div className="flex-1">
-                            <div
-                              className={`h-4 rounded w-16 mb-2 ${
-                                isDark ? "bg-gray-700" : "bg-gray-300"
-                              }`}
-                            ></div>
-                            <div
-                              className={`h-3 rounded w-20 ${
-                                isDark ? "bg-gray-700" : "bg-gray-300"
-                              }`}
-                            ></div>
+                          >
+                            <div className="flex items-center space-x-3">
+                              <div
+                                className={`w-12 h-12 rounded-full ${
+                                  isDark ? "bg-gray-700" : "bg-gray-300"
+                                }`}
+                              ></div>
+                              <div className="flex-1">
+                                <div
+                                  className={`h-4 rounded w-16 mb-2 ${
+                                    isDark ? "bg-gray-700" : "bg-gray-300"
+                                  }`}
+                                ></div>
+                                <div
+                                  className={`h-3 rounded w-20 ${
+                                    isDark ? "bg-gray-700" : "bg-gray-300"
+                                  }`}
+                                ></div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    ))
-                  : trendingTokens.map((token, index) => (
-                      <NewlyFollowedTokenCard
-                        key={token.tokenId || index}
-                        tokenId={token.tokenId || token.mintAddr || token.id}
-                        tokenImage={token.logo}
-                        tokenSymbol={token.ticker || token.name || "Unknown"}
-                        tokenValue={
-                          token.marketCap
-                            ? formatTokenMarketCap(token.marketCap, solPrice)
-                            : "N/A"
-                        }
-                        tokenValueChangePercentage={token.priceChange || 0}
-                        backgroundColor="white"
-                      />
-                    ))}
-              </div>
-            </div>
-
-            {/* All Trending Live Streams in Grid */}
-            <div>
-              <h3
-                className={`text-lg font-semibold mb-4 ${
-                  isDark ? "text-white" : "text-gray-900"
-                }`}
-              >
-                Trending Live Streams ({trendingStreams.length})
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {trendingStreams.map((stream) => (
-                  <LiveStreamCard key={stream.id} stream={stream} />
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          // Default horizontal scroll layout
-          <div className="">
-            {/* Trending Tokens - Horizontal Scroll */}
-            <div>
-              <DragScroll className="flex space-x-4 overflow-x-auto px-6 py-4 items-stretch">
-                {loading
-                  ? [...Array(6)].map((_, index) => (
-                      <div
-                        key={index}
-                        className={`min-w-[200px] flex-shrink-0 animate-pulse rounded-xl p-4 ${
-                          isDark ? "bg-gray-900" : "bg-white"
-                        }`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <div
-                            className={`w-12 h-12 rounded-full ${
-                              isDark ? "bg-gray-700" : "bg-gray-300"
-                            }`}
-                          ></div>
-                          <div className="flex-1">
-                            <div
-                              className={`h-4 rounded w-16 mb-2 ${
-                                isDark ? "bg-gray-700" : "bg-gray-300"
-                              }`}
-                            ></div>
-                            <div
-                              className={`h-3 rounded w-20 ${
-                                isDark ? "bg-gray-700" : "bg-gray-300"
-                              }`}
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  : trendingTokens.slice(0, 6).map((token) => (
-                      <div
-                        key={
-                          token.tokenId ||
-                          token._id ||
-                          token.mintAddr ||
-                          token.id
-                        }
-                        className="min-w-[200px] flex-shrink-0"
-                      >
-                        <NewlyFollowedTokenCard
-                          tokenImage={token.logo}
-                          tokenSymbol={
-                            token.ticker.toUpperCase().slice(0, 5) ||
-                            token.name.toUpperCase().slice(0, 5) ||
-                            "Unknown"
-                          }
-                          tokenValue={
-                            token.marketCap
-                              ? formatTokenMarketCap(token.marketCap, solPrice)
-                              : "N/A"
-                          }
-                          tokenValueChangePercentage={token.priceChange || 0}
-                          backgroundColor="white"
-                        />
-                      </div>
-                    ))}
-              </DragScroll>
-            </div>
-
-            {/* Trending Live Streams - Horizontal Scroll */}
-            <DragScroll className="flex space-x-4 overflow-x-auto px-6 items-stretch">
-              {trendingStreams.map((stream) => (
-                <div key={stream.id} className="w-80 flex-shrink-0">
-                  <LiveStreamCard stream={stream} />
+                        ))
+                      : trendingTokens.map((token, index) => (
+                          <NewlyFollowedTokenCard
+                            key={token.tokenId || index}
+                            tokenId={
+                              token.tokenId || token.mintAddr || token.id
+                            }
+                            tokenImage={token.logo}
+                            tokenSymbol={
+                              token.ticker || token.name || "Unknown"
+                            }
+                            tokenValue={
+                              token.marketCap
+                                ? formatTokenMarketCap(
+                                    token.marketCap,
+                                    solPrice
+                                  )
+                                : "N/A"
+                            }
+                            tokenValueChangePercentage={token.priceChange || 0}
+                            backgroundColor="white"
+                          />
+                        ))}
+                  </div>
                 </div>
-              ))}
-            </DragScroll>
-          </div>
-        )}
+
+                {/* All Trending Live Streams in Grid */}
+                <div className="mt-7">
+                  <h3
+                    className={`text-lg font-semibold mb-4 ${
+                      isDark ? "text-white" : "text-gray-900"
+                    }`}
+                  >
+                    Trending Live Streams ({trendingStreams.length})
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {trendingStreams.map((stream) => (
+                      <LiveStreamCard key={stream.id} stream={stream} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              // Default horizontal scroll layout
+              <div className="space-y-7">
+                {/* Trending Tokens - Horizontal Scroll */}
+                <div>
+                  <DragScroll className="flex space-x-4 overflow-x-auto pl-5 pr-6 pb-7 items-stretch">
+                    {loading
+                      ? [...Array(6)].map((_, index) => (
+                          <div
+                            key={index}
+                            className={`min-w-[200px] flex-shrink-0 animate-pulse rounded-xl p-4 ${
+                              isDark ? "bg-gray-900" : "bg-white"
+                            }`}
+                          >
+                            <div className="flex items-center space-x-3">
+                              <div
+                                className={`w-12 h-12 rounded-full ${
+                                  isDark ? "bg-gray-700" : "bg-gray-300"
+                                }`}
+                              ></div>
+                              <div className="flex-1">
+                                <div
+                                  className={`h-4 rounded w-16 mb-2 ${
+                                    isDark ? "bg-gray-700" : "bg-gray-300"
+                                  }`}
+                                ></div>
+                                <div
+                                  className={`h-3 rounded w-20 ${
+                                    isDark ? "bg-gray-700" : "bg-gray-300"
+                                  }`}
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      : trendingTokens.slice(0, 6).map((token) => (
+                          <div
+                            key={
+                              token.tokenId ||
+                              token._id ||
+                              token.mintAddr ||
+                              token.id
+                            }
+                            className="min-w-[200px] flex-shrink-0"
+                          >
+                            <NewlyFollowedTokenCard
+                              tokenImage={token.logo}
+                              tokenSymbol={
+                                token.ticker.toUpperCase().slice(0, 5) ||
+                                token.name.toUpperCase().slice(0, 5) ||
+                                "Unknown"
+                              }
+                              tokenValue={
+                                token.marketCap
+                                  ? formatTokenMarketCap(
+                                      token.marketCap,
+                                      solPrice
+                                    )
+                                  : "N/A"
+                              }
+                              tokenValueChangePercentage={
+                                token.priceChange || 0
+                              }
+                              backgroundColor="white"
+                            />
+                          </div>
+                        ))}
+                  </DragScroll>
+                </div>
+
+                {/* Trending Live Streams - Horizontal Scroll */}
+                <DragScroll className="flex space-x-4 overflow-x-auto pl-5 pr-6 pb-7 items-stretch">
+                  {trendingStreams.map((stream) => (
+                    <div key={stream.id} className="w-80 flex-shrink-0">
+                      <LiveStreamCard stream={stream} />
+                    </div>
+                  ))}
+                </DragScroll>
+              </div>
+            )
+          ) : (
+            <div className="text-center py-4 mx-5">
+              <div
+                className={`w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center ${
+                  isDark ? "text-gray-400" : "text-gray-500"
+                }`}
+              >
+                <svg
+                  className="w-8 h-8"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
+                </svg>
+              </div>
+              <p
+                className={`text-lg mb-2 ${
+                  isDark ? "text-gray-300" : "text-gray-700"
+                }`}
+              >
+                No trending tokens yet
+              </p>
+              <p
+                className={`text-sm ${
+                  isDark ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                Check back later for trending token content!
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

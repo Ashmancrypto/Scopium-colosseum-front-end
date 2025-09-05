@@ -15,9 +15,7 @@ const WalletDropdown = ({
   if (!isOpen) return null;
 
   const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
+    onClose();
   };
 
   const modalRef = useRef(null)

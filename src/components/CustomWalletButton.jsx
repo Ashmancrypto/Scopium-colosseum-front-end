@@ -148,20 +148,20 @@ const CustomWalletButton = ({ className = "" }) => {
         onProfileClick={handleProfileClick}
         onViewWallet={handleViewWallet}
         onDisconnect={handleDisconnect}
-        onClose={() => setIsDropdownOpen(false)}
+        onClose={() => {setIsDropdownOpen(false); setIsWalletModalOpen(false); setIsModalOpen(false)}}
       />
 
       {/* Wallet Modal */}
       <WalletModal
         userData={user}
         isOpen={isWalletModalOpen}
-        onClose={() => setIsWalletModalOpen(false)}
+        onClose={() => {setIsWalletModalOpen(false); setIsDropdownOpen(false); setIsModalOpen(false)}}
       />
 
       {/* Wallet Selection Modal */}
       <WalletSelectionModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {setIsModalOpen(false); setIsDropdownOpen(false); setIsWalletModalOpen(false)}}
         availableWallets={availableWallets}
         otherWallets={otherWallets}
         showMore={showMore}

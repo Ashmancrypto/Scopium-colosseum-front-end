@@ -27,6 +27,8 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
 
   const dropdownRef = useRef(null);
 
+  const createStreamModalRef = useRef(null);
+
   const navItems = [
     {
       name: "Streamers",
@@ -66,11 +68,11 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
       },
       {
         name: "Privacy Notice",
-        path: "/privacy-notice",
+        path: "/privacy",
       },
       {
         name: "Disclaimers",
-        path: "/disclaimers",
+        path: "/disclaimer",
       },
       {
         name: "Cookie Notice",
@@ -86,7 +88,7 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
       },
       {
         name: "Terms",
-        path: "/terms",
+        path: "/terms-of-service",
       },
     ],
   };
@@ -172,6 +174,25 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
     };
   }, [isCreateDropdownOpen]);
 
+
+  useEffect(() => {
+    if (isCreateTokenModalOpen || isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isCreateTokenModalOpen, isModalOpen]);
+
+  useEffect(() => {
+    if (createStreamModalRef.current) {
+      if (window.scrollY < 80) {
+        createStreamModalRef.current.style.top = `${0 + window.scrollY}px`;
+      } else {
+        createStreamModalRef.current.style.top = `80px`;
+      }
+    }
+  }, [isModalOpen]);
+
   return (
     <header
       className={`md:mt-20 md:-mb-20 max-h-40 sticky top-0 left-0 z-40 border-b transition-colors duration-200 md:-translate-y-1/2
@@ -190,9 +211,7 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
       <AnimatePresence>
         {isNavigationMenuOpen && (
           <div
-            className={`lg:hidden min-h-screen bg-black/50 absolute bottom-0 w-full translate-y-full z-30 backdrop-blur-sm ${
-              isDark ? "text-black" : "text-white"
-            }`}
+            className={`lg:hidden min-h-screen bg-black/50 absolute bottom-0 w-full translate-y-full z-30 backdrop-blur-sm`}
             onClick={toggleNavigationMenu}
           >
             <motion.div
@@ -203,7 +222,7 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
               exit={{ x: "-100%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className={`w-[308px] h-full absolute top-0 left-0 z-10 pt-[28px] pb-[300px] px-[24px] text-[14px] leading-none overflow-y-scroll no-scrollbar ${
-                isDark ? "bg-[rgba(46,46,46,1)]" : "bg-white"
+                isDark ? "bg-[rgba(46,46,46,1)] text-white" : "bg-white text-black"
               }`}
               style={{
                 boxShadow: isDark
@@ -527,17 +546,9 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
       {/* create stream */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          className="fixed left-0 z-[9999] w-full h-screen flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
           onClick={closeModal}
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            width: "100vw",
-            height: "100vh",
-          }}
+          ref={createStreamModalRef}
         >
           <div
             className={`relative rounded-2xl shadow-2xl w-full max-w-2xl border transition-colors duration-300 ${
@@ -558,7 +569,7 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
             >
               ×
             </button>
-            <div style={{ maxHeight: "90vh", overflow: "auto" }}>
+            <div className="no-scrollbar" style={{ maxHeight: "90vh", overflow: "auto" }}>
               <StreamCreator onStreamCreated={handleStreamCreated} />
             </div>
           </div>

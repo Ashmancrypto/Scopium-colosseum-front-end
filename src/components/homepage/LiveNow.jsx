@@ -57,31 +57,65 @@ const LiveNow = ({ streams, onStreamSelect }) => {
         />
 
         {/* Stream Cards Container */}
-        {showAllStreams ? (
-          // Grid layout for "Show All"
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6">
-            {liveStreams.map((stream) => (
-              <LiveStreamCard
-                key={stream.id}
-                stream={stream}
-                onClick={() => onStreamSelect(stream)}
-              />
-            ))}
-          </div>
-        ) : (
-          // Horizontal scroll layout for default view
-          <DragScroll className="px-6 flex space-x-4 overflow-x-auto py-4 items-stretch">
-            {liveStreams.slice(0, 4).map((stream) => (
-              <div
-                key={stream.id}
-                onClick={() => onStreamSelect(stream)}
-                className="flex-shrink-0 w-80"
-              >
-                <LiveStreamCard key={stream.id} stream={stream} />
+        <div className="mt-7">
+          {liveStreams.length > 0 ? (
+            showAllStreams ? (
+              // Grid layout for "Show All"
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-5">
+                {liveStreams.map((stream) => (
+                  <LiveStreamCard
+                    key={stream.id}
+                    stream={stream}
+                    onClick={() => onStreamSelect(stream)}
+                  />
+                ))}
               </div>
-            ))}
-          </DragScroll>
-        )}
+            ) : (
+              // Horizontal scroll layout for default view
+              <DragScroll className="flex space-x-4 overflow-x-auto pb-7 items-stretch">
+                {liveStreams.slice(0, 4).map((stream) => (
+                  <div
+                    key={stream.id}
+                    onClick={() => onStreamSelect(stream)}
+                    className="flex-shrink-0 w-80"
+                  >
+                    <LiveStreamCard key={stream.id} stream={stream} />
+                  </div>
+                ))}
+              </DragScroll>
+            )
+          ) : (
+            <div className="text-center py-4 mx-5">
+              <div
+                className={`w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center ${
+                  isDark ? "text-gray-400" : "text-gray-500"
+                }`}
+              >
+                <svg
+                  className="w-8 h-8"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
+              </div>
+              <p
+                className={`text-lg mb-2 ${
+                  isDark ? "text-gray-300" : "text-gray-700"
+                }`}
+              >
+                No live streams yet
+              </p>
+              <p
+                className={`text-sm ${
+                  isDark ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                Check back later for live streaming content!
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* Show count when viewing all in grid */}
         {showAllStreams && liveStreams.length > 0 && (

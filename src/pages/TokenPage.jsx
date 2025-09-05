@@ -357,7 +357,7 @@ const TokenPage = () => {
           </div>
           <Chat tokenAddress={tokenAddress} currentUserId={currentUserId} />
         </div>
-        <div className="mx-4 lg:mx-6 mt-6 mb-8">
+        <div className="mx-4 lg:mx-6 mt-6 pb-4">
           <TransactionTable
             transactions={transactions}
             loading={loadingTransactions}

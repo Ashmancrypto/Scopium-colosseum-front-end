@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 
+
 const FilterSidebar = ({
   activeFilters,
   onFilterChange,

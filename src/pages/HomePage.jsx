@@ -78,7 +78,7 @@ const HomePage = () => {
 
       <div className="flex flex-1">
         <div className="flex-1 lg:ml-[192px] lg:mr-[80px] overflow-auto">
-          <div className="space-y-8 pb-16">
+          <div className="space-y-14 pb-16">
             {hasSearched || isSearching ? (
               <SearchResults
                 searchQuery={searchQuery}

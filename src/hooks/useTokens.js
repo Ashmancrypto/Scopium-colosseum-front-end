@@ -10,8 +10,8 @@ import { REAL_SOL_THRESHOLD } from "../contexts/contractsOnSolana/contracts/cons
 
 export const useTokens = () => {
   const { user } = useContext(AuthContext);
+  const userId = user?.userId;
 
-  const [userId, setUserId] = useState("");
   const [allTokens, setAllTokens] = useState([]);
   const [trendingTokens, setTrendingTokens] = useState([]);
   const [tokens, setTokens] = useState([]);
@@ -31,10 +31,6 @@ export const useTokens = () => {
 
   const { login } = useLogin();
   const { logout } = useLogout();
-
-  useEffect(() => {
-    setUserId(user?.userId);
-  }, [user]);
 
   const TOKENS_PER_PAGE = 9;
 
@@ -68,7 +64,6 @@ export const useTokens = () => {
   const fetchTrendingTokens = async () => {
     try {
       setLoadingTrending(true);
-      const user = getUser();
       const userId = user?.userId || "";
 
       console.log("Fetching trending tokens for userId:", userId);
@@ -129,14 +124,21 @@ export const useTokens = () => {
   }, [allTokens, filters.category, currentPage, filterTokensByCategory]);
 
   useEffect(() => {
-    fetchTokens();
-    fetchTrendingTokens();
+    if (userId) {
+      fetchTokens();
+      fetchTrendingTokens();
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    if (userId) {
+      fetchTokens();
+    }
   }, [
     filters.name,
     filters.sortCondition,
     filters.sortOrder,
     filters.nsfw,
-    userId,
   ]);
 
   const updateFilters = useCallback((newFilters) => {

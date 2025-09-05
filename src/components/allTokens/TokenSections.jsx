@@ -119,19 +119,19 @@ const TokenSections = ({ tokens, loading, error, onRefresh }) => {
 
       {/* New Tokens Section */}
       <div>
-        <div className="flex items-center justify-between pb-4 mb-6">
+        <div className="flex items-center justify-start gap-5 pb-4 mb-6">
           <h2 className={`text-xl font-semibold transition-colors duration-300 ${
-            isDark ? 'text-white' : 'text-gray-900'
+            isDark ? 'text-white' : 'text-black'
           }`}>
             New tokens
           </h2>
           
             <button 
               onClick={handleViewAllNew}
-              className={`text-sm transition-colors ${
+              className={`text-sm transition-colors font-bold px-[16px] py-[6px] border border-[rgba(10,10,10,0.4)] bg-white rounded-[10px] ${
                 isDark 
-                  ? 'text-gray-400 hover:text-white' 
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'text-white' 
+                  : 'text-black'
               }`}
             >
               {showAllNew ? 'Show Less' : 'View All'}

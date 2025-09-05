@@ -31,7 +31,7 @@ const SectionHeader = ({
         <div className="flex items-center space-x-3">
           <div className="h-8 flex items-center justify-center">
             <img
-              src="/images/icons/section.png"
+              src={isDark ? "/images/icons/section-dark.png" : "/images/icons/section.png"}
               alt="Section"
               className="w-12 h-16 filter"
             />

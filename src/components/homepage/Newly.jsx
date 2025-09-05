@@ -77,7 +77,7 @@ const Newly = () => {
                   ></div>
                 </div>
               ))
-            : allTokens.map((token) => (
+            : allTokens.slice(0, 6).map((token) => (
                 <div
                   key={token.tokenId}
                   className={`w-full rounded-[12px] ransition-all duration-200 cursor-pointer hover:scale-105 border p-[12px] pb-[16px] flex flex-col items-center gap-[16px] ${
