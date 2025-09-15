@@ -1,5 +1,6 @@
 // Create Modal components barrel export
 export { default as CreateTokenModal } from "./CreateTokenModal.jsx";
+export { default as SecurityInfoModal } from "./SecurityInfoModal.jsx";
 export { default as BasicInfoSection } from "./BasicInfoSection.jsx";
 export { default as BannerUploadSection } from "./BannerUploadSection.jsx";
 export { default as DisclaimerSection } from "./DisclaimerSection.jsx";

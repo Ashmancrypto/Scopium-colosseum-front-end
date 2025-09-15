@@ -139,10 +139,13 @@ const createMetadata = async (
         bannerUrl = datas.bannerUrl;
     });
 
-    if (!imageUrl || !metadataUri || !bannerUrl) {
+    if (!imageUrl || !metadataUri) {
         throw new Error("Failed to upload metadata!");
     }
 
+    if(!bannerUrl) {
+        bannerUrl = null;
+    }
     const [metadataPDA] = await PublicKey.findProgramAddress(
         [
             Buffer.from("metadata"),
@@ -206,15 +209,16 @@ export const createToken = async (
 ) => {
     try {
         let createTxs = [];
-        console.log('debug socials::', websiteLink, twitterLink, tgLink)
+        // console.log('debug socials::', websiteLink, twitterLink, tgLink)
         /* Step 1 - Create mint (freezeAuthority disabled) */
         const { keypair: mintKeypair, txs: createMintTxs } = await createMint(wallet.publicKey, null, TOKEN_DECIMALS, category);
         createTxs = createMintTxs;
 
+        // console.log('debug createToken st1', createTxs)
         /* Step 2 - Create metadata */
         const { imageUrl, tx: metadataTx, bannerUrl } = await createMetadata(wallet, mintKeypair.publicKey, name, ticker, description, imgFile, bannerFile, websiteLink, twitterLink, tgLink, wallet.publicKey, wallet.publicKey);
         createTxs.push(metadataTx);
-
+        // console.log('debug createToken st2', imageUrl, metadataTx, bannerUrl)
         /* Step 3 - Mint 80% tokens to owner */
         const mintTx1 = await mintToken(
             mintKeypair.publicKey,
@@ -241,7 +245,6 @@ export const createToken = async (
             wallet.publicKey
         );
         createTxs.push(revokeTx);
-
         return {
             mintKeypair,
             imageUrl,
