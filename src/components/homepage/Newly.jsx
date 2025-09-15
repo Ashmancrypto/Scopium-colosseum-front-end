@@ -1,9 +1,5 @@
 import { useState } from "react";
-import { TokenCard, LiveStreamCard, SectionHeader } from "./index.js";
 import { useTheme } from "../../contexts/ThemeContext.jsx";
-import DragScroll from "../../hooks/dragScroll/DragScroll.jsx";
-import NewlyTokenCard from "./NewlyTokenCard.jsx";
-import NewlyFollowedTokenCard from "./NewlyFollowedTokenCard.jsx";
 import { useTokens } from "../../hooks/useTokens.js";
 import { useEffect, useRef } from "react";
 
@@ -20,6 +16,7 @@ const Newly = () => {
   };
 
   const updateHeight = () => {
+    if(!ref.current) return;
     const bottomOfViewport = window.innerHeight;
     const topOfElement = ref.current.getBoundingClientRect().top;
     setHeight(bottomOfViewport - topOfElement);

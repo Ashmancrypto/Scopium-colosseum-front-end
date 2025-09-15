@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { TokenCard, LiveStreamCard, SectionHeader } from "./index.js";
 import { useTheme } from "../../contexts/ThemeContext.jsx";
 import DragScroll from "../../hooks/dragScroll/DragScroll.jsx";
-import NewlyFollowedTokenCard from "./NewlyFollowedTokenCard.jsx";
 import { formatTokenMarketCap } from "../../utils/formatters.js";
 import { solPriceContext } from "../../contexts/SolPriceContext.jsx";
 import { useTokens } from "../../hooks/useTokens.js";
@@ -133,25 +132,10 @@ const Trending = () => {
                           </div>
                         ))
                       : trendingTokens.map((token, index) => (
-                          <NewlyFollowedTokenCard
+                          <TokenCard
                             key={token.tokenId || index}
-                            tokenId={
-                              token.tokenId || token.mintAddr || token.id
-                            }
-                            tokenImage={token.logo}
-                            tokenSymbol={
-                              token.ticker || token.name || "Unknown"
-                            }
-                            tokenValue={
-                              token.marketCap
-                                ? formatTokenMarketCap(
-                                    token.marketCap,
-                                    solPrice
-                                  )
-                                : "N/A"
-                            }
-                            tokenValueChangePercentage={token.priceChange || 0}
-                            backgroundColor="white"
+                            token = {token}
+                          
                           />
                         ))}
                   </div>
@@ -178,7 +162,7 @@ const Trending = () => {
               <div className="space-y-7">
                 {/* Trending Tokens - Horizontal Scroll */}
                 <div>
-                  <DragScroll className="flex space-x-4 overflow-x-auto pl-5 pr-6 pb-7 items-stretch">
+                  <DragScroll className="flex pt-4 space-x-4 overflow-x-auto pl-5 pr-6 pb-7 items-stretch">
                     {loading
                       ? [...Array(6)].map((_, index) => (
                           <div
@@ -218,25 +202,8 @@ const Trending = () => {
                             }
                             className="min-w-[200px] flex-shrink-0"
                           >
-                            <NewlyFollowedTokenCard
-                              tokenImage={token.logo}
-                              tokenSymbol={
-                                token.ticker.toUpperCase().slice(0, 5) ||
-                                token.name.toUpperCase().slice(0, 5) ||
-                                "Unknown"
-                              }
-                              tokenValue={
-                                token.marketCap
-                                  ? formatTokenMarketCap(
-                                      token.marketCap,
-                                      solPrice
-                                    )
-                                  : "N/A"
-                              }
-                              tokenValueChangePercentage={
-                                token.priceChange || 0
-                              }
-                              backgroundColor="white"
+                            <TokenCard
+                              token={token}
                             />
                           </div>
                         ))}

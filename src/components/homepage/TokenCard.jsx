@@ -78,7 +78,7 @@ const TokenCard = ({ token }) => {
   const getPriceChangeColor = (change) => {
     if (!change && change !== 0) return 'text-gray-400';
     const num = parseFloat(change);
-    return num >= 0 ? 'text-green-500' : 'text-red-500';
+    return num >= 0 ? 'text-[rgba(41,167,37,1)]' : 'text-[rgba(211,54,54,1)]';
   };
 
   const getPriceChangeIcon = (change) => {
@@ -89,13 +89,48 @@ const TokenCard = ({ token }) => {
       <TrendingDown className="w-3 h-3" />;
   };
 
+  const getPriceChartImageSrc = (change) =>{
+    if (!change && change !== 0) return null;
+    const num = parseFloat(change);
+    return num >= 0 ?
+    <svg
+    width="52"
+    height="52"
+    viewBox="0 0 52 52"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className='w-[50px] h-[50px]'
+  >
+    <path
+      d="M51 1.01577C49.5455 0.444514 41 15.5351 36.9091 23.1518L33.986 6.01423L27.6876 23.1518L18.7273 26.9235L12.3636 44.2387L9.98482 30.2921L0.999999 51"
+      stroke="#29A725"
+      strokeWidth="2"
+    />
+  </svg> :
+      <svg
+      width="52"
+      height="52"
+      viewBox="0 0 52 52"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className='w-[50px] h-[50px]'
+    >
+      <path
+        d="M51 50.9842C49.5455 51.5555 41 36.4649 36.9091 28.8482L33.986 45.9858L27.6876 28.8482L18.7273 25.0765L12.3636 7.76131L9.98482 21.7079L0.999999 1"
+        stroke="#D33636"
+        strokeWidth="2"
+      />
+    </svg>
+  }
+
   return (
     <div
       onClick={handleCardClick}
-      className={`group rounded-xl p-4 transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg border ${isDark
-          ? 'bg-gray-900 border-gray-900'
-          : 'bg-white hover:bg-gray-50 border-gray-200'
+      className={`group rounded-[12px] p-4 transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg border ${isDark
+          ? 'bg-[rgba(46,46,46,1)] border-[rgba(1,219,117,0.3)]'
+          : 'bg-white hover:bg-gray-50 border-[rgba(10,10,10,0.4)]'
         }`}
+      style={{boxShadow: '0px 0px 5px 0px rgba(10, 10, 10, 0.15)'}}
     >
       {/* Top Row: Logo, Chart, Favorite */}
       <div className="flex items-center justify-between mb-4">
@@ -105,8 +140,10 @@ const TokenCard = ({ token }) => {
             <img
               src={token.logo}
               alt={token.name || token.ticker}
-              className="w-12 h-12 rounded-full object-cover"
+              className="w-[60px] h-[60px] rounded-[12px] object-cover"
               onError={handleImageError}
+              style={{boxShadow: '0px 0px 15px 0px rgba(151, 151, 151, 0.45)'
+              }}
             />
           ) : (
             <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-violet-500 rounded-full flex items-center justify-center">
@@ -118,19 +155,15 @@ const TokenCard = ({ token }) => {
         </div>
 
         {/* Chart */}
-        <div className="flex-1 flex justify-center px-4">
-          <img
-            src="/images/chart.png"
-            alt="Price chart"
-            className="h-8 w-16 object-contain"
-          />
+        <div className="flex-1 flex justify-center px-6">
+          {getPriceChartImageSrc(token.priceChange)}
         </div>
 
         {/* Favorite Button */}
         <button
           onClick={handleWatchlistToggle}
           disabled={isUpdatingFavorite}
-          className={`p-2 rounded-lg transition-all duration-200 flex-shrink-0 ${isWatchlisted
+          className={`p-2 rounded-lg transition-all duration-200 self-start flex-shrink-0 ${isWatchlisted
             ? isDark 
               ? 'text-green-400 bg-green-400/20 hover:bg-green-400/30'
               : 'text-pink-400 bg-pink-100 hover:bg-pink-200'

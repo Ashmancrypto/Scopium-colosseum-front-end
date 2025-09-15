@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 const PrivacyPolicy = () => {
 
   return (
-    <div className="min-h-screen rgba(235,235,235,1) flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-[rgba(235,235,235,1)] flex flex-col relative overflow-hidden">
       {/* Header */}
       <Header />
 
@@ -475,11 +475,11 @@ const PrivacyPolicy = () => {
                   </p>
 
                   <div className="overflow-x-auto mb-6">
-                    <table className="min-w-full bg-[rgba(235,235,235,1)] border border-gray-300">
+                    <table className="min-w-full bg-[rgba(235,235,235,1)] border border-black/60 text-black">
                       <thead className="bg-[rgba(235,235,235,1)]">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Data Category</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">Retention Period</th>
+                          <th className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider border-black/60 border">Data Category</th>
+                          <th className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider border-black/60 border">Retention Period</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200">

@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Plus } from "lucide-react";
 import { useTheme } from "../../contexts/ThemeContext.jsx";
 import { motion, AnimatePresence } from "motion/react";
-import NewlyFollowedTokenCard from "./NewlyFollowedTokenCard.jsx";
 import { useTokens } from "../../hooks/useTokens.js";
+import TokenCard from "./TokenCard.jsx";
 
 const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
   const { isDark } = useTheme();
@@ -34,14 +34,13 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
 
   return (
     <motion.div
-      className={`hidden lg:block backdrop-blur-md transition-colors duration-300 absolute right-0 bottom-0 translate-y-full ${
+      className={`hidden lg:flex backdrop-blur-md transition-colors duration-300 absolute right-0 bottom-0 translate-y-full ${
         isDark ? "bg-green-500/50" : "bg-pink-500/20"
       }`}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       animate={{ width: isExpanded ? "250px" : "80px" }}
       style={{
         height: `${height}px`,
-        display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
       }}
@@ -100,7 +99,13 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                   ))
                 ) : (
                   <div className="text-center py-4">
-                    <p className="text-sm">No live streams</p>
+                    <p
+                      className={`text-sm ${
+                        isDark ? "text-white" : "text-black"
+                      }`}
+                    >
+                      No live streams
+                    </p>
                   </div>
                 )}
               </motion.div>
@@ -165,7 +170,13 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                   ))
                 ) : (
                   <div className="text-center py-4">
-                    <p className="text-sm text-gray-500">No live streams</p>
+                    <p
+                      className={`text-sm ${
+                        isDark ? "text-white" : "text-black"
+                      }`}
+                    >
+                      No live streams
+                    </p>
                   </div>
                 )}
               </motion.div>
@@ -233,7 +244,13 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                   ))
                 ) : (
                   <div className="text-center py-4">
-                    <p className="text-xs">No favorite tokens</p>
+                    <p
+                      className={`text-xs ${
+                        isDark ? "text-white" : "text-black"
+                      }`}
+                    >
+                      No favorite tokens
+                    </p>
                   </div>
                 )}
               </motion.div>
@@ -258,28 +275,25 @@ const RightSidebar = ({ livestreamers = [], tokens = [] }) => {
                   ))
                 ) : displayWatchListedTokens.length > 0 ? (
                   displayWatchListedTokens.map((token) => (
-                    <NewlyFollowedTokenCard
+                    <TokenCard
                       key={token.tokenId || token._id || token.id}
-                      tokenImage={token.logo}
-                      tokenSymbol={token.ticker || token.name}
-                      tokenValue={
-                        token.marketCap
-                          ? `$${(token.marketCap / 1000000).toFixed(1)}M`
-                          : "N/A"
-                      }
-                      tokenValueChangePercentage={token.priceChange || 0}
-                      backgroundColor="white"
-                      onClick={() => {
-                        if (token.mintAddr) {
-                          window.location.href = `/token/${token.mintAddr}`;
-                        }
-                      }}
+                      token={token}
                     />
                   ))
                 ) : (
                   <div className="text-center py-8">
-                    <p className="text-sm text-gray-500">No favorite tokens</p>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p
+                      className={`text-sm ${
+                        isDark ? "text-white" : "text-black"
+                      }`}
+                    >
+                      No favorite tokens
+                    </p>
+                    <p
+                      className={`text-xs ${
+                        isDark ? "text-white" : "text-black"
+                      } mt-1`}
+                    >
                       Add tokens to favorites to see them here
                     </p>
                   </div>

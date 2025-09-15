@@ -107,7 +107,7 @@ const StreamCategories = () => {
             </div>
           ) : (
             // Horizontal scroll layout (default)
-            <DragScroll className="flex space-x-4 overflow-x-auto pb-7 scrollbar-hide pl-5 pr-6 items-stretch">
+            <DragScroll className="flex pt-4 space-x-4 overflow-x-auto pb-7 scrollbar-hide pl-5 pr-6 items-stretch">
               {categories.map((category) => (
                 <div
                   key={category.id}

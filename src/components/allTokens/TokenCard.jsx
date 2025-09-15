@@ -11,6 +11,8 @@ import {
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 
 const TokenCard = ({ token }) => {
+  
+
   const { isDark } = useTheme();
   const toast = useToastContext();
   const [isWatchlisted, setIsWatchlisted] = useState(false);
@@ -86,14 +88,14 @@ const TokenCard = ({ token }) => {
   return (
     <div
       onClick={handleCardClick}
-      className={`relative rounded-xl p-3 pt-12 shadow border text-center w-[min(100%,240px)] hover:scale-[1.01] transition-all cursor-pointer mb-3 ${isDark
+      className={`relative rounded-[12px] px-[16px] pb-[35px] pt-12 shadow-black/20 shadow-sm border border-[rgba(10,10,10,0.5)] text-center hover:scale-[1.01] transition-all cursor-pointer mb-8 h-[78px] w-[210px] ${isDark
         ? 'bg-gray-900 border-gray-700 hover:bg-gray-900 hover:border-gray-600'
         : 'bg-white border-black/10 hover:bg-gray-50 hover:border-gray-300'
         }`}
     >
       {/* Token Logo - Floating */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="w-16 h-16 rounded-[16px] shadow-md overflow-hidden">
+        <div className="w-[84px] h-[84px] rounded-[12px] shadow-black/30 shadow-sm overflow-hidden">
           {!imageError && token.logo ? (
             <img
               src={token.logo}
@@ -131,7 +133,7 @@ const TokenCard = ({ token }) => {
 
       {/* Token Info */}
       <div
-        className={`mt-1 flex items-center justify-between text-sm font-medium transition-colors duration-300 ${isDark ? 'text-white' : 'text-black'
+        className={`mt-1 flex items-center justify-center gap-[17px] text-sm font-medium transition-colors duration-300 ${isDark ? 'text-white' : 'text-black'
           }`}
       >
         <span className="truncate max-w-[33%] text-left">${token.ticker || '???'}</span>

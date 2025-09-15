@@ -35,7 +35,7 @@ export default function DragScroll({ children, className = "" }) {
         {children}
       </div>
       <div className="flex justify-center mt-2">
-        <div className="w-3/5 xl:w-2/5 h-1 bg-[#FFD7EC] rounded-full overflow-hidden">
+        <div className={`w-3/5 xl:w-2/5 h-1 rounded-full overflow-hidden ${isDark ? "bg-[rgba(255,255,255,0.7)]" : "bg-[#FFD7EC]"}`}>
           <div
             className={`h-full ${
               isDark ? "bg-green-500" : "bg-pink-500"

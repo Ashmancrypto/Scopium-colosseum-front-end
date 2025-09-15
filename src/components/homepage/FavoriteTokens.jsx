@@ -67,7 +67,7 @@ const FavoriteTokens = ({ favoriteTokens, loading }) => {
                 </div>
               ) : (
                 // Default horizontal scroll layout
-                <DragScroll className="flex space-x-4 overflow-x-auto pb-7 pl-5 pr-6">
+                <DragScroll className="flex space-x-4 overflow-x-auto pb-7 pl-5 pr-6 pt-4">
                   {favoriteTokens.slice(0, 6).map((token) => (
                     <div
                       key={token._id || token.tokenId}

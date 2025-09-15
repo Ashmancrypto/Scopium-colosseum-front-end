@@ -62,7 +62,7 @@ const FilterSidebar = ({
   const hasActiveFilters = Object.values(activeFilters).some(filters => filters.length > 0);
 
   return (
-    <div className="p-4 h-full">
+    <div className="p-4 h-full min-w-[280px]">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className={`text-lg font-semibold transition-colors duration-300 ${isDark ? 'text-white' : 'text-gray-900'
