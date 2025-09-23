@@ -6,7 +6,7 @@ const TokenGrid = ({ tokens }) => {
   if (!tokens || tokens.length === 0) return null;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 w-[900px]">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full max-w-7xl mx-auto">
       {tokens.map((token, index) => (
         <TokenCard
           key={token.mintAddr || token._id || index}

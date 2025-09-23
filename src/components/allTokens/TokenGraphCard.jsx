@@ -2,7 +2,7 @@ import { useTheme } from "../../contexts/ThemeContext.jsx";
 import { formatTimeAgo } from "../../utils/formatters.js";
 import TokenChart from "./TokenChart.jsx";
 
-const TokenGraphCard = ({ token }) => {
+const TokenGraphCard = ({ token, wFull = false }) => {
   const { isDark } = useTheme();
   const tokenLatestPrice =
     token.priceHistory[token.priceHistory.length - 1].price;
@@ -13,7 +13,7 @@ const TokenGraphCard = ({ token }) => {
 
   return (
     <div
-      className={`relative flex flex-col px-[20px] py-[20px] rounded-[12px] min-w-[600px] border-[1px] shadow-black/20 shadow-sm ${
+      className={`relative flex flex-col px-[20px] py-[20px] rounded-[12px] ${wFull ? "w-full" : "w-[clamp(400px,80vw,600px)]"} border-[1px] shadow-black/20 shadow-sm ${
         isDark
           ? "bg-gray-900 border-gray-800 hover:bg-gray-900 hover:border-gray-700 text-white"
           : "bg-white border-black/10 hover:bg-gray-50 hover:border-gray-300 text-black"
@@ -45,7 +45,7 @@ const TokenGraphCard = ({ token }) => {
       <div className="">
         <TokenChart />
       </div>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-[10px]">
         {token.priceHistory.slice(-4).map((price, index) => {
           const changePercentage = getTokenChangePercentage(
             tokenLatestPrice,
@@ -63,7 +63,7 @@ const TokenGraphCard = ({ token }) => {
                 }}
               >
                 {changePercentage >= 0 ? "+" : ""}
-                {changePercentage}%{" "}
+                {changePercentage.toFixed(2)}%{" "}
                 <svg
                   width="12"
                   height="5"

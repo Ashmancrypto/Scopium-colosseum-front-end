@@ -32,7 +32,7 @@ const StreamPlayer = ({ stream }) => {
 
   // Join stream when component mounts and session ID is ready
   useEffect(() => {
-    if (!stream || !sessionId || !stream.is_live) return;
+    if (!stream || !sessionId || !stream.is_live || !stream.id) return;
 
     const joinStream = async () => {
       try {
@@ -83,7 +83,8 @@ const StreamPlayer = ({ stream }) => {
 
   // Poll for viewer count updates
   useEffect(() => {
-    if (!stream) return;
+    // Only poll viewer count if we have a valid stream with ID and it's live
+    if (!stream || !stream.id || !stream.is_live) return;
 
     const pollViewerCount = async () => {
       try {

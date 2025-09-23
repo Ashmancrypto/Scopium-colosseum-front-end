@@ -1,11 +1,27 @@
-import React, { useState } from "react";
-import { TokenGrid, TokenCard } from "./index.js";
 import { Loader, AlertCircle, RefreshCw } from "lucide-react";
 import { useTheme } from "../../contexts/ThemeContext.jsx";
 import TokenScrollSection from "./TokenScrollSection.jsx";
+import CardCarouselDots from "./CardCarouselDots.jsx";
+import { formatTokenAmount, formatTimeAgo } from "../../utils/formatters.js";
+import TokenChart from "./TokenChart.jsx";
+import TokenGrid from "./TokenGrid.jsx";
 
-const TokenSections = ({ tokens, loading, error, onRefresh, isFilterBarVisible }) => {
+const TokenSections = ({
+  tokens,
+  loading,
+  error,
+  onRefresh,
+  isFilterBarVisible,
+}) => {
   const { isDark } = useTheme();
+
+  const formatPriceDiv = (price) => {
+    if (price > 0) {
+      return <div className="text-[rgba(41,167,37,1)]">+{price}%</div>;
+    } else {
+      return <div className="text-[rgba(211,54,54,1)]">{price}%</div>;
+    }
+  };
 
   if (loading) {
     return (
@@ -82,8 +98,77 @@ const TokenSections = ({ tokens, loading, error, onRefresh, isFilterBarVisible }
         </div>
 
         {favoriteTokens.length > 0 ? (
-          <div className="">
-              <TokenScrollSection tokens={favoriteTokens} paddingLeft={52} isFilterBarVisible={isFilterBarVisible} />
+          <div>
+            <TokenScrollSection
+              tokens={favoriteTokens}
+              paddingLeft={52}
+              isFilterBarVisible={isFilterBarVisible}
+            />
+            <div className="block sm:hidden w-[calc(100vw-10px)] overflow-hidden">
+              <CardCarouselDots
+                dots={true}
+                cardVw={90}
+                dotsDark={!isDark}
+                cards={favoriteTokens.map((token) => (
+                  <div
+                    className="w-[90vw] bg-[rgb(255, 255, 255)] border-[3px] border-[rgba(21,153,254,0.6)] relative min-h-[100px] rounded-[12px] pt-[36px] pb-[20px] px-[20px]"
+                    key={token.id || token.tokenId}
+                  >
+                    <img
+                      src={token.logo}
+                      alt={token.ticker}
+                      className="absolute top-0 left-[16px] w-[84] h-[84px] -translate-y-[10%] rounded-[12px] pointer-events-none"
+                      style={{
+                        boxShadow: "0px 0px 15px 0px rgba(128, 128, 128, 0.25)",
+                      }}
+                    />
+
+                    <div
+                      className={`ml-[100px] mb-[20px] ${
+                        isDark ? "text-white" : "text-black"
+                      }`}
+                    >
+                      <h3 className="text-[16px] font-bold mb-[18px]">
+                        {token.name}
+                      </h3>
+                      <div
+                        className={`flex items-start gap-[20px] text-[16px] justify-start w-full ${
+                          isDark ? "text-white" : "text-[rgba(10,10,10,0.6)]"
+                        }`}
+                      >
+                        <h4>Volume : {formatTokenAmount(token.volume)}</h4>
+                        <h4>Age : {formatTimeAgo(token.cdate)}</h4>
+                      </div>
+                    </div>
+                    <div className="w-full h-[230px] rounded-[12px] overflow-hidden">
+                      <TokenChart />
+                    </div>
+                    <div className="grid grid-cols-2 gap-[20px] w-[95%] mx-auto text-black">
+                      {token.priceHistory.slice(-4).map((price, index) => (
+                        <div className="flex items-center gap-[6px] py-4">
+                          <h4
+                            className={`${
+                              isDark ? "text-white" : "text-black"
+                            }`}
+                          >
+                            {formatTimeAgo(price.timestamp)}
+                          </h4>
+                          <h4>
+                            {formatPriceDiv(
+                              (price.price /
+                                token.priceHistory[
+                                  token.priceHistory.length - 1
+                                ].price) *
+                                100
+                            )}
+                          </h4>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              />
+            </div>
           </div>
         ) : (
           <div
@@ -101,7 +186,7 @@ const TokenSections = ({ tokens, loading, error, onRefresh, isFilterBarVisible }
 
       {/* New Tokens Section */}
       <div>
-        <div className="flex items-center justify-start gap-5 pb-4 mb-4 pl-[28px]">
+        <div className="flex items-center justify-start gap-5 pb-4 sm:mb-4 pl-[28px] mb-12">
           <h2
             className={`text-xl font-semibold transition-colors duration-300 ${
               isDark ? "text-white" : "text-black"
@@ -112,7 +197,20 @@ const TokenSections = ({ tokens, loading, error, onRefresh, isFilterBarVisible }
         </div>
 
         {newTokens.length > 0 ? (
-              <TokenScrollSection reversed={true} tokens={newTokens} paddingLeft={52} isFilterBarVisible={isFilterBarVisible} />
+          <div>
+            <TokenScrollSection
+              reversed={true}
+              tokens={newTokens}
+              paddingLeft={52}
+              isFilterBarVisible={isFilterBarVisible}
+            />
+            <div className="block sm:hidden w-[calc(100vw-10px)] px-4">
+              <TokenGrid
+                tokens={newTokens}
+                isFilterBarVisible={isFilterBarVisible}
+              />
+            </div>
+          </div>
         ) : (
           <div
             className={`text-center py-8 ${

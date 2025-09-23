@@ -12,6 +12,124 @@ export const useTokens = () => {
   const { user } = useContext(AuthContext);
   const userId = user?.userId;
 
+  const isMockup = import.meta.env.VITE_IS_MOCKUP === "true";
+
+  const mockupTokens = [
+    {
+      id: 1,
+      tokenId: "1",
+      name: "Mockup Token 1",
+      symbol: "MTK1",
+      price: 100000,
+      marketCap: 1000000000,
+      priceChange: 100,
+      logo: "https://placehold.net/3.png",
+      ticker: "MTK1",
+      category: "Meme Tokens",
+      isFavorited: false,
+      isWatchListed: false,
+      priceHistory: [
+        {
+          price: 100000,
+          timestamp: "2024-02-09T11:01:00.000Z",
+        },
+        {
+          price: 100000,
+          timestamp: "2024-02-10T11:01:00.000Z",
+        },
+        {
+          price: 100000,
+          timestamp: "2024-02-11T11:01:00.000Z",
+        },
+      ],
+      cdate: "2023-06-09T11:01:00.000Z",
+    },
+    {
+      id: 2,
+      tokenId: "2",
+      name: "Mockup Token 2",
+      symbol: "MTK2",
+      price: 100000,
+      marketCap: 1000000000,
+      priceChange: 100,
+      logo: "https://placehold.net/1.png",
+      ticker: "MTK2",
+      category: "Meme Tokens",
+      isFavorited: true,
+      isWatchListed: false,
+      priceHistory: [
+        {
+          price: 100000,
+          timestamp: "2024-02-09T11:01:00.000Z",
+        },
+      ],
+      cdate: "2023-07-09T11:01:00.000Z",
+    },
+    {
+      id: 3,
+      tokenId: "3",
+      name: "Mockup Token 3",
+      symbol: "MTK3",
+      price: 100000,
+      marketCap: 1000000000,
+      priceChange: 100,
+      logo: "https://placehold.net/2.png",
+      ticker: "MTK3",
+      category: "Meme Tokens",
+      isFavorited: true,
+      isWatchListed: false,
+      priceHistory: [
+        {
+          price: 100000,
+          timestamp: "2024-02-09T11:01:00.000Z",
+        },
+      ],
+      cdate: "2023-08-09T11:01:00.000Z",
+    },
+    {
+      id: 4,
+      tokenId: "4",
+      name: "Mockup Token 4",
+      symbol: "MTK4",
+      price: 100000,
+      marketCap: 1000000000,
+      priceChange: 100,
+      logo: "https://placehold.net/4.png",
+      ticker: "MTK4",
+      category: "Meme Tokens",
+      isFavorited: true,
+      isWatchListed: false,
+      priceHistory: [
+        {
+          price: 100000,
+          timestamp: "2024-02-09T11:01:00.000Z",
+        },
+      ],
+      cdate: "2023-09-09T11:01:00.000Z",
+    },
+    {
+      id: 5,
+      tokenId: "5",
+      name: "Mockup Token 5",
+      symbol: "MTK5",
+      price: 100000,
+      marketCap: 1000000000,
+      priceChange: 100,
+      logo: "https://placehold.net/5.png",
+      ticker: "MTK5",
+      category: "Meme Tokens",
+      isFavorited: true,
+      isWatchListed: false,
+      priceHistory: [
+        {
+          price: 100000,
+          timestamp: "2024-02-09T11:01:00.000Z",
+        },
+      ],
+      cdate: "2025-02-05T11:01:00.000Z",
+    },
+  ];
+
   const [allTokens, setAllTokens] = useState([]);
   const [trendingTokens, setTrendingTokens] = useState([]);
   const [tokens, setTokens] = useState([]);
@@ -35,6 +153,12 @@ export const useTokens = () => {
   const TOKENS_PER_PAGE = 9;
 
   const fetchTokens = async () => {
+    if (isMockup) {
+      setAllTokens(mockupTokens);
+      setLoading(false);
+      setError(null);
+      return;
+    }
     try {
       setLoading(true);
       setError(null);
@@ -44,7 +168,7 @@ export const useTokens = () => {
         `sort: ${filters.sortCondition}`,
         `sort: ${filters.sortOrder}`,
         filters.nsfw,
-        userId
+        userId || null
       );
 
       if (result && Array.isArray(result)) {
@@ -62,6 +186,12 @@ export const useTokens = () => {
   };
 
   const fetchTrendingTokens = async () => {
+    if (isMockup) {
+      setTrendingTokens(mockupTokens);
+      setLoadingTrending(false);
+      setError(null);
+      return;
+    }
     try {
       setLoadingTrending(true);
       const userId = user?.userId || "";
@@ -124,22 +254,13 @@ export const useTokens = () => {
   }, [allTokens, filters.category, currentPage, filterTokensByCategory]);
 
   useEffect(() => {
-    if (userId) {
-      fetchTokens();
-      fetchTrendingTokens();
-    }
+    fetchTokens();
+    fetchTrendingTokens();
   }, [userId]);
 
   useEffect(() => {
-    if (userId) {
-      fetchTokens();
-    }
-  }, [
-    filters.name,
-    filters.sortCondition,
-    filters.sortOrder,
-    filters.nsfw,
-  ]);
+    fetchTokens();
+  }, [filters.name, filters.sortCondition, filters.sortOrder, filters.nsfw]);
 
   const updateFilters = useCallback((newFilters) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));

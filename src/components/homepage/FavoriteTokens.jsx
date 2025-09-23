@@ -92,11 +92,13 @@ const FavoriteTokens = ({ favoriteTokens, loading }) => {
             </>
           ) : (
             <div className="text-center py-4 mx-5">
-              <Heart
-                className={`w-12 h-12 mx-auto mb-4 ${
+              <div
+                className={`w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center ${
                   isDark ? "text-gray-400" : "text-gray-500"
                 }`}
-              />
+              >
+                <Heart className="w-8 h-8" />
+              </div>
               <p
                 className={`text-lg mb-2 ${
                   isDark ? "text-gray-300" : "text-gray-700"

@@ -9,8 +9,9 @@ const HamburgerMenu = ({ onMenuToggle }) => {
   const { isDark } = useTheme();
 
   const general = [
+    { name: "Home", url: "/", isRoute: true },
     { name: "About", url: "#" },
-    { name: "Advertise", url: "#" },
+    { name: "Advertising", url: "/advertising", isRoute: true },
     { name: "API Data", url: "#" },
     { name: "Affiliate Program", url: "#" },
     { name: "Socials", url: "#" },

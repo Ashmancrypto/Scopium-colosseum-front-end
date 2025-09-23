@@ -183,7 +183,7 @@ const FilteredTokensList = ({
   }
 
   return (
-    <div className="pl-[28px]">
+    <div className="px-[20px]">
       {/* Active Filters Display */}
       {activeFilterLabels.length > 0 && (
         <div className="mb-6">
@@ -219,7 +219,7 @@ const FilteredTokensList = ({
       )}
 
       {/* Results Count */}
-      <div className="mb-10">
+      <div className="mb-20">
         <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
           Showing {filteredTokens.length} token
           {filteredTokens.length !== 1 ? "s" : ""}

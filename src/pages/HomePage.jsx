@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import Header from "../components/Header.jsx";
 import { useHeaderSearch } from "../hooks/useHeaderSearch.js";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   HeroLiveStream,
   LiveNow,
@@ -16,10 +17,24 @@ import {
 } from "../components/homepage/index.js";
 import { useTheme } from "../contexts/ThemeContext.jsx";
 import { useTokens } from "../hooks/useTokens.js";
+import FavoriteStreamers from "../components/streamersPage/FavoriteStreamers.jsx";
+import { useStreams } from "../hooks/useStreams.js";
 
-const HomePage = () => {
+const HomePage = ({ isStreamersPage = false }) => {
+  // Animation variants for smooth page transitions
+  const pageVariants = {
+    initial: { x: "100%", opacity: 0 },
+    animate: { x: 0, opacity: 1 },
+    exit: { x: "-100%", opacity: 0 },
+  };
+
+  const pageTransition = {
+    type: "tween",
+    ease: "easeInOut",
+    duration: 0.5,
+  };
+  const { streams, loadingStreams, errorStreams } = useStreams();
   const [selectedStream, setSelectedStream] = useState(null);
-  const [streams, setStreams] = useState([]);
   const { isDark } = useTheme();
   const [selectedNetwork, setSelectedNetwork] = useState("Solana");
   const {
@@ -107,24 +122,59 @@ const HomePage = () => {
                     selectedStream={selectedStream}
                   />
                 </div>
-                <div id="migrated">
-                  <Migrated
-                    migratedTokens={migratedTokens}
-                    loading={loadingTrending}
-                  />
-                </div>
-                <div id="trending">
-                  <Trending
-                    trendingTokens={trendingTokens}
-                    loading={loadingTrending}
-                  />
-                </div>
-                <div id="favorite-tokens">
-                  <FavoriteTokens
-                    favoriteTokens={favoriteTokens}
-                    loading={loading}
-                  />
-                </div>
+                <AnimatePresence mode="wait">
+                  {!isStreamersPage ? (
+                    <motion.div
+                      key="homepage-content"
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={pageTransition}
+                    >
+                      <div id="migrated" className="mb-14">
+                        <Migrated
+                          migratedTokens={migratedTokens}
+                          loading={loadingTrending}
+                        />
+                      </div>
+                      <div id="trending" className="mb-14">
+                        <Trending
+                          trendingTokens={trendingTokens}
+                          loading={loadingTrending}
+                          isStreamersPage={false}
+                        />
+                      </div>
+                      <div id="favorite-tokens">
+                        <FavoriteTokens
+                          favoriteTokens={favoriteTokens}
+                          loading={loading}
+                        />
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="streamers-content"
+                      variants={pageVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={pageTransition}
+                    >
+                      <div id="trending" className="mb-14">
+                        <Trending
+                          trendingTokens={trendingTokens}
+                          loading={loadingTrending}
+                          isStreamersPage={true}
+                        />
+                      </div>
+                      <div id="favorite-streamers">
+                        <FavoriteStreamers />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 <div id="stream-categories">
                   <StreamCategories />
                 </div>
