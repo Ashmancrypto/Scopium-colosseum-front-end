@@ -14,7 +14,7 @@ const LiveStreamCard = ({ stream }) => {
       {/* Stream Thumbnail */}
       <div className="relative aspect-video bg-gradient-to-br from-purple-600 to-pink-600 ">
         <img
-          src={`https://api.scopium.fun${stream.thumbnail}`}
+          src={`${stream.thumbnail}`}
           alt={stream.title}
           className="w-full h-full object-cover"
         />

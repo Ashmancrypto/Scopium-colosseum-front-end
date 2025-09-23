@@ -32,7 +32,7 @@ const TokenScrollSection = ({ tokens, paddingLeft = 24, reversed = false, isFilt
   }, [tokens]);
 
   return (
-    <div className={`overflow-x-hidden mb-12 ${isFilterBarVisible ? "w-[calc(98vw-275px)] lg:w-[calc(100vw-380px)]" : "w-[98vw] lg:w-[calc(100vw-90px)]"}`}>
+    <div className={`sm:block hidden overflow-x-hidden mb-12 ${isFilterBarVisible ? "w-[calc(98vw-275px)] lg:w-[calc(100vw-380px)]" : "w-[98vw] lg:w-[calc(100vw-90px)]"}`}>
       
       {reversed ? <div
         ref={scrollContainerRef}

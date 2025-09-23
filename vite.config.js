@@ -7,10 +7,6 @@ export default defineConfig({
   plugins: [react(), commonjs(), nodePolyfills()],
   define: {
     global: "globalThis",
-    "process.env": {},
-    process: {
-      env: {},
-    },
   },
   optimizeDeps: {
     include: ["borsh"],

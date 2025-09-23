@@ -65,9 +65,7 @@ const TokenChart = ({
     chart.timeScale().fitContent();
 
     const onResize = () => {
-      chart.applyOptions({ width: chartContainerRef.current.clientWidth, height: chartContainerRef.current.clientHeight, crosshair: {
-        mode: LightweightCharts.CrosshairMode.Hidden,
-      } });
+      chart.applyOptions({ width: chartContainerRef.current.clientWidth, height: chartContainerRef.current.clientHeight,});
     };
     window.addEventListener("resize", onResize);
 

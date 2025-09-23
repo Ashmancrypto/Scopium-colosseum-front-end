@@ -32,7 +32,7 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   const navItems = [
     {
       name: "Streamers",
-      path: "/coming-soon",
+      path: "/streamers",
       icon: "/images/icons/streamers.png",
     },
     { name: "Tokens", path: "/all-tokens", icon: "/images/icons/tokens.png" },
@@ -41,31 +41,35 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   const navigationMenuItems = {
     general: [
       {
-        name: "About",
-        path: "/about",
+        name: "Home",
+        path: "/",
       },
+      // {
+      //   name: "About",
+      //   path: "/about",
+      // },
       {
-        name: "Advertise",
-        path: "/advertise",
+        name: "Advertising",
+        path: "/advertising",
       },
-      {
-        name: "API Data",
-        path: "/api-data",
-      },
-      {
-        name: "Affiliate Program",
-        path: "/affiliate-program",
-      },
-      {
-        name: "Socials",
-        path: "/socials",
-      },
+      // {
+      //   name: "API Data",
+      //   path: "/api-data",
+      // },
+      // {
+      //   name: "Affiliate Program",
+      //   path: "/affiliate-program",
+      // },
+      // {
+      //   name: "Socials",
+      //   path: "/socials",
+      // },
     ],
     legal: [
-      {
-        name: "All Legal Docs",
-        path: "/legal-docs",
-      },
+      // {
+      //   name: "All Legal Docs",
+      //   path: "/legal-docs",
+      // },
       {
         name: "Privacy Notice",
         path: "/privacy",
@@ -74,18 +78,18 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
         name: "Disclaimers",
         path: "/disclaimer",
       },
-      {
-        name: "Cookie Notice",
-        path: "/cookie-notice",
-      },
+      // {
+      //   name: "Cookie Notice",
+      //   path: "/cookie-notice",
+      // },
       {
         name: "Support",
         path: "/support",
       },
-      {
-        name: "Security",
-        path: "/security",
-      },
+      // {
+      //   name: "Security",
+      //   path: "/security",
+      // },
       {
         name: "Terms",
         path: "/terms-of-service",
@@ -200,11 +204,12 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
           }`}
       style={{
         backgroundImage: isDark
-          ? "url(/images/header-image-dark.png)"
+          ? "url(/images/header-dark-3.png)"
           : "url(/images/header-image.png)",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        backgroundColor: "rgba(0,0,0,1)",
       }}
     >
       <AnimatePresence>
@@ -551,55 +556,54 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
           onClick={closeModal}
           ref={createStreamModalRef}
         >
-
           <div className="relative max-w-[529px] w-full">
-          <div className="absolute left-[100%] rotate-[20deg] top-1/2 -translate-x-[35%] -translate-y-1/2 w-[337px] ">
-            <img
-              src={`${
-                isDark
-                  ? "/images/mascot/scopium-mascot-dark.png"
-                  : "/images/mascot/scopium-mascot.png"
-              }`}
-              alt="Stream mascot"
-              className="object-contain w-full h-full"
-            />
-          </div>
-          <div
-            className={`relative rounded-2xl shadow-2xl w-full border transition-colors duration-300 border-none`}
-            style={{ maxHeight: "90vh", overflow: "hidden" }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className={`absolute top-4 right-4 p-2 rounded-lg transition-colors z-10 ${
-                isDark
-                  ? "text-gray-400 hover:text-white hover:bg-gray-600"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
-              }`}
-              onClick={closeModal}
-            >
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M13.5 1.5L1.5 13.5M1.5 1.5L13.5 13.5"
-                  stroke={isDark ? "white" : "#0A0A0A"}
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-            <div
-              className="no-scrollbar border-none"
-              style={{ maxHeight: "90vh", overflow: "auto" }}
-            >
-              <StreamCreator onStreamCreated={handleStreamCreated} />
+            <div className="absolute left-[100%] rotate-[20deg] top-1/2 -translate-x-[35%] -translate-y-1/2 w-[337px] ">
+              <img
+                src={`${
+                  isDark
+                    ? "/images/mascot/scopium-mascot-dark.png"
+                    : "/images/mascot/scopium-mascot.png"
+                }`}
+                alt="Stream mascot"
+                className="object-contain w-full h-full"
+              />
             </div>
-          </div>
+            <div
+              className={`relative rounded-2xl shadow-2xl w-full border transition-colors duration-300 border-none`}
+              style={{ maxHeight: "90vh", overflow: "hidden" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className={`absolute top-4 right-4 p-2 rounded-lg transition-colors z-10 ${
+                  isDark
+                    ? "text-gray-400 hover:text-white hover:bg-gray-600"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                }`}
+                onClick={closeModal}
+              >
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 15 15"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13.5 1.5L1.5 13.5M1.5 1.5L13.5 13.5"
+                    stroke={isDark ? "white" : "#0A0A0A"}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+              <div
+                className="no-scrollbar border-none"
+                style={{ maxHeight: "90vh", overflow: "auto" }}
+              >
+                <StreamCreator onStreamCreated={handleStreamCreated} />
+              </div>
+            </div>
           </div>
         </div>
       )}

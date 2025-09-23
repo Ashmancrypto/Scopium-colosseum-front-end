@@ -9,10 +9,12 @@ import { ListFilter } from "lucide-react";
 import { useTokens } from "../hooks/useTokens.js";
 import { useTheme } from "../contexts/ThemeContext.jsx";
 import { MainCtaButton } from "../components/ui/index.js";
-import {motion, AnimatePresence} from 'motion/react';
+import { motion, AnimatePresence } from "motion/react";
+import { useWindowSize } from "../hooks/useWindowSize.js";
 
 const AllTokensPage = () => {
   const { isDark } = useTheme();
+  const { width } = useWindowSize();
   const [isFilterBarVisible, setIsFilterBarVisible] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
     trending: [],
@@ -55,36 +57,43 @@ const AllTokensPage = () => {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 pb-1 max-w-screen ${
+      className={`min-h-screen transition-colors duration-300 pb-1 max-w-screen relative ${
         isDark ? "bg-neutral-950" : "bg-[#EBEBEB]"
+      } ${
+        isFilterBarVisible && width < 1024
+          ? "w-[97vw] overflow-x-hidden"
+          : "w-full"
       }`}
+      style={{
+        zIndex: 1000,
+      }}
     >
-      <Header showRightSidebar={true}/>
+      <Header showRightSidebar={true} />
 
       <div className="flex">
         {/* Filter Sidebar */}
         <AnimatePresence mode="sync">
-        {isFilterBarVisible && (
-          <motion.div
-            initial={{ x: "-100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-            key="filter-sidebar"
-            className={`backdrop-blur-md border-r min-h-screen shadow-lg transition-colors duration-300 ${
-              isDark
-                ? "bg-gray-900/90 border-gray-700"
-                : "bg-white/90 border-gray-200"
-            }`}
-          >
-            <FilterSidebar
-              activeFilters={activeFilters}
-              onFilterChange={handleFilterChange}
-              onClearFilters={clearAllFilters}
-              onHideFilters={toggleFilterBar}
-            />
-          </motion.div>
-        )}
+          {isFilterBarVisible && (
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+              key="filter-sidebar"
+              className={`backdrop-blur-md border-r min-h-screen shadow-lg transition-colors duration-300 ${
+                isDark
+                  ? "bg-gray-900/90 border-gray-700"
+                  : "bg-white/90 border-gray-200"
+              }`}
+            >
+              <FilterSidebar
+                activeFilters={activeFilters}
+                onFilterChange={handleFilterChange}
+                onClearFilters={clearAllFilters}
+                onHideFilters={toggleFilterBar}
+              />
+            </motion.div>
+          )}
         </AnimatePresence>
 
         {/* Main Content - adjusted for right sidebar */}

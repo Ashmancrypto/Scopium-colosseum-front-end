@@ -6,7 +6,7 @@ const HeroLiveStream = ({ stream }) => {
   const { isDark } = useTheme();
   let passedStream;
 
-  // Mock data for "no live stream" state - maintains same design with different content
+  // Mock data for "no live stream" state - matches real API response format
   const noStreamData = {
     id: null,
     title: "No Active Stream",

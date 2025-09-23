@@ -14,6 +14,9 @@ import { SolPriceProvider } from "./contexts/SolPriceContext.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import TokenPage from "./pages/TokenPage.jsx";
 import ThirdPartyIPAgreement from "./pages/ThirdPartyIPAgreement.jsx";
+import StreamerPage from "./pages/StreamerPage.jsx";
+import SupportPage from "./pages/SupportPage.jsx";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 function App() {
   return (
@@ -24,7 +27,7 @@ function App() {
             <ToastProvider>
               <ContractContextProvider>
                 <Router>
-                  <div className="pb-16 md:pb-0">
+                  <div className="">
                     <Routes>
                       <Route path="/" element={<HomePage />} />
                       <Route path="/all-tokens" element={<AllTokensPage />} />
@@ -47,6 +50,17 @@ function App() {
                         path="/token/:tokenAddress"
                         element={<TokenPage />}
                       />
+                      <Route
+                        path="/streamers"
+                        element={<HomePage isStreamersPage={true} />}
+                      />
+                      <Route
+                        path="/streamer/:streamer"
+                        element={<StreamerPage />}
+                      />
+                      <Route path="/support" element={<SupportPage />} />
+                      {/* Catch-all route for 404 pages */}
+                      <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                   </div>
                 </Router>

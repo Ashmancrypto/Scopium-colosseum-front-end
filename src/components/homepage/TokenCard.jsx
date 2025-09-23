@@ -126,7 +126,7 @@ const TokenCard = ({ token }) => {
   return (
     <div
       onClick={handleCardClick}
-      className={`group rounded-[12px] p-4 transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg border ${isDark
+      className={`group rounded-[12px] p-4 transition-all duration-300 cursor-pointer shadow-lg border ${isDark
           ? 'bg-[rgba(46,46,46,1)] border-[rgba(1,219,117,0.3)]'
           : 'bg-white hover:bg-gray-50 border-[rgba(10,10,10,0.4)]'
         }`}
