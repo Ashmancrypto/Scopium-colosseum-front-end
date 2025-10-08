@@ -15,6 +15,7 @@ import { AuthProvider } from "./contexts/AuthContext.jsx";
 import TokenPage from "./pages/TokenPage.jsx";
 import ThirdPartyIPAgreement from "./pages/ThirdPartyIPAgreement.jsx";
 import StreamerPage from "./pages/StreamerPage.jsx";
+import StreamerProfilePage from "./pages/streamer/ProfilePage.jsx";
 import SupportPage from "./pages/SupportPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 
@@ -57,6 +58,10 @@ function App() {
                       <Route
                         path="/streamer/:streamer"
                         element={<StreamerPage />}
+                      />
+                      <Route
+                        path="/streamer-profile/:streamer"
+                        element={<StreamerProfilePage />}
                       />
                       <Route path="/support" element={<SupportPage />} />
                       {/* Catch-all route for 404 pages */}
