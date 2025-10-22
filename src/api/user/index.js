@@ -17,6 +17,11 @@ export async function updateProfile(formData) {
   return result;
 }
 
+export async function checkUsernameAvailability(username) {
+  const result = await axiosPublic.get(`/user/check_username?username=${encodeURIComponent(username)}`);
+  return result.data?.available;
+}
+
 export async function getFollowings(userId) {
   const userIdStr = encodeURIComponent(JSON.stringify(userId));
   const result = await axiosPublic.get(
