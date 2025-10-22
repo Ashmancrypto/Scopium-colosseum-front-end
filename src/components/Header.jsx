@@ -12,6 +12,8 @@ import Newly from "./homepage/Newly.jsx";
 import RightSidebar from "./homepage/RightSidebar.jsx";
 import StreamCreator from "./homepage/StreamCreator.jsx";
 import { CreateTokenModal } from "./createModal/index.js";
+import BusinessVerificationModal from "./header/BusinessVerificationModal.jsx";
+
 
 const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   const navigate = useNavigate();
@@ -24,6 +26,8 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNavigationMenuOpen, setIsNavigationMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isBusinessVerificationModalOpen, setIsBusinessVerificationModalOpen] = useState(false);
+
 
   const dropdownRef = useRef(null);
 
@@ -44,13 +48,14 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
         name: "Home",
         path: "/",
       },
-      // {
-      //   name: "About",
-      //   path: "/about",
-      // },
       {
         name: "Advertising",
         path: "/advertising",
+      },
+      {
+        name: "Business Verification",
+        path: "#",
+        onClick: () => setIsBusinessVerificationModalOpen(true),
       },
       // {
       //   name: "API Data",
@@ -126,7 +131,10 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   const handleCloseTokenModal = () => {
     setIsCreateTokenModalOpen(false);
   };
-
+  
+  const handleCloseBusinessVerificationModal = () => {
+    setIsBusinessVerificationModalOpen(false);
+  };
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -179,12 +187,12 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
   }, [isCreateDropdownOpen]);
 
   useEffect(() => {
-    if (isCreateTokenModalOpen || isModalOpen) {
+    if (isCreateTokenModalOpen || isModalOpen || isBusinessVerificationModalOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-  }, [isCreateTokenModalOpen, isModalOpen]);
+  }, [isCreateTokenModalOpen, isModalOpen, isBusinessVerificationModalOpen]);
 
   useEffect(() => {
     if (createStreamModalRef.current) {
@@ -259,6 +267,13 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
                   <Link
                     key={index}
                     to={item.path}
+                    onClick={(e) => {
+                      if (item.onClick) {
+                        e.preventDefault();
+                        item.onClick();
+                        toggleNavigationMenu();
+                      }
+                    }}
                     className={`transition-colors duration-200 ${
                       isDark ? "hover:text-green-500" : "hover:text-pink-500 "
                     }`}
@@ -428,6 +443,13 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
                         <Link
                           key={index}
                           to={item.path}
+                          onClick={(e) => {
+                            if (item.onClick) {
+                              e.preventDefault();
+                              item.onClick();
+                              toggleNavigationMenu();
+                            }
+                          }}
                           className={`transition-colors duration-200 ${
                             isDark
                               ? "hover:text-green-500"
@@ -548,6 +570,11 @@ const Header = ({ onSearch, showNewly = false, showRightSidebar = false }) => {
       <CreateTokenModal
         isOpen={isCreateTokenModalOpen}
         onClose={handleCloseTokenModal}
+      />
+      {/* Business Verification Modal */}
+      <BusinessVerificationModal
+        isOpen={isBusinessVerificationModalOpen}
+        onClose={handleCloseBusinessVerificationModal}
       />
       {/* create stream */}
       {isModalOpen && (
