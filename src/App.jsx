@@ -12,6 +12,7 @@ import Privacy from "./pages/Privacy.jsx";
 import Disclaimer from "./pages/Disclaimer.jsx";
 import { SolPriceProvider } from "./contexts/SolPriceContext.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
+import FirstTimeUsernameModal from './components/profile/FirstTimeUsernameModal.jsx';
 import TokenPage from "./pages/TokenPage.jsx";
 import ThirdPartyIPAgreement from "./pages/ThirdPartyIPAgreement.jsx";
 import StreamerPage from "./pages/StreamerPage.jsx";
@@ -29,6 +30,7 @@ function App() {
               <ContractContextProvider>
                 <Router>
                   <div className="">
+                    <FirstTimeUsernameModal />
                     <Routes>
                       <Route path="/" element={<HomePage />} />
                       <Route path="/all-tokens" element={<AllTokensPage />} />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Loader, Edit, Upload, X } from 'lucide-react';
 import { useToastContext } from '../../contexts/ToastContext.jsx';
 import { updateProfile } from '../../api/user/index.js';
+import { checkUsernameAvailability } from '../../api/user/index.js';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 
 const EditProfileModal = ({ isOpen, onClose, user, onSave }) => {
@@ -59,6 +60,13 @@ const EditProfileModal = ({ isOpen, onClose, user, onSave }) => {
   const handleSave = async () => {
     try {
       setSaving(true);
+      // Check username availability before submitting
+      if (username && username.trim().length > 0) {
+        const available = await checkUsernameAvailability(username.trim());
+        if (!available) {
+          throw new Error('Username is already taken. Please choose another.');
+        }
+      }
       
       // Create FormData for API call
       const formData = new FormData();

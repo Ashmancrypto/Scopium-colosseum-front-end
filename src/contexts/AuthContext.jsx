@@ -39,6 +39,17 @@ export const AuthProvider = ({ children }) => {
                     .then(() => {
                         const user = getUser();
                         setUser(user);
+                        // If username equals default derived from wallet (first 6 chars), mark as needing update
+                        try {
+                            const defaultUsername = walletAddress.slice(0, 6);
+                            if (user && user.username && user.username === defaultUsername) {
+                                localStorage.setItem('usernameIsDefault', '1');
+                            } else {
+                                localStorage.removeItem('usernameIsDefault');
+                            }
+                        } catch (err) {
+                            // ignore
+                        }
                     })
                     .catch((error) => {
                         console.error('Login failed:', error);
