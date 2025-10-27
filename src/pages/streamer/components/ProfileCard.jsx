@@ -1,14 +1,6 @@
 const ProfileCard = ({ profile, assets, isDark = false }) => {
     const textPrimary = isDark ? 'text-white' : 'text-gray-900';
     const textSecondary = isDark ? 'text-gray-300' : 'text-gray-600';
-    const assetSet = assets ?? {};
-
-    const followerLabel = (() => {
-        if (profile?.followers === undefined || profile?.followers === null) return null;
-        const num = Number(profile.followers);
-        if (Number.isNaN(num)) return `${profile.followers}`;
-        return `${num.toLocaleString()} followers`;
-    })();
 
     const resolveAsset = (a, preferLight = false) => {
         if (!a) return null;
@@ -29,9 +21,8 @@ const ProfileCard = ({ profile, assets, isDark = false }) => {
             <button
                 type="button"
                 className="absolute -right-4 -top-4 inline-flex h-10 w-10 items-center justify-center rounded-full"
-                aria-label="Edit streamer profile"
             >
-                <img src={resolveAsset(assetSet.edit)} alt="Edit streamer profile" className="h-7 w-7 object-contain" loading="lazy" />
+                <img src={resolveAsset(assets.edit)} alt="Edit streamer profile" className="h-7 w-7 object-contain" loading="lazy" />
             </button>
 
             <div className="flex flex-col gap-6">
@@ -39,9 +30,9 @@ const ProfileCard = ({ profile, assets, isDark = false }) => {
                     <div className="flex items-center gap-4">
                         <div className="relative h-28 w-28 shrink-0">
                             <img
-                                src={resolveAsset(assetSet.union)}
-                                data-light-src={typeof assetSet.union === 'object' ? assetSet.union.light : ''}
-                                data-dark-src={typeof assetSet.union === 'object' ? assetSet.union.dark : ''}
+                                src={resolveAsset(assets.union)}
+                                data-light-src={typeof assets.union === 'object' ? assets.union.light : ''}
+                                data-dark-src={typeof assets.union === 'object' ? assets.union.dark : ''}
                                 alt="Profile highlight"
                                 className="h-full w-full"
                                 loading="lazy"
@@ -66,8 +57,8 @@ const ProfileCard = ({ profile, assets, isDark = false }) => {
                             />
                             <div className="absolute inset-1 mt-3">
                                 <img
-                                    src={profile?.avatar ?? ''}
-                                    alt={profile?.username ?? 'Streamer avatar'}
+                                    src={profile.avatar}
+                                    alt={profile.username}
                                     className="h-full w-full"
                                     loading="lazy"
                                     onError={(e) => {
@@ -79,25 +70,19 @@ const ProfileCard = ({ profile, assets, isDark = false }) => {
 
                         <div className="flex flex-1 flex-col justify-center gap-1">
                             <div className="flex flex-wrap items-center gap-2">
-                                <h1 className={`text-2xl font-semibold tracking-tight ${textPrimary}`}>{profile?.username ?? 'Unknown streamer'}</h1>
-                                <img src={resolveAsset(assetSet.verified)} alt="Verified streamer" className="h-5 w-5 object-contain" loading="lazy" />
+                                <h1 className={`text-2xl font-semibold tracking-tight ${textPrimary}`}>{profile.username}</h1>
+                                <img src={resolveAsset(assets.verified)} alt="Verified streamer" className="h-5 w-5 object-contain" loading="lazy" />
                             </div>
-                            {followerLabel ? (
-                                <p className={`text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{followerLabel}</p>
-                            ) : null}
-                            {profile?.pnl ? (
-                                <p className="text-sm font-semibold text-emerald-500">PNL: {profile.pnl}</p>
-                            ) : null}
+                            <p className={`text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{profile.followers} followers</p>
+                            <p className="text-sm font-semibold text-emerald-500">PNL: {profile.pnl}</p>
                         </div>
                     </div>
 
-                    {profile?.bio ? (
-                        <p className={`max-w-sm text-sm leading-relaxed ${textSecondary}`}>{profile.bio}</p>
-                    ) : null}
+                    <p className={`max-w-sm text-sm leading-relaxed ${textSecondary}`}>{profile.bio}</p>
                 </div>
 
                 <div className="flex items-center justify-center gap-5">
-                    {(assetSet.actions || []).map((iconObj, index) => {
+                    {assets.actions.map((iconObj, index) => {
                         const src = resolveAsset(iconObj); // use dark when available
                         if (!src) return null;
 

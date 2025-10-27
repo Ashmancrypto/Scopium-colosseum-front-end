@@ -16,36 +16,7 @@ const getTrendColor = (trend, isDark) => {
   }
 };
 
-const formatNumber = (value, { style = 'decimal', maximumFractionDigits = 2, notation } = {}) => {
-  if (value === null || value === undefined) {
-    return null;
-  }
-
-  const num = Number(value);
-  if (Number.isNaN(num)) {
-    return String(value);
-  }
-
-  return new Intl.NumberFormat('en-US', {
-    style,
-    maximumFractionDigits,
-    notation,
-  }).format(num);
-};
-
-const TokensFeed = ({ tokens = [], isDark = false, isLoading = false }) => {
-  if (isLoading) {
-    return (
-      <div
-        className={`rounded-2xl border p-10 text-center transition-colors ${
-          isDark ? 'border-gray-700 bg-gray-900/90 text-gray-300' : 'border-gray-200 bg-white text-gray-600'
-        }`}
-      >
-        Loading tokens…
-      </div>
-    );
-  }
-
+const TokensFeed = ({ tokens = [], isDark = false }) => {
   if (!tokens.length) {
     return (
       <div
@@ -60,36 +31,11 @@ const TokensFeed = ({ tokens = [], isDark = false, isLoading = false }) => {
 
   return (
     <div className="space-y-8">
-      {tokens.map((token, index) => {
-        const metaItems = [
-          token.marketCap !== undefined && token.marketCap !== null
-            ? {
-                label: 'Market Cap',
-                value: `${formatNumber(token.marketCap, { notation: 'compact', maximumFractionDigits: 2 })}`,
-              }
-            : null,
-          token.price !== undefined && token.price !== null
-            ? {
-                label: 'Price',
-                value: `$${formatNumber(token.price, { maximumFractionDigits: 4 })}`,
-              }
-            : null,
-          token.replies !== undefined && token.replies !== null
-            ? {
-                label: 'Replies',
-                value: formatNumber(token.replies, { maximumFractionDigits: 0 }),
-              }
-            : null,
-        ].filter(Boolean);
-
-  const articleKey = token.id ?? token.mintAddr ?? `${token.symbol ?? 'token'}-${index}`;
-  const displayMetaItems = metaItems.filter((item) => item?.value);
-
-        return (
-          <article
-            key={articleKey}
-            className={`rounded-3xl border px-6 py-6 transition-colors duration-300 ${getCardClasses(isDark)}`}
-          >
+      {tokens.map((token) => (
+        <article
+          key={token.id}
+          className={`rounded-3xl border px-6 py-6 transition-colors duration-300 ${getCardClasses(isDark)}`}
+        >
           <div className="flex flex-wrap items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               {token.icon ? (
@@ -118,20 +64,30 @@ const TokensFeed = ({ tokens = [], isDark = false, isLoading = false }) => {
               </div>
             </div>
 
-            {displayMetaItems.length ? (
-              <div
-                className={`flex flex-wrap items-center gap-6 text-xs font-medium sm:text-sm ${
-                  isDark ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                {displayMetaItems.map((item) => (
-                  <span key={`${articleKey}-${item.label}`} className="inline-flex items-center gap-1">
-                    {item.label}
-                    <span className={`font-semibold ${getMetaAccentClass(isDark)}`}>{item.value}</span>
-                  </span>
-                ))}
-              </div>
-            ) : null}
+            <div
+              className={`flex flex-wrap items-center gap-6 text-xs font-medium sm:text-sm ${
+                isDark ? 'text-gray-400' : 'text-gray-500'
+              }`}
+            >
+              {token.volume ? (
+                <span className="inline-flex items-center gap-1">
+                  Volume
+                  <span className={`font-semibold ${getMetaAccentClass(isDark)}`}>{token.volume}</span>
+                </span>
+              ) : null}
+              {token.age ? (
+                <span className="inline-flex items-center gap-1">
+                  Age
+                  <span className={`font-semibold ${getMetaAccentClass(isDark)}`}>{token.age}</span>
+                </span>
+              ) : null}
+              {token.holders ? (
+                <span className="inline-flex items-center gap-1">
+                  Holders
+                  <span className={`font-semibold ${getMetaAccentClass(isDark)}`}>{token.holders}</span>
+                </span>
+              ) : null}
+            </div>
           </div>
 
           <div
@@ -168,9 +124,8 @@ const TokensFeed = ({ tokens = [], isDark = false, isLoading = false }) => {
               ))}
             </div>
           ) : null}
-          </article>
-        );
-      })}
+        </article>
+      ))}
     </div>
   );
 };
