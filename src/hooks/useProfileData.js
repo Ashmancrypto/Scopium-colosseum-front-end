@@ -42,14 +42,7 @@ export const useProfileData = (username) => {
               avatar: result.avatar || null,
               walletAddr: result.walletAddr,
               coinsCreated: result.coinsCreated || [],
-              coinsHeld: result.coinsHeld || [],
-              followers: result.followers || 0,
-              likes: result.likes || 0,
-              mentions: result.mentions || 0,
-              replies: result.replies || 0,
-              notifications: result.notifications || {},
-              followersList: result.followersList || [],
-              followingsList: result.followingsList || []
+              coinsHeld: result.coinsHeld || []
             });
           } else {
             setProfileNotFound(true);
@@ -74,14 +67,7 @@ export const useProfileData = (username) => {
               avatar: result.avatar || currentUser.avatar || null,
               walletAddr: publicKey?.toString(),
               coinsCreated: result.coinsCreated || [],
-              coinsHeld: result.coinsHeld || [],
-              followers: result.followers || 0,
-              likes: result.likes || 0,
-              mentions: result.mentions || 0,
-              replies: result.replies || 0,
-              notifications: result.notifications || {},
-              followersList: result.followersList || [],
-              followingsList: result.followingsList || []
+              coinsHeld: result.coinsHeld || []
             });
           } else {
             // Fallback to current user data
@@ -91,14 +77,7 @@ export const useProfileData = (username) => {
               avatar: currentUser.avatar || null,
               walletAddr: publicKey?.toString(),
               coinsCreated: [],
-              coinsHeld: [],
-              followers: 0,
-              likes: 0,
-              mentions: 0,
-              replies: 0,
-              notifications: {},
-              followersList: [],
-              followingsList: []
+              coinsHeld: []
             });
           }
         } catch (error) {
@@ -110,14 +89,7 @@ export const useProfileData = (username) => {
             avatar: currentUser.avatar || null,
             walletAddr: publicKey?.toString(),
             coinsCreated: [],
-            coinsHeld: [],
-            followers: 0,
-            likes: 0,
-            mentions: 0,
-            replies: 0,
-            notifications: {},
-            followersList: [],
-            followingsList: []
+            coinsHeld: []
           });
         } finally {
           setLoadingProfile(false);

@@ -10,19 +10,7 @@ const getActionClasses = (variant, isDark) => {
     : 'border border-pink-400/40 bg-white text-pink-500 hover:border-pink-500/60 hover:text-pink-600';
 };
 
-const VideosFeed = ({ sections = [], isDark = false, isLoading = false }) => {
-  if (isLoading) {
-    return (
-      <div
-        className={`rounded-2xl border p-10 text-center transition-colors ${
-          isDark ? 'border-gray-700 bg-gray-900/90 text-gray-300' : 'border-gray-200 bg-white text-gray-600'
-        }`}
-      >
-        Loading videos…
-      </div>
-    );
-  }
-
+const VideosFeed = ({ sections = [], isDark = false }) => {
   const hasVideos = sections.some((section) => section.items && section.items.length > 0);
 
   const resolveIcon = (icon) => {
