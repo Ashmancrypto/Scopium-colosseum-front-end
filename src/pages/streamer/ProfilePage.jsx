@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Header from '../../components/Header.jsx';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
+import { useProfileData } from '../../hooks/useProfileData.js';
 import {
   ProfileCard,
   BannerBoard,
@@ -242,21 +244,99 @@ const tabs = [
 
 const StreamerProfilePage = () => {
   const { isDark } = useTheme();
+  const { username, streamer } = useParams(); // Support both /profile/:username and /streamer/:streamer routes
+  const profileUsername = username || streamer; // Use whichever is available
   const [activeTab, setActiveTab] = useState('posts');
 
+  // Fetch profile data from database
+  const {
+    userProfile,
+    loadingProfile,
+    profileNotFound,
+    isOwnProfile
+  } = useProfileData(profileUsername);
+
   const pageBackground = isDark ? 'bg-gray-800' : 'bg-[#EBEBEB]';
+
+  // Map userProfile data to profileDetails format for ProfileCard
+  const profileDetails = userProfile ? {
+    username: userProfile.username || 'USERNAME',
+    followers: '150k', // TODO: Fetch from backend when available
+    pnl: '+12.5%', // TODO: Calculate from backend data when available
+    bio: userProfile.bio || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tortor turpis, consequat vel nibh at, maximus rhoncus lacus.',
+    avatar: userProfile.avatar || '/images/icons/Streamer POV/Rectangle 56.png'
+  } : {
+    username: 'USERNAME',
+    followers: '150k',
+    pnl: '+12.5%',
+    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tortor turpis, consequat vel nibh at, maximus rhoncus lacus.',
+    avatar: '/images/icons/Streamer POV/Rectangle 56.png'
+  };
+
+  // Map userProfile tokens to mockTokens format
+  const tokensFromProfile = userProfile?.coinsCreated?.map((token, index) => ({
+    id: `token-${index}`,
+    name: token.name || 'Token name',
+    symbol: token.symbol || 'TKN',
+    icon: token.icon || '/images/placeholders/tokenPlaceholders/pepe.png',
+    chart: '/images/chart.png',
+    volume: '6.01M', // TODO: Fetch from token data
+    age: '5 hours', // TODO: Calculate from token data
+    holders: '602k', // TODO: Fetch from token data
+    stats: [
+      { label: '5 Min', value: '+0.27%', trend: 'up' },
+      { label: '1 Hr', value: '+1.48%', trend: 'up' },
+      { label: '6 Hr', value: '+8.92%', trend: 'up' },
+      { label: '24 Hr', value: '+24.69%', trend: 'up' }
+    ]
+  })) || [];
+
+  // Use tokensFromProfile if available, otherwise fallback to mockTokens
+  const displayTokens = tokensFromProfile.length > 0 ? tokensFromProfile : mockTokens;
 
   const renderActiveTabContent = () => {
     switch (activeTab) {
       case 'videos':
         return <VideosFeed sections={mockVideoSections} isDark={isDark} />;
       case 'tokens':
-        return <TokensFeed tokens={mockTokens} isDark={isDark} />;
+        return <TokensFeed tokens={displayTokens} isDark={isDark} />;
       case 'posts':
       default:
         return <PostsFeed posts={mockPosts} isDark={isDark} />;
     }
   };
+
+  // Loading state
+  if (loadingProfile) {
+    return (
+      <div className={`min-h-screen transition-colors duration-300 ${pageBackground}`}>
+        <Header />
+        <div className="pt-16 flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+            </div>
+            <p className="mt-4">Loading profile...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Profile not found state
+  if (profileNotFound) {
+    return (
+      <div className={`min-h-screen transition-colors duration-300 ${pageBackground}`}>
+        <Header />
+        <div className="pt-16 flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-2">Profile Not Found</h2>
+            <p>The user &quot;{profileUsername}&quot; could not be found.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen md:mt-40 transition-colors duration-300 ${pageBackground}`}>
@@ -271,7 +351,7 @@ const StreamerProfilePage = () => {
             </aside>
 
             <main className="flex-1 space-y-6">
-              <PostComposer isDark={isDark} />
+              {isOwnProfile && <PostComposer isDark={isDark} />}
               <ContentTabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} isDark={isDark} />
               {renderActiveTabContent()}
             </main>
