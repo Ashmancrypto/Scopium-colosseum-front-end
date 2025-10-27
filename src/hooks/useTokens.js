@@ -186,6 +186,13 @@ export const useTokens = () => {
   };
 
   const fetchTrendingTokens = async () => {
+    // Temporarily disabled trending tokens API call - endpoint not ready
+    setTrendingTokens(mockupTokens);
+    setLoadingTrending(false);
+    setError(null);
+    return;
+    
+    /* 
     if (isMockup) {
       setTrendingTokens(mockupTokens);
       setLoadingTrending(false);
@@ -218,6 +225,7 @@ export const useTokens = () => {
     } finally {
       setLoadingTrending(false);
     }
+    */
   };
 
   // Filter tokens by category

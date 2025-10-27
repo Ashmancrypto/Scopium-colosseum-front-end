@@ -4,7 +4,8 @@ import ContractContextProvider from "./contexts/contractsOnSolana/contractContex
 import { ToastProvider } from "./contexts/ToastContext.jsx";
 import { ThemeProvider } from "./contexts/ThemeContext.jsx";
 import HomePage from "./pages/HomePage.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
+// Old profile page - now using StreamerProfilePage at /profile/:username route
+// import ProfilePage from "./pages/ProfilePage.jsx";
 import AllTokensPage from "./pages/AllTokensPage.jsx";
 import ComingSoonPage from "./pages/ComingSoonPage.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
@@ -15,7 +16,8 @@ import { AuthProvider } from "./contexts/AuthContext.jsx";
 import FirstTimeUsernameModal from './components/profile/FirstTimeUsernameModal.jsx';
 import TokenPage from "./pages/TokenPage.jsx";
 import ThirdPartyIPAgreement from "./pages/ThirdPartyIPAgreement.jsx";
-import StreamerPage from "./pages/StreamerPage.jsx";
+// Old streamer page - deprecated in favor of StreamerProfilePage
+// import StreamerPage from "./pages/StreamerPage.jsx";
 import StreamerProfilePage from "./pages/streamer/ProfilePage.jsx";
 import SupportPage from "./pages/SupportPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
@@ -34,9 +36,10 @@ function App() {
                     <Routes>
                       <Route path="/" element={<HomePage />} />
                       <Route path="/all-tokens" element={<AllTokensPage />} />
+                      {/* Main profile route - uses new StreamerProfilePage design */}
                       <Route
                         path="/profile/:username"
-                        element={<ProfilePage />}
+                        element={<StreamerProfilePage />}
                       />
                       <Route path="/coming-soon" element={<ComingSoonPage />} />
                       <Route
@@ -57,14 +60,20 @@ function App() {
                         path="/streamers"
                         element={<HomePage isStreamersPage={true} />}
                       />
+                      {/* New unified route for both streamer and user profiles */}
                       <Route
-                        path="/streamer/:streamer"
-                        element={<StreamerPage />}
-                      />
-                      <Route
-                        path="/streamer-profile/:streamer"
+                        path="/profile/:username"
                         element={<StreamerProfilePage />}
                       />
+                      {/* Old routes - kept for backward compatibility, redirect to /profile/:username */}
+                      <Route
+                        path="/streamer/:streamer"
+                        element={<StreamerProfilePage />}
+                      />
+                      {/* <Route
+                        path="/streamer-profile/:streamer"
+                        element={<StreamerProfilePage />}
+                      /> */}
                       <Route path="/support" element={<SupportPage />} />
                       {/* Catch-all route for 404 pages */}
                       <Route path="*" element={<NotFoundPage />} />

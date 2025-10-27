@@ -96,6 +96,7 @@ const CustomWalletButton = ({ className = "" }) => {
     if (!user) {
       return;
     } else {
+      // Navigate to unified profile page
       navigate(`/profile/${user.username}`);
     }
     setIsDropdownOpen(false);

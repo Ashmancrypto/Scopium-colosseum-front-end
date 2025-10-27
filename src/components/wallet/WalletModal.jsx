@@ -94,6 +94,7 @@ const WalletModal = ({ userData, isOpen, onClose }) => {
   };
 
   const handleEditProfile = () => {
+    // Navigate to unified profile page
     navigate(`/profile/${user.username}`);
     onClose();
   };
