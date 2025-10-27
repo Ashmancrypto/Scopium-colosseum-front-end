@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Header from '../../components/Header.jsx';
-import { useTheme } from '../../contexts/ThemeContext.jsx';
-import { useProfileData } from '../../hooks/useProfileData.js';
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import Header from "../../components/Header.jsx";
+import { useTheme } from "../../contexts/ThemeContext.jsx";
+import { useProfileData } from "../../hooks/useProfileData.js";
 import {
   ProfileCard,
   BannerBoard,
@@ -10,297 +10,321 @@ import {
   ContentTabs,
   PostsFeed,
   VideosFeed,
-  TokensFeed
-} from './components/index.js';
+  TokensFeed,
+} from "./components/index.js";
+import TierSystem from "./components/TierSystem.jsx";
 
 const mockBanners = [
   {
     id: 1,
-    title: 'Banner #139',
-    description: 'Promotion of new art, cover color adjustments. Deserunt fanny tump, consoput.'
+    title: "Banner #139",
+    description:
+      "Promotion of new art, cover color adjustments. Deserunt fanny tump, consoput.",
   },
   {
     id: 2,
-    title: 'Banner #138',
-    description: 'Weekly stream schedule update, calendar drop. Deserunt fanny tump, consoput.'
+    title: "Banner #138",
+    description:
+      "Weekly stream schedule update, calendar drop. Deserunt fanny tump, consoput.",
   },
   {
     id: 3,
-    title: 'Banner #136',
-    description: 'Exclusive Q&A stream teaser, merch preview. Deserunt fanny tump, consoput.'
-  }
+    title: "Banner #136",
+    description:
+      "Exclusive Q&A stream teaser, merch preview. Deserunt fanny tump, consoput.",
+  },
 ];
 
 const mockPosts = [
   {
     id: 1,
     content:
-      'Hey everyone! I have been working on a new graphic overlay, and it is nearing completion! Cannot wait for the storytelling stream where I share my inspiration behind the new design. #CryptoArt #NFTCommunity #Scopium',
-    tags: ['Image'],
+      "Hey everyone! I have been working on a new graphic overlay, and it is nearing completion! Cannot wait for the storytelling stream where I share my inspiration behind the new design. #CryptoArt #NFTCommunity #Scopium",
+    tags: ["Image"],
     reactions: {
       likes: 1298,
       comments: 244,
-      shares: 91
-    }
+      shares: 91,
+    },
   },
   {
     id: 2,
     content:
-      'Happy release day! I have been teasing this on my weekly updates, and it is finally dropping tonight. See you for the streaming launch stream! Thanks you all! #CryptoArt #NFTCommunity #Scopium',
-    tags: ['Image'],
+      "Happy release day! I have been teasing this on my weekly updates, and it is finally dropping tonight. See you for the streaming launch stream! Thanks you all! #CryptoArt #NFTCommunity #Scopium",
+    tags: ["Image"],
     reactions: {
       likes: 984,
       comments: 167,
-      shares: 54
-    }
-  }
+      shares: 54,
+    },
+  },
 ];
 
-const getIconPath = (fileName) => encodeURI(`/images/icons/Streamer POV/${fileName}`);
+const getIconPath = (fileName) =>
+  encodeURI(`/images/icons/Streamer POV/${fileName}`);
 const getGenericIconPath = (fileName) => encodeURI(`/images/icons/${fileName}`);
 
 const assetPair = (fileName) => ({
   light: getIconPath(fileName),
-  dark: getIconPath(`dark/${fileName}`)
+  dark: getIconPath(`dark/${fileName}`),
 });
 
 const streamerAssets = {
-  edit: assetPair('Streamer-profile-edit.png'),
-  union: assetPair('Union.png'),
-  verified: assetPair('Verified icon.png'),
+  edit: assetPair("Streamer-profile-edit.png"),
+  union: assetPair("Union.png"),
+  verified: assetPair("Verified icon.png"),
   actions: [
-    assetPair('X-twitter-3d icon 1.png'),
-    assetPair('X-twitter-3d icon 2.png'),
-    assetPair('X-twitter-3d icon 3.png'),
-    assetPair('X-twitter-3d icon 4.png')
-  ]
+    assetPair("X-twitter-3d icon 1.png"),
+    assetPair("X-twitter-3d icon 2.png"),
+    assetPair("X-twitter-3d icon 3.png"),
+    assetPair("X-twitter-3d icon 4.png"),
+  ],
 };
 
 const mockVideoSections = [
   {
-    id: 'recent-streams',
-    title: 'Recent Streams',
+    id: "recent-streams",
+    title: "Recent Streams",
     actions: [
       {
-        id: 'add-video',
-        label: 'Add Video',
-        variant: 'primary',
+        id: "add-video",
+        label: "Add Video",
+        variant: "primary",
         icon: {
-          light: getGenericIconPath('new.png'),
-          dark: getGenericIconPath('new.png')
-        }
+          light: getGenericIconPath("new.png"),
+          dark: getGenericIconPath("new.png"),
+        },
       },
       {
-        id: 'view-all-recent',
-        label: 'View All',
-        variant: 'secondary',
+        id: "view-all-recent",
+        label: "View All",
+        variant: "secondary",
         icon: {
-          light: getGenericIconPath('arrow.svg'),
-          dark: getGenericIconPath('arrow.svg')
-        }
-      }
+          light: getGenericIconPath("arrow.svg"),
+          dark: getGenericIconPath("arrow.svg"),
+        },
+      },
     ],
     items: [
       {
-        id: 'stream-1',
-        title: 'Stream title - Live NFT Reveal: Let\'s See What Happens',
-        thumbnail: '/images/sample/sample1.png',
-        liveLabel: 'Live',
-        duration: '2h 14m',
-        viewerCount: '32.5k watching',
-        streamer: 'Username',
-        followersLabel: '225k followers',
-        avatar: '/images/sample/savatar2.png',
+        id: "stream-1",
+        title: "Stream title - Live NFT Reveal: Let's See What Happens",
+        thumbnail: "/images/sample/sample1.png",
+        liveLabel: "Live",
+        duration: "2h 14m",
+        viewerCount: "32.5k watching",
+        streamer: "Username",
+        followersLabel: "225k followers",
+        avatar: "/images/sample/savatar2.png",
         actions: [
-          { id: 'likes', icon: getGenericIconPath('favorite.png'), label: '1.8k' },
-          { id: 'comments', label: '320' },
-          { id: 'shares', icon: getGenericIconPath('up.png'), label: '54' }
-        ]
+          {
+            id: "likes",
+            icon: getGenericIconPath("favorite.png"),
+            label: "1.8k",
+          },
+          { id: "comments", label: "320" },
+          { id: "shares", icon: getGenericIconPath("up.png"), label: "54" },
+        ],
       },
       {
-        id: 'stream-2',
-        title: 'Stream title - Live NFT Reveal: Let\'s See What Happens',
-        thumbnail: '/images/sample/sample2.png',
-        liveLabel: 'Live',
-        duration: '1h 48m',
-        viewerCount: '24.1k watching',
-        streamer: 'Username',
-        followersLabel: '225k followers',
-        avatar: '/images/sample/savatar3.png',
+        id: "stream-2",
+        title: "Stream title - Live NFT Reveal: Let's See What Happens",
+        thumbnail: "/images/sample/sample2.png",
+        liveLabel: "Live",
+        duration: "1h 48m",
+        viewerCount: "24.1k watching",
+        streamer: "Username",
+        followersLabel: "225k followers",
+        avatar: "/images/sample/savatar3.png",
         actions: [
-          { id: 'likes', icon: getGenericIconPath('favorite.png'), label: '1.2k' },
-          { id: 'comments', label: '205' },
-          { id: 'shares', icon: getGenericIconPath('up.png'), label: '37' }
-        ]
-      }
-    ]
+          {
+            id: "likes",
+            icon: getGenericIconPath("favorite.png"),
+            label: "1.2k",
+          },
+          { id: "comments", label: "205" },
+          { id: "shares", icon: getGenericIconPath("up.png"), label: "37" },
+        ],
+      },
+    ],
   },
   {
-    id: 'videos-library',
-    title: 'Videos',
+    id: "videos-library",
+    title: "Videos",
     actions: [
       {
-        id: 'add-video-library',
-        label: 'Add Video',
-        variant: 'secondary',
+        id: "add-video-library",
+        label: "Add Video",
+        variant: "secondary",
         icon: {
-          light: getGenericIconPath('new.png'),
-          dark: getGenericIconPath('new.png')
-        }
+          light: getGenericIconPath("new.png"),
+          dark: getGenericIconPath("new.png"),
+        },
       },
       {
-        id: 'view-all-library',
-        label: 'View All',
-        variant: 'secondary',
+        id: "view-all-library",
+        label: "View All",
+        variant: "secondary",
         icon: {
-          light: getGenericIconPath('arrow.svg'),
-          dark: getGenericIconPath('arrow.svg')
-        }
-      }
+          light: getGenericIconPath("arrow.svg"),
+          dark: getGenericIconPath("arrow.svg"),
+        },
+      },
     ],
     items: [
       {
-        id: 'video-1',
-        title: 'Stream title - Live NFT Reveal: Let\'s See What Happens',
-        thumbnail: '/images/sample/sample3.png',
-        duration: '32m',
-        viewerCount: '9.6k views',
-        streamer: 'Username',
-        followersLabel: '225k followers',
-        avatar: '/images/sample/savatar4.png',
+        id: "video-1",
+        title: "Stream title - Live NFT Reveal: Let's See What Happens",
+        thumbnail: "/images/sample/sample3.png",
+        duration: "32m",
+        viewerCount: "9.6k views",
+        streamer: "Username",
+        followersLabel: "225k followers",
+        avatar: "/images/sample/savatar4.png",
         actions: [
-          { id: 'likes', icon: getGenericIconPath('favorite.png'), label: '832' },
-          { id: 'comments', label: '147' },
-          { id: 'shares', icon: getGenericIconPath('up.png'), label: '26' }
-        ]
+          {
+            id: "likes",
+            icon: getGenericIconPath("favorite.png"),
+            label: "832",
+          },
+          { id: "comments", label: "147" },
+          { id: "shares", icon: getGenericIconPath("up.png"), label: "26" },
+        ],
       },
       {
-        id: 'video-2',
-        title: 'Stream title - Live NFT Reveal: Let\'s See What Happens',
-        thumbnail: '/images/sample/sample1.png',
-        duration: '28m',
-        viewerCount: '6.3k views',
-        streamer: 'Username',
-        followersLabel: '225k followers',
-        avatar: '/images/sample/savatar5.png',
+        id: "video-2",
+        title: "Stream title - Live NFT Reveal: Let's See What Happens",
+        thumbnail: "/images/sample/sample1.png",
+        duration: "28m",
+        viewerCount: "6.3k views",
+        streamer: "Username",
+        followersLabel: "225k followers",
+        avatar: "/images/sample/savatar5.png",
         actions: [
-          { id: 'likes', icon: getGenericIconPath('favorite.png'), label: '614' },
-          { id: 'comments', label: '103' },
-          { id: 'shares', icon: getGenericIconPath('up.png'), label: '19' }
-        ]
-      }
-    ]
-  }
+          {
+            id: "likes",
+            icon: getGenericIconPath("favorite.png"),
+            label: "614",
+          },
+          { id: "comments", label: "103" },
+          { id: "shares", icon: getGenericIconPath("up.png"), label: "19" },
+        ],
+      },
+    ],
+  },
 ];
 
 const mockTokens = [
   {
-    id: 'token-1',
-    name: 'Token name',
-    symbol: 'TKN',
-    icon: '/images/placeholders/tokenPlaceholders/pepe.png',
-    chart: '/images/chart.png',
-    volume: '6.01M',
-    age: '5 hours',
-    holders: '602k',
+    id: "token-1",
+    name: "Token name",
+    symbol: "TKN",
+    icon: "/images/placeholders/tokenPlaceholders/pepe.png",
+    chart: "/images/chart.png",
+    volume: "6.01M",
+    age: "5 hours",
+    holders: "602k",
     stats: [
-      { label: '5 Min', value: '+0.27%', trend: 'up' },
-      { label: '1 hour', value: '+0.52%', trend: 'up' },
-      { label: '6 hour', value: '+1.24%', trend: 'up' },
-      { label: '24 hour', value: '-0.62%', trend: 'down' }
-    ]
+      { label: "5 Min", value: "+0.27%", trend: "up" },
+      { label: "1 hour", value: "+0.52%", trend: "up" },
+      { label: "6 hour", value: "+1.24%", trend: "up" },
+      { label: "24 hour", value: "-0.62%", trend: "down" },
+    ],
   },
   {
-    id: 'token-2',
-    name: 'Token name',
-    symbol: 'COIN',
-    icon: '/images/placeholders/tokenPlaceholders/dog.png',
-    chart: '/images/chart.png',
-    volume: '4.38M',
-    age: '9 hours',
-    holders: '482k',
+    id: "token-2",
+    name: "Token name",
+    symbol: "COIN",
+    icon: "/images/placeholders/tokenPlaceholders/dog.png",
+    chart: "/images/chart.png",
+    volume: "4.38M",
+    age: "9 hours",
+    holders: "482k",
     stats: [
-      { label: '5 Min', value: '+0.12%', trend: 'up' },
-      { label: '1 hour', value: '+0.37%', trend: 'up' },
-      { label: '6 hour', value: '+0.91%', trend: 'up' },
-      { label: '24 hour', value: '-0.84%', trend: 'down' }
-    ]
-  }
+      { label: "5 Min", value: "+0.12%", trend: "up" },
+      { label: "1 hour", value: "+0.37%", trend: "up" },
+      { label: "6 hour", value: "+0.91%", trend: "up" },
+      { label: "24 hour", value: "-0.84%", trend: "down" },
+    ],
+  },
 ];
 
 const profileDetails = {
-  username: 'USERNAME',
-  followers: '150k',
-  pnl: '+12.5%',
-  bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tortor turpis, consequat vel nibh at, maximus rhoncus lacus.',
-  avatar: '/images/icons/Streamer POV/Rectangle 56.png'
+  username: "USERNAME",
+  followers: "150k",
+  pnl: "+12.5%",
+  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tortor turpis, consequat vel nibh at, maximus rhoncus lacus.",
+  avatar: "/images/icons/Streamer POV/Rectangle 56.png",
 };
 
 const tabs = [
-  { id: 'posts', label: 'Posts' },
-  { id: 'videos', label: 'Videos' },
-  { id: 'tokens', label: 'Tokens' }
+  { id: "posts", label: "Posts" },
+  { id: "videos", label: "Videos" },
+  { id: "tokens", label: "Tokens" },
 ];
 
 const StreamerProfilePage = () => {
   const { isDark } = useTheme();
   const { username, streamer } = useParams(); // Support both /profile/:username and /streamer/:streamer routes
   const profileUsername = username || streamer; // Use whichever is available
-  const [activeTab, setActiveTab] = useState('posts');
+  const [activeTab, setActiveTab] = useState("posts");
 
   // Fetch profile data from database
-  const {
-    userProfile,
-    loadingProfile,
-    profileNotFound,
-    isOwnProfile
-  } = useProfileData(profileUsername);
+  const { userProfile, loadingProfile, profileNotFound, isOwnProfile } =
+    useProfileData(profileUsername);
 
-  const pageBackground = isDark ? 'bg-gray-800' : 'bg-[#EBEBEB]';
+  const pageBackground = isDark ? "bg-gray-800" : "bg-[#EBEBEB]";
 
   // Map userProfile data to profileDetails format for ProfileCard
-  const profileDetails = userProfile ? {
-    username: userProfile.username || 'USERNAME',
-    followers: '150k', // TODO: Fetch from backend when available
-    pnl: '+12.5%', // TODO: Calculate from backend data when available
-    bio: userProfile.bio || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tortor turpis, consequat vel nibh at, maximus rhoncus lacus.',
-    avatar: userProfile.avatar || '/images/icons/Streamer POV/Rectangle 56.png'
-  } : {
-    username: 'USERNAME',
-    followers: '150k',
-    pnl: '+12.5%',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tortor turpis, consequat vel nibh at, maximus rhoncus lacus.',
-    avatar: '/images/icons/Streamer POV/Rectangle 56.png'
-  };
+  const profileDetails = userProfile
+    ? {
+        username: userProfile.username || "USERNAME",
+        followers: "150k", // TODO: Fetch from backend when available
+        pnl: "+12.5%", // TODO: Calculate from backend data when available
+        bio:
+          userProfile.bio ||
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tortor turpis, consequat vel nibh at, maximus rhoncus lacus.",
+        avatar:
+          userProfile.avatar || "/images/icons/Streamer POV/Rectangle 56.png",
+      }
+    : {
+        username: "USERNAME",
+        followers: "150k",
+        pnl: "+12.5%",
+        bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tortor turpis, consequat vel nibh at, maximus rhoncus lacus.",
+        avatar: "/images/icons/Streamer POV/Rectangle 56.png",
+      };
 
   // Map userProfile tokens to mockTokens format
-  const tokensFromProfile = userProfile?.coinsCreated?.map((token, index) => ({
-    id: `token-${index}`,
-    name: token.name || 'Token name',
-    symbol: token.symbol || 'TKN',
-    icon: token.icon || '/images/placeholders/tokenPlaceholders/pepe.png',
-    chart: '/images/chart.png',
-    volume: '6.01M', // TODO: Fetch from token data
-    age: '5 hours', // TODO: Calculate from token data
-    holders: '602k', // TODO: Fetch from token data
-    stats: [
-      { label: '5 Min', value: '+0.27%', trend: 'up' },
-      { label: '1 Hr', value: '+1.48%', trend: 'up' },
-      { label: '6 Hr', value: '+8.92%', trend: 'up' },
-      { label: '24 Hr', value: '+24.69%', trend: 'up' }
-    ]
-  })) || [];
+  const tokensFromProfile =
+    userProfile?.coinsCreated?.map((token, index) => ({
+      id: `token-${index}`,
+      name: token.name || "Token name",
+      symbol: token.symbol || "TKN",
+      icon: token.icon || "/images/placeholders/tokenPlaceholders/pepe.png",
+      chart: "/images/chart.png",
+      volume: "6.01M", // TODO: Fetch from token data
+      age: "5 hours", // TODO: Calculate from token data
+      holders: "602k", // TODO: Fetch from token data
+      stats: [
+        { label: "5 Min", value: "+0.27%", trend: "up" },
+        { label: "1 Hr", value: "+1.48%", trend: "up" },
+        { label: "6 Hr", value: "+8.92%", trend: "up" },
+        { label: "24 Hr", value: "+24.69%", trend: "up" },
+      ],
+    })) || [];
 
   // Use tokensFromProfile if available, otherwise fallback to mockTokens
-  const displayTokens = tokensFromProfile.length > 0 ? tokensFromProfile : mockTokens;
+  const displayTokens =
+    tokensFromProfile.length > 0 ? tokensFromProfile : mockTokens;
 
   const renderActiveTabContent = () => {
     switch (activeTab) {
-      case 'videos':
+      case "videos":
         return <VideosFeed sections={mockVideoSections} isDark={isDark} />;
-      case 'tokens':
+      case "tokens":
         return <TokensFeed tokens={displayTokens} isDark={isDark} />;
-      case 'posts':
+      case "posts":
       default:
         return <PostsFeed posts={mockPosts} isDark={isDark} />;
     }
@@ -309,12 +333,19 @@ const StreamerProfilePage = () => {
   // Loading state
   if (loadingProfile) {
     return (
-      <div className={`min-h-screen transition-colors duration-300 ${pageBackground}`}>
+      <div
+        className={`min-h-screen transition-colors duration-300 ${pageBackground}`}
+      >
         <Header />
         <div className="pt-16 flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+            <div
+              className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+              role="status"
+            >
+              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                Loading...
+              </span>
             </div>
             <p className="mt-4">Loading profile...</p>
           </div>
@@ -326,7 +357,9 @@ const StreamerProfilePage = () => {
   // Profile not found state
   if (profileNotFound) {
     return (
-      <div className={`min-h-screen transition-colors duration-300 ${pageBackground}`}>
+      <div
+        className={`min-h-screen transition-colors duration-300 ${pageBackground}`}
+      >
         <Header />
         <div className="pt-16 flex items-center justify-center min-h-screen">
           <div className="text-center">
@@ -339,20 +372,34 @@ const StreamerProfilePage = () => {
   }
 
   return (
-    <div className={`min-h-screen md:mt-40 transition-colors duration-300 ${pageBackground}`}>
+    <div
+      className={`min-h-screen md:mt-40 transition-colors duration-300 ${pageBackground}`}
+    >
       <Header />
 
       <div className="pt-16 flex">
-        <div className={`flex-1 p-2 sm:p-4 lg:p-6 min-h-screen transition-colors duration-300 ${pageBackground}`}>
+        <div
+          className={`flex-1 p-2 sm:p-4 lg:p-6 min-h-screen transition-colors duration-300 ${pageBackground}`}
+        >
           <div className="mx-auto flex max-w-6xl flex-col gap-6 lg:flex-row">
             <aside className="w-full space-y-6 lg:w-80 xl:w-96 lg:sticky lg:top-28 lg:self-start">
-              <ProfileCard profile={profileDetails} assets={streamerAssets} isDark={isDark} />
-              <BannerBoard banners={mockBanners} isDark={isDark} />
+              <ProfileCard
+                profile={profileDetails}
+                assets={streamerAssets}
+                isDark={isDark}
+              />
+              {/* <BannerBoard banners={mockBanners} isDark={isDark} /> */}
+              <TierSystem isDark={isDark}></TierSystem>
             </aside>
 
             <main className="flex-1 space-y-6">
               {isOwnProfile && <PostComposer isDark={isDark} />}
-              <ContentTabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} isDark={isDark} />
+              <ContentTabs
+                tabs={tabs}
+                activeTab={activeTab}
+                onChange={setActiveTab}
+                isDark={isDark}
+              />
               {renderActiveTabContent()}
             </main>
           </div>
