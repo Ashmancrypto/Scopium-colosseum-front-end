@@ -12,7 +12,7 @@ On a public blockchain, all swap transactions are visible:
 - Large swaps can move markets before execution
 - Front-running becomes trivial
 
-### Arcium's Private Solution
+### A Private Solution
 
 Arcium enables confidential token swaps where:
 
@@ -50,21 +50,21 @@ Refer to the [Arcium documentation](https://docs.arcium.com/developers) for setu
 ## Future Works
 
 ### Token Integration 
-- [ ] Integrate SPL Token Program for real token transfers
-- [ ] Add token account validation and ownership checks
-- [ ] Implement escrow accounts for secure token custody during swaps
-- [ ] Support for multiple token pairs
+-  Integrate SPL Token Program for real token transfers
+-  Add token account validation and ownership checks
+-  Implement escrow accounts for secure token custody during swaps
+-  Support for multiple token pairs
 
 ### AMM Enhancement 
-- [ ] Complete AMM pool functionality with real liquidity
-- [ ] LP token minting for liquidity providers
-- [ ] Fee distribution mechanism
-- [ ] Impermanent loss calculations
+-  Complete AMM pool functionality with real liquidity
+-  LP token minting for liquidity providers
+-  Fee distribution mechanism
+-  Impermanent loss calculations
 
 
 ### User Experience
-- [ ] Web3 frontend 
-- [ ] Real-time swap preview 
-- [ ] Mobile wallet integration
-- [ ] Multi-language support
+-  Web3 frontend 
+-  Real-time swap preview 
+-  Mobile wallet integration
+-  Multi-language support
 
