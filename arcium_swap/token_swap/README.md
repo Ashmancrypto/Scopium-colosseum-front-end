@@ -8,7 +8,6 @@ This project demonstrates a privacy-preserving token swap using Arcium's Multi-P
 
 On a public blockchain, all swap transactions are visible:
 - Anyone can see how much you're swapping
-- Trading strategies become public knowledge
 - Large swaps can move markets before execution
 - Front-running becomes trivial
 
